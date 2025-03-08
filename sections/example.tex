@@ -1,0 +1,171 @@
+%% LaTeX2e class for student theses
+%% sections/evaluation.tex
+
+\chapter{Example}
+\label{ch:Example}%anchor point for a reference
+In this chapter, we give you some advice for \LaTeX{} and scientific writing to avoid common mistakes.
+Most of these rules are just good practice and are not necessarily true in every situation but following them will not hurt you.
+You should already be comfortable with \LaTeX{} and Git, take a look at this beginners guide \url{https://www.overleaf.com/learn} if you are not.
+
+
+\section{Chapters, Sections and Subsections}
+\label{sec:Example:Chapters}
+Your text should be partitioned by the commands "\texttt{\textbackslash{}chapter}", "\texttt{\textbackslash{}section}", and "\texttt{\textbackslash{}subsection}".
+After every headline, there should be some text e.g. a chapter should never begin with a section title.
+If you want to reference one part of your text from another part of your text, write something like "see \cref{ch:Example}".
+%alternatively use Chapter~\ref{ch:Example}
+Take a look at the code to see how to make the number clickable.
+
+
+\section{Tables}
+\label{sec:Example:Tables}
+Tables should be \emph{floats} i.e. typeset within "\texttt{\textbackslash{}begin\{table\}}" and "\texttt{\textbackslash{}end\{table\}}" which makes them float to the top of the next page.
+Tables should have the full text width.
+Further, they should have a meaningful caption placed above them which serves as a standalone explanation and they should also be referenced from the text, like \cref{tb:Example:Tables}.
+
+A visually pleasing table has few lines, unlike tables from e.g. Excel.
+A table typically consists of three horizontal lines "$\set{\texttt{top},\texttt{mid},\texttt{bottom}}$\texttt{rule}" and no vertical lines.
+Top and bottom rule separate the table from the surrounding text whereas the mid rule separates the header from the data.
+All further visual distinction between some rows and columns is achieved by empty space.
+For lines, this is possible with the command "\texttt{\textbackslash{}addlinespace}".
+The automatic spacing between columns is usually already sufficient.
+
+This example uses the "\texttt{tabularx}" package to make tables.
+There are three column types you typically use which are also available in other packages like "\texttt{booktabs}".
+Text columns are of type "\texttt{L}" which makes the column left aligned.
+Number columns are of type "\texttt{R}" which makes the column right aligned.
+Sometimes you use the type "\texttt{C}" to make a column centered.
+This is mostly useful for the header row.
+
+\begin{table}[t]
+	\caption{This is an example table, the content does not have an actual meaning.
+		Note that unlike for figures, the caption is above the content.
+		\label{tb:Example:Tables}}
+	\begin{tabularx}{\linewidth}{LLRR}
+		\toprule
+		& Text column & Number column & More numbers \\
+		\midrule
+		First row & some text & 123\,456 & 1\,234.56 \\
+		Second row & some more text & 12\,345\,678 & 7\,839.20 \\
+		\addlinespace
+		First other row & some text & 654\,321 & 6\,789.10 \\
+		Second other row & some more text & 87\,654\,321 & 1\,234.50 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+
+\section{Figures}
+\label{sec:Example:Figures}
+Like tables, Figures should be \emph{floats} i.e. typeset within "\texttt{\textbackslash{}begin\{figure\}}" and "\texttt{\textbackslash{}end\{figure\}}" which makes them float to the top of the next page.
+Figures should be centered with "\texttt{\textbackslash{}centering}",
+and they should have a meaningful caption which serves as a standalone explanation.
+Other than for tables, the cation is placed below the figure.
+Further, they should always be referenced from the text, like \cref{fig:Example:figure}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[height=2.5cm]{logos/kitlogo_en_cmyk.pdf}
+	\caption{This is the logo of the KIT and is used as an example image in this work.
+	Note that unlike for tables, the caption is below the content.
+	\label{fig:Example:figure}}
+\end{figure}
+
+
+\section{Math and Numbers}
+\label{sec:Example:MathAndNumbers}
+A sentence should always end with a full stop even if the sentence ends with maths like this
+\[3987^{12}+4365^{12}=4472^{12}\text{~.}\]
+Use the latex command "\texttt{\textbackslash,}" as the thousands separator to make numbers like 12\,345 look nicer.
+This is especially useful in tables, see \cref{tb:Example:Tables}.
+
+Math formulas look nicer and are easier to read if you use parentheses of varying sizes, take a look at the following two formulas
+\begin{align*}
+	f&\in\mathcal{O}((n+m)\cdot\log(n))\\
+	g&\in\mathcal{O}\big((n+m)\cdot\log(n)\big)\text{~.}
+\end{align*}
+Try to avoid starting sentences with a math symbol.
+The multiplication symbol is a dot typeset with the command "\texttt{\textbackslash{}cdot}" instead of "$*$" or "$\times$".
+
+
+\section{Citations}
+\label{sec:Example:Citations}
+Put citation marks whenever you use statements by another person or published by yourself outside of this work.
+Put citation marks at the and of a sentence since they distract the reader.
+Dibbelt et al. \cite{DSW16} did something.
+Dibbelt et al. did something \cite{DSW16}.
+
+
+\section{General notes}
+\label{sec:Example:Notes}
+These are just some unrelated tips and tricks.
+
+\paragraph{Git}
+Put every sentence in a new line inside the .tex file to make "\texttt{git diff}" and other commands work nicer.
+
+\paragraph{Text}
+Avoid enumeration and itemize environments in written text.
+Do not use short forms like "don't".
+However, common abbreviations like "et al.", "e.g.", and "i.e." should be used.
+
+\paragraph{Floats}
+Try to avoid two floats at the begin of the same page, especially if they are of different types.
+See \cref{fig:Example:figure} and \cref{tb:Example:Tables} as a counter example.
+
+\paragraph{TODOs}
+As you are working on the document, some things may need further
+attention again at a later time.\todo{Include results obtained by
+  analyzing the Xen crystal with the anti-mass spectrometer, once the
+  experiments are completed.}  Then, it might be useful to annotate
+the corresponding part with a \texttt{todo}.  To make it really
+obvious that something important is missing at some
+point. \todo[inline]{You can include an \texttt{inline} note as well.}
+Also do not forget to check your thesis for left-over \texttt{todo}s
+before printing and handing in.
+
+
+\section{Examples}
+Some random examples.
+\begin{theorem}[Euclid's theorem]
+	The set of primes $\mathbb{P}$ is not finite.
+	\label{thm:Example:Examples:euclid}
+\end{theorem}
+\begin{proof}
+	Suppose that we have a finite set $\mathbb{P}$ which contains all primes and let $a$ be the product of all primes in $\mathbb{P}$.
+	Then $a$ and $a+1$ do not share a common factor other than $1$.
+	However, this implies that $a+1$ contains a prime factor which is missing in $\mathbb{P}$.
+	Therefore, our assumption that $\mathbb{P}$ contains all primes is wrong which implies that no finite set containing all primes can exist.
+\end{proof}
+
+\begin{theorem}
+	The set of primes $\mathbb{P}$ is not finite.
+\end{theorem}
+\begin{proofSketch}
+	Take a look at the sum over the inverse of all primes
+	\[\sum_{p\in\mathbb{P}} \frac{1}{p}\]
+	and show that this sum diverges which directly implies that $\mathbb{P}$ cannot be finite.
+\end{proofSketch}
+
+\begin{corollary}
+	A direct implication of \cref{thm:Example:Examples:euclid} is that there is no largest prime.
+\end{corollary}
+
+\begin{algorithm}[H]
+	\Input{An integer $n$.}
+	\Output{The largest prime factor of $n$.}
+	\BlankLine
+	$x \longleftarrow 1$\;
+	\ForAll{$i$ \With $i\cdot i \leq n$}{
+		\While{$n \bmod i = 0$}{
+			$n\longleftarrow \frac{n}{i}$\;
+			$x\longleftarrow \max(x, i)$\;
+		}
+	}
+	\If{$n > 1$}{
+		$x \longleftarrow n$\;
+	}
+	\Return{$x$}
+	\caption{A factorization algorithm.
+	\label{alg:Example:Examples:algorithm}}
+\end{algorithm}
+

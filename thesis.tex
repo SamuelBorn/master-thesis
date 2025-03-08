@@ -1,0 +1,107 @@
+%% LaTeX2e class for student theses
+%% thesis.tex
+%% 
+%% Available page modes: oneside, twoside
+%% Available languages: english, ngerman
+%% Available modes: draft, final (see README)
+\documentclass[twoside, english]{thesis}
+\addbibresource{thesis.bib}
+
+
+%% ---------------------------------
+%% | Information about the thesis  |
+%% ---------------------------------
+
+%% Name of the author
+\author{author}
+
+%% Title (and possibly subtitle) of the thesis
+\title{title}
+
+%% Type of the thesis: {Bachelor's | Master's} Thesis
+\thesistype{type}
+
+%% Change the institute here if you do not write at "ITI"
+%\myinstitute{Institute of Theoretical Informatics}
+
+%% You can put a logo in the "logos" directory and include it here
+%% instead of the Scale logo. The logo can also be omitted
+\grouplogo{scaleLogo}
+
+%% The reviewers are the professors that grade your thesis
+\reviewerone{m}{T.T.-Prof. Dr. Thomas Bläsius}
+\reviewertwo{w}{Prof. Dr. Jane Doe}
+
+%% The advisors are PhDs or Postdocs
+\advisorone{w}{Jane Doe}
+%% The second advisor can be omitted
+\advisortwo{m}{John Doe}
+
+%% Please enter the start end end time of your thesis
+\editingtime{from}{to}
+
+\settitle
+
+
+%% ====================================
+%% ====================================
+%% ||                                ||
+%% || Beginning of the main document ||
+%% ||                                ||
+%% ====================================
+%% ====================================
+\begin{document}
+\pagenumbering{Alph}
+
+%% Set PDF metadata
+\setpdf
+
+%% Set the title
+\maketitle
+
+%% The Preamble begins here
+\input{sections/declaration.tex}
+\frontmatter
+
+%% ----------------
+%% |   Abstract   |
+%% ----------------
+ 
+%% For theses written in English, an abstract both in English
+%% and German is mandatory.
+%%
+%% For theses written in German, a German abstract is sufficient.
+%%
+%% The text is included from the following files:
+%% - sections/abstract
+
+\includeabstract
+
+%% ------------------------
+%% |   Table of Contents  |
+%% ------------------------
+\tableofcontents
+%\listoffigures
+%\listoftables
+
+%% -----------------
+%% |   Main part   |
+%% -----------------
+\mainmatter
+
+\input{sections/example.tex}
+\input{sections/content.tex}
+
+%% --------------------
+%% |   Bibliography   |
+%% --------------------
+%% Add entry to the table of contents for the bibliography
+\printbibliography[heading=bibintoc]
+
+%% ----------------
+%% |   Appendix   |
+%% ----------------
+%\appendix
+%\input{sections/appendix.tex}
+
+\end{document}
