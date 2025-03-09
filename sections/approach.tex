@@ -3,3 +3,40 @@
 
 \section{Planarity}
 \label{sec:approach:planarity}
+
+\todo[inline]{
+    always intertial flow cutter to compute unless used otherwise
+}
+
+\todo[inline]{
+    street graphs are almost planar
+    planar graphs have 2/3 balanced separators of size O(sqrt(n))
+    cite paper
+    worse than road graphs
+    how do road grpahs behave when planarized
+    
+    interpret all roads as linear segments
+    for every intersection add new vertex
+    replace old edge
+    to make efficiently: spatial index with bounding box of every edge
+    figure: explanation
+    query intersections of bounding boxes and then check for intersection
+    multiple intersections possible
+    sort points add to graph
+    psuedo code
+
+    karlsruhe 100k nodes 2.5k intersections
+    germany 5m nodes 100k intersctions
+    bit more than sqrt(n) intersections that were mentioned in other papers but still in the same range
+
+    separator sizes did not change much
+    2/3 balanced with cbrt(n)
+    figure: plot germany planar vs non planar
+
+    separators of non planar are often seps of planar or can be extended to be one with just a few nodes
+    figure: map karlruhe non planar extendend to 
+
+
+    the findings from above leads us to assume the just almost planarity of road networks no impact on sep size
+    and look mostly on planar graphs
+}
