@@ -1,42 +1,97 @@
-\chapter{Our Approach}
-\label{ch:approach}
+\chapter{Our Approach} \label{ch:approach}
 
-\section{Planarity}
-\label{sec:approach:planarity}
+\section{Planarity} \label{sec:approach:planarity}
 
-\todo[inline]{
-    always intertial flow cutter to compute unless used otherwise
-}
+%\todo{mention always intertial flow cutter to compute unless stated otherwise}
 
-\todo[inline]{
-    street graphs are almost planar
-    planar graphs have 2/3 balanced separators of size O(sqrt(n))
-    cite paper
-    worse than road graphs
-    how do road grpahs behave when planarized
-    
-    interpret all roads as linear segments
-    for every intersection add new vertex
-    replace old edge
-    to make efficiently: spatial index with bounding box of every edge
-    figure: explanation
-    query intersections of bounding boxes and then check for intersection
-    multiple intersections possible
-    sort points add to graph
-    psuedo code
+Road networks can be modeled as graphs that are nearly planar, meaning they can
+be embedded in the plane with only a small number of edge crossings. It is a
+well-known result in graph theory that planar graphs admit \(\frac23\)-balanced
+separators of size \(\bigO{\sqrt{n}}\), where \(n\) denotes the number of
+vertices. 
 
-    karlsruhe 100k nodes 2.5k intersections
-    germany 5m nodes 100k intersctions
-    bit more than sqrt(n) intersections that were mentioned in other papers but still in the same range
+A relevant inquiry is whether the near-planarity of road networks is a critical
+feature that influences their structural properties, or if the occasional
+non-planar elements are merely incidental and do not substantially affect the
+network’s overall characteristics. This prompts the question of how the
+separator sizes of road networks are affected when they are transformed into
+strictly planar graphs, for instance, by altering edges to eliminate crossings.
 
-    separator sizes did not change much
-    2/3 balanced with cbrt(n)
-    figure: plot germany planar vs non planar
+To study road networks as planar graphs, we represent roads as linear segments
+between points. At each intersection of these segments, a new vertex is
+introduced, and the original edges are replaced accordingly. This process
+transforms the graph into a planar form by eliminating crossings. For efficient
+execution, we employ a spatial index that stores the bounding boxes of all
+edges. This structure enables rapid identification of potential intersections
+by querying overlapping bounding boxes, followed by verification of actual
+crossings. Given that a single edge may intersect multiple times, we
+sort the intersection points along each edge and introduce new edges
+accordingly Pseudo-code for this planarization algorithm is provided in
+\cref{alg:planarization}.
 
-    separators of non planar are often seps of planar or can be extended to be one with just a few nodes
-    figure: map karlruhe non planar extendend to 
+\begin{algorithm}[h]
+	\Input{Non-planar graph \(G=(V, E, pos)\).}
+	\Output{Planarized version of \G.}
+	\BlankLine
+	spatial\_index \(\longleftarrow\) load(bounding\_boxes(\E))\;
+	crossings \(\longleftarrow\) \{\}\;
+	\ForAll{\e  in \E}{
+		\ForAll{candidates \(c\) in spatial\_index.query(\e)}{
+			\If{\(c\) intersects \e} {
+				crossings[\(e\)].append(\(c\))\;
+				crossings[\(c\)].append(\(e\))\;
+			}
+		}
+	}
+	\ForAll{(\e, crossed) in crossings}{
+		\G.remove(\e)\;
+		vertices \(\longleftarrow\) get\_intersection\_vertices(\(e\), crossed)\;
+		sort vertices along \e\;
+		add\_new\_edges(\(e\), vertices)\;
+	}
+	\caption{Planarization algorithm \label{alg:planarization}}
+\end{algorithm}
 
+We applied this planarization method to real-world road networks. The Karlsruhe
+network, with approximately 120,000 nodes and 150,000 edges, revealed around
+2,500 intersections, while the Germany network, comprising about 5.8 million
+nodes and 7.2 million edges, exhibited approximately 100,000 intersections.
+These figures slightly exceed the \bigO{\sqrt{n}} intersection counts reported
+in prior studies but remain within a similar magnitude
+\cite{eppstein_linear-time_2010}. These differences could be explained by the
+unoptimal linear assumption of edges and might be mitigated by using a more
+modeled road network like OpenStreetMap.
 
-    the findings from above leads us to assume the just almost planarity of road networks no impact on sep size
-    and look mostly on planar graphs
-}
+Analysis of separator sizes showed minimal variation post-planarization. We
+identified \(\frac{2}{3}\)-balanced separators of size approximately
+\(\cbrt{n}\), aligning with the values from non planar graphs. A comparison of
+the separator sizes in the planar and non-planar versions of the Germany
+network is depicted in \cref{fig:germany_planar_vs_non_planar}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\linewidth]{graphics/GermanyPlanarVsNonPlanar.pdf}
+	\caption{Comparison of separator sizes in the German road network: planar vs. non-planar.}
+	\label{fig:germany_planar_vs_non_planar}
+\end{figure}
+
+Our findings indicate that separators in non-planar road networks closely
+resemble those in their planarized versions. Frequently, non-planar separators
+are also separators in the planarized graph or can be adapted to planar ones
+with the addition of only a few nodes. This can be seen in
+\cref{fig:karlsruhe_planar_vs_non_planar}, which depicts a non-planar separator
+extended to be a separator in the planarized Karlsruhe network.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\linewidth]{graphics/karlsruhe_top_level_sep_extended_to_planar.png}
+	\caption{Example visualization of one possible top-level separator for
+		Karlsruhe. Teal points represent the separator of the original graph, while
+		orange points denote the additional nodes required to make it separator
+		for the planarized version of Karlsruhe. Separators where computed with
+		KaHIP.} \label{fig:karlsruhe_planar_vs_non_planar}
+\end{figure}
+
+These findings highlight that the near-planar structure of road networks has
+minimal impact on separator size, suggesting that such networks can typically
+be analyzed as planar graphs.
