@@ -85,6 +85,7 @@ with the addition of only a few nodes. This can be seen in
 \cref{fig:karlsruhe_planar_vs_non_planar}, which depicts a non-planar separator
 extended to be a separator in the planarized Karlsruhe network.
 \todo{explain they can get larger and smaller}
+\todo{also say that separators can increase: simple example two disjoint components that get connected}
 
 \begin{figure}
 	\centering
@@ -158,7 +159,7 @@ extended to be a separator in the planarized Karlsruhe network.
 
 			\draw[dashed] (-1, 1) -- (-1, -4.5);
 		\end{tikzpicture}
-        \caption{Separator in non-planar graph\newline\newline\newline}
+        \caption{Separator in non-planar graph\newline}
 	\end{subfigure}
     \hfill
 	\begin{subfigure}{0.45\linewidth}
@@ -184,7 +185,7 @@ extended to be a separator in the planarized Karlsruhe network.
 
 			\draw[dashed] (-1, 1) -- (-1, -4.5);
 		\end{tikzpicture}
-        \caption{If nodes 1 and 3 were forced to be part of the separator (because of other reasons), the separator of the planarized graph would be larger.}
+        \caption{The separator of the original graph is not a separator in the planarized graph.}
 	\end{subfigure}
     \caption{Example where the separator of the original graph is not a separator in the planarized graph.}
 \end{figure}
@@ -193,7 +194,7 @@ extended to be a separator in the planarized Karlsruhe network.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\linewidth]{graphics/karlsruhe_top_level_sep_extended_to_planar.png}
+	\includegraphics[width=0.8\linewidth]{graphics/karlsruhe_top_level_sep_extended_to_planar_wide.png}
 	\caption{Example visualization of one possible top-level separator for
 		Karlsruhe. Teal points represent the separator of the original graph, while
 		orange points denote the additional nodes required to make it separator
