@@ -1,4 +1,4 @@
-\chapter{Our Approach} \label{ch:approach}
+\chapter{Experimental Analysis} \label{ch:experimental_analysis}
 
 \section{Planarity} \label{sec:approach:planarity}
 
@@ -20,19 +20,22 @@ strictly planar graphs, for instance, by altering edges to eliminate crossings.
 To study road networks as planar graphs, we represent roads as linear segments
 between points. At each intersection of these segments, a new vertex is
 introduced, and the original edges are replaced accordingly. This process
-transforms the graph into a planar form by eliminating crossings.
+transforms the graph into a planar form by eliminating crossings. For efficient
+execution, we utilize a spatial index that stores the bounding boxes of all
+edges. Under the assumption of short edges, this structure enables rapid
+identification of potential intersections by querying overlapping bounding
+boxes, followed by verification of actual crossings. While other algorithms
+exist, such as the Bentley-Ottmann algorithm, which is designed for general
+segment crossings, or a linear-time algorithm (e.g., as described in
+\cite{eppstein_linear-time_2010}), which is tailored for graph structures with
+a sublinear number of edge crossings, we opted for this spatial index-based
+approach due to its simplicity and ease of implementation, especially since
+performance is not a critical concern in this context. Given that a single edge
+may intersect multiple times, we sort the intersection points along each edge
+and introduce new edges accordingly. Pseudo-code for this planarization
+algorithm is provided in \cref{alg:planarization}.
 
-
-\todo{There exist other algorihtms like bentley ottman or even linear time but it was easier to implement this one. not performance critical.}
-For efficient execution, we employ a spatial index that stores the bounding boxes of all
-edges. Under the assumptions of short edges this structure enables rapid identification of potential intersections
-by querying overlapping bounding boxes, followed by verification of actual
-crossings. Given that a single edge may intersect multiple times, we
-sort the intersection points along each edge and introduce new edges
-accordingly Pseudo-code for this planarization algorithm is provided in
-\cref{alg:planarization}.
-
-\begin{algorithm}[h]
+\begin{algorithm}[b]
 	\Input{Non-planar graph \(G=(V, E, pos)\).}
 	\Output{Planarized version of \G.}
 	\BlankLine
@@ -52,7 +55,7 @@ accordingly Pseudo-code for this planarization algorithm is provided in
 		sort vertices along \e\;
 		add\_new\_edges(\(e\), vertices)\;
 	}
-	\caption{Planarization algorithm \label{alg:planarization}}
+	\caption{Simple planarization algorithm \label{alg:planarization}}
 \end{algorithm}
 
 We applied this planarization method to real-world road networks. The Karlsruhe
