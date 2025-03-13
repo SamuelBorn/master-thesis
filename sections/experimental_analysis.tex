@@ -25,15 +25,15 @@ execution, we utilize a spatial index that stores the bounding boxes of all
 edges. Under the assumption of short edges, this structure enables rapid
 identification of potential intersections by querying overlapping bounding
 boxes, followed by verification of actual crossings. While other algorithms
-exist, such as the Bentley-Ottmann algorithm, which is designed for general
-segment crossings, or a linear-time algorithm (e.g., as described in
-\cite{eppstein_linear-time_2010}), which is tailored for graph structures with
-a sublinear number of edge crossings, we opted for this spatial index-based
-approach due to its simplicity and ease of implementation, especially since
-performance is not a critical concern in this context. Given that a single edge
-may intersect multiple times, we sort the intersection points along each edge
-and introduce new edges accordingly. Pseudo-code for this planarization
-algorithm is provided in \cref{alg:planarization}.
+exist, such as the Bentley-Ottmann algorithm \cite{bentley_algorithms_1979},
+which is designed for general segment crossings, or a linear-time algorithm
+(e.g., as described in \cite{eppstein_linear-time_2010}), which is tailored for
+graph structures with a sublinear number of edge crossings, we opted for this
+spatial index-based approach due to its simplicity and ease of implementation,
+especially since performance is not a critical concern in this context. Given
+that a single edge may intersect multiple times, we sort the intersection
+points along each edge and introduce new edges accordingly. Pseudo-code for
+this planarization algorithm is provided in \cref{alg:planarization}.
 
 \begin{algorithm}[b]
 	\Input{Non-planar graph \(G=(V, E, pos)\).}
