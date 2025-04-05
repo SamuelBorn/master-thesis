@@ -7,10 +7,11 @@
 Road networks can be modeled as graphs.
 A graph \(G\) is formally defined as a pair \((V, E)\), where \(V\) represents a finite set of vertices (or nodes) and \(E\) represents a set of edges connecting pairs of vertices.
 In many applications, particularly route planning, graphs are augmented with a weight function \(w: E \to \mathbb{R}^+\), assigning a positive real value such as distance or travel time to each edge.
-However, for the study of graph separators, the edge weights are typically not considered.
-This thesis focuses on simple graphs, meaning graphs without multiple edges between the same pair of vertices and without edges connecting a vertex to itself (loops).
+However, for the purpose of this thesis, the topological strucuture of the graph is of primary interest, and we will not focus on edge weights.
+We will also only consider simple graphs, meaning graphs without multiple edges between the same pair of vertices and without edges connecting a vertex to itself (loops).
 Furthermore, as the concept of separators primarily applies to connectivity, we will consider undirected graphs, where edges represent symmetric relationships.
 An edge connecting vertices \(u\) and \(v\) in an undirected graph is denoted as the set \(\{u,v\}\).
+The neighborhood of a vertex \(v\) is defined as the set of vertices adjacent to \(v\), denoted as \(N : V \to \mathcal{P}(V)\).
 A \emph{geometric graph} associates each vertex \(v \in V\) of a graph \(G = (V, E)\) with a unique point \(p\) in a specific geometric space, such as the Euclidean plane \(\mathbb{R}^2\) or the surface of a sphere.
 
 \section{Graph Separators}
@@ -19,7 +20,334 @@ A \emph{geometric graph} associates each vertex \(v \in V\) of a graph \(G = (V,
 A vertex separator (or simply separator) of a graph \(G = (V, E)\) is a subset of vertices \(S \subseteq V\) whose removal disconnects the graph into two or more components.
 More formally, the subgraph induced by \(V \setminus S\), denoted \(G[V \setminus S]\), is disconnected.
 For algorithmic applications, particularly divide-and-conquer strategies, balanced separators are crucial.
-A separator \(S\) is called \(\alpha\)-balanced, if removing \(S\) partitions the remaining vertices \(V \setminus S\) into disjoint sets \(V_1, V_2, \dots, V_k\) such that no vertex in \(V_i\) is adjacent to a vertex in \(V_j\) for \(i \neq j\), and the size of each resulting component \(V_i\) is bounded: \(|V_i| \le \alpha \cdot |V|\).
+A separator \(S\) is called \(\alpha\)-balanced, for an \(\alpha \in (0,1)\), if removing \(S\) partitions the remaining vertices \(V \setminus S\) into disjoint sets \(V_1, V_2, \dots, V_k\) such that no vertex in \(V_i\) is adjacent to a vertex in \(V_j\) for \(i \neq j\), and the size of each resulting component \(V_i\) is bounded: \(|V_i| \le \alpha \cdot |V|\).
+A simple illustration of a balcseparator is shown in \cref{fig:separator_example_balanced}.
 A common requirement is \(2/3\)-balancedness, meaning each component contains at most \(2/3\) of the original graph's vertices.
 Balancedness ensures that recursive applications of the separator lead to subproblems of substantially smaller size, which is essential for the efficiency of algorithms based on this technique.
-The efficiency is often determined by the size of the separator, which is typically expressed as an asymptotic function of the number of vertices \(n = |V|\) in the graph.
+Furthermore, minimizing the size of the separator \(S\) itself is critical for algorithmic performance.
+The size of the separator is typically evaluated asymptotically as a function of the number of vertices \(n = |V|\) e.g. \(n^\beta\) for \(\beta \in (0,1)\).
+
+The concept of \emph{recursive} \(\alpha\)-balanced separators extends this idea by ensuring that the property of finding small, balanced separators persists in the resulting subgraphs.
+Specifically, after removing an \(\alpha\)-balanced separator \(S\) from \(G\), each induced subgraph \(G[V_i]\) (for \(i = 1, 2, \dots, k\)) can itself be partitioned using another \(\alpha\)-balanced separator of small size.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
+			\node (1) {1};
+			\node (2) [right=of 1] {2};
+			\node (3) [right=of 2] {3};
+			\node (4) [below=of 1] {4};
+			\node (5) [below=of 2, fill=teal!30] {5};
+			\node (6) [below=of 3] {6};
+			\node (7) [below=of 4] {7};
+			\node (8) [below=of 5, fill=teal!30] {8};
+
+			\draw (4) -- (5);
+			\draw (5) -- (7);
+			\draw (5) -- (2);
+			\draw (6) -- (5);
+			\draw (7) -- (8);
+			\draw (8) -- (6);
+			\draw (4) -- (1);
+			\draw (7) -- (4);
+			\draw (2) -- (3);
+			\draw (3) -- (6);
+		\end{tikzpicture}
+		\caption{\(G\) with separator \(S = \{5, 8\}\)}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
+			\node (1) {1};
+			\node (2) [right=of 1] {2};
+			\node (3) [right=of 2] {3};
+			\node (4) [below=of 1] {4};
+			\node (6) [below=of 3] {6};
+			\node (7) [below=of 4] {7};
+
+			\draw (4) -- (1);
+			\draw (7) -- (4);
+			\draw (2) -- (3);
+			\draw (3) -- (6);
+		\end{tikzpicture}
+		\caption{\(G[V \setminus S]\)}
+	\end{subfigure}
+	\caption{Example of a well balanced separator in a graph. The vertices 5 and 8 form a balanced separator that disconnects the graph into two components.}
+	\label{fig:separator_example_balanced}
+\end{figure}
+
+\section{Customizable Contraction Hierarchies}
+\label{sec:cch}
+
+Efficiently computing shortest paths in large graphs, such as continental road networks, is a fundamental problem.
+While Dijkstra's algorithm provides exact solutions for single-source shortest paths, its performance can be insufficient for real-time applications on large datasets.
+For instance, executing Dijkstra's algorithm on a graph representing the European road network can take over a second, primarily due to memory access latency rather than computational complexity alone.
+To accelerate query performance, many algorithms employ a two-phase approach: an initial precomputation phase followed by a query phase.
+This precomputation step processes the graph structure and edge weights to generate auxiliary data structures that enable faster subsequent queries.
+
+However, edge weights in real-world networks, particularly road networks, are often dynamic due to factors like traffic congestion.
+Standard two-phase approaches typically require re-running the entire, often time-consuming, precomputation phase whenever edge weights change.
+To address this limitation, three-phase approaches have been developed, separating the process into precomputation, customization, and query phases.
+The initial precomputation relies only on the graph's topology (nodes and edges), which is assumed to be relatively static.
+The second phase, customization, quickly incorporates the current edge weights into the precomputed structures.
+Finally, the query phase uses the customized data structures to answer shortest path requests rapidly.
+
+Customizable Contraction Hierarchies (CCH) represent a prominent and effective three-phase route planning technique \cite{dibbelt_customizable_2016}.
+CCH enables very fast customization, allowing adaptation to frequently changing edge weights, making it suitable for dynamic scenarios.
+The core idea underpinning CCH involves strategically inserting shortcut edges into the graph, analogous to the concept used in the original Contraction Hierarchies (CH) algorithm \cite{mcgeoch_contraction_2008}.
+These shortcuts bypass sequences of original edges, effectively contracting the graph and speeding up queries.
+The efficiency of the CCH precomputation, particularly the node ordering it employs, can leverage the existence of small separators.
+We will now give a quick overview of the CCH algorithm.
+
+\paragraph{Precomputation}
+
+The CCH precomputation phase processes a graph \( G = (V, E) \) based on a given vertex order \cite{dibbelt_customizable_2016}.
+This order is defined by a bijection \( \pi : \{1, \dots, n\} \to V \), where \( n = |V| \).
+We will call the inverse \( \pi^{-1} \) rank, defined by the function \( \text{rank} : V \to \{1, \dots, n\} \), where \( \text{rank}(v) = \pi^{-1}(v) \) assigns each vertex its position in the order.
+The determination of \( \pi \) is discussed separately.
+The core process involves iteratively contracting vertices \( v_1, v_2, \dots, v_n \), where \( v_i = \pi(i) \).
+Contracting vertex \( v_i \) removes it from the current graph.
+For every pair of neighbors \( u, w \in N(v_i) \), a shortcut edge \( (u, w) \).
+Resulting multi-edges between any pair \( (u, w) \) are simplified.
+The contraction process is illustrated in \cref{fig:cch_precomputation_example}.
+
+\begin{figure}
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
+			\node (3) at (-0.5,2) {3};
+			\node (5) at (1.1,3) {5};
+			\node (2) at (1.5,1.5) {2};
+			\node (6) at (2,5) {6};
+			\node (4) at (2.5,2.5) {4};
+			\node (1) at (4,1) {1};
+
+			\draw (3) -- (6);
+			\draw (3) -- (5);
+			\draw (5) -- (2);
+			\draw (2) -- (6);
+			\draw (1) -- (4);
+			\draw (4) -- (6);
+		\end{tikzpicture}
+		\caption{Input graph. Already converted to be undirected and simple.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
+			\node (3) at (-0.5,2) {3};
+			\node (5) at (1.1,3) {5};
+			\node (2) at (1.5,1.5) {2};
+			\node (6) at (2,5) {6};
+			\node (4) at (2.5,2.5) {4};
+			\node (1) at (4,1) {1};
+
+			\draw (3) -- (6);
+			\draw (3) -- (5);
+			\draw (5) -- (2);
+			\draw (2) -- (6);
+			\draw (1) -- (4);
+			\draw (4) -- (6);
+
+			\draw[thick, teal, dashed] (5) -- (6);
+			\draw[thick, teal, dashed] (1) -- (6);
+		\end{tikzpicture}
+		\caption{Graph after precomputation, new shortcut edges are shown in teal.}
+	\end{subfigure}
+	\caption{Example of the CCH precomputation step. Nodes are named and positioned based on their rank.}
+	\label{fig:cch_precomputation_example}
+\end{figure}
+
+\paragraph{Customization}
+
+The customization phase integrates an edge weight function into the precomputed CCH supergraph \(G_C = (V, E_C)\).
+During customization, edges in the supergraph \(E_C\) that correspond to edges in the original graph topology \(E\) are assigned weights according to the current metric being considered.
+Edges present only in \(E_C\) but not in \(E\), which were introduced as shortcuts during the contraction process, are initially assigned an infinite weight.
+The primary objective of this phase is to establish the triangle inequality for the current edge weights within the CCH graph \(G_C\).
+
+To achieve this, the concept of a lower triangle is employed.
+Given an edge \(\{x, y\} \in E_C\), a lower triangle is formed by the vertices \(\{x, y, z\}\) if the edges \(\{z, x\}\) and \(\{z, y\}\) also exist in \(E_C\), and \(rank(z) < \min\{rank(x), rank(y)\}\).
+The customization algorithm iterates through the vertices of the graph in ascending order of their precomputed rank.
+For each vertex \(x\), it considers all upward edges \(\{x, y\}\) in the graph, where \(y\) is a neighbor of \(x\) and \(rank(y) > rank(x)\).
+For every edge we determine all lower triangles \(\{x, y, z\}\) that can be formed with \(x\) as the lowest ranked vertex.
+If the path through \(z\) offers a shorter connection, the weight of the edge \(\{x, y\}\) is updated to this smaller value: \(w(x, y) \leftarrow \min\{w(x, y), w(x, z) + w(z, y)\}\).
+The detailed procedure is outlined in the pseudocode presented in \cref{alg:customization}.
+\cref{fig:cch_precomputation_example} illustrates the customization process.
+
+Note that the outlined algorithm only considers undirected edge weights, the algorithm can be extendend to directed edge weights. Details can be found in \cite{dibbelt_customizable_2016}.
+
+\begin{algorithm}
+	\Input{\( G_C = (V, E_C) \), node ordering \(\pi\), edge weights \(w\)}
+	\Output{Customized CCH graph}
+	\BlankLine
+	\ForAll{\(x\) in \(V\) in ascending order of rank}{
+		\ForAll{upward edges \( \{x, y\} \) in \( E_C \)}{
+			\ForAll{lower triangles \( \{x, y, z\} \) associated with \( \{x, y\} \)}{
+				\( w(x, y) \longleftarrow \min\{ w(x, y), w(x, z) + w(z, y) \} \)\;
+			}
+		}
+	}
+	\caption{CCH Customization}
+	\label{alg:customization}
+\end{algorithm}
+
+\begin{figure}
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{scope}[every node/.style={circle, draw, minimum size=0.7cm}]
+				\node (3) at (-0.5,2) {3};
+				\node (5) at (1.1,3) {5};
+				\node (2) at (1.5,1.5) {2};
+				\node (6) at (2,5) {6};
+				\node (4) at (2.5,2.5) {4};
+				\node (1) at (4,1) {1};
+			\end{scope}
+
+			\begin{scope}[every node/.style={midway, fill=white, font=\scriptsize, inner sep=1mm, circle}]
+				\draw (3) -- (6) node {1};
+				\draw (3) -- (5) node {1};
+				\draw (2) -- (5) node {1};
+				\draw (2) -- (6) node {3};
+				\draw (1) -- (4) node {1};
+				\draw (4) -- (6) node {2};
+				\draw[thick, teal, dashed] (5) -- (6) node {\(\infty\)};
+				\draw[thick, teal, dashed] (1) -- (6) node {\(\infty\)};
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Graph after precomputation. Weights are added to the edges. Shortcuts get weight \(\infty\).}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{scope}[every node/.style={circle, draw, minimum size=0.7cm}]
+				\node (3) at (-0.5,2) {3};
+				\node (5) at (1.1,3) {5};
+				\node (2) at (1.5,1.5) {2};
+				\node (6) at (2,5) {6};
+				\node (4) at (2.5,2.5) {4};
+				\node (1) at (4,1) {1};
+			\end{scope}
+
+			\begin{scope}[every node/.style={midway, fill=white, font=\scriptsize, inner sep=1mm, circle}]
+				\draw (3) -- (6) node {1};
+				\draw (3) -- (5) node {1};
+				\draw (2) -- (5) node {1};
+				\draw (2) -- (6) node {3};
+				\draw (1) -- (4) node {1};
+				\draw (4) -- (6) node {2};
+				\draw[thick, teal, dashed] (5) -- (6) node {\textbf{2}};
+				\draw[thick, teal, dashed] (1) -- (6) node {\(\infty\)};
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Graph after customization. The shortcut edge \(\{5, 6\}\) is updated to weight \(2\).}
+	\end{subfigure}
+	\caption{Example of the CCH customization step.}
+\end{figure}
+
+\paragraph{Query}
+
+To answer a shortest path query between a source node \(s\) and a target node \(t\), the algorithm utilizes an implicit structure known as the elimination tree.
+This tree is defined on the nodes of the preprocessed CCH graph.
+Specifically, the parent of a node \(v\) in the elimination tree is the neighbor \(p\) of \(v\) in the CCH graph that has the lowest rank among all neighbors with a rank strictly greater than the rank of \(v\).
+\cref{fig:cch_elimination_tree} illustrates the elimination tree for the example graph shown in \cref{fig:cch_precomputation_example}.
+The query algorithm performs a bidirectional search upwards in this elimination tree, starting from \(s\) and \(t\).
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
+		\node (3) at (-0.5,2) {3};
+		\node (5) at (1.1,3) {5};
+		\node (2) at (1.5,1.5) {2};
+		\node (6) at (2,5) {6};
+		\node (4) at (2.5,2.5) {4};
+		\node (1) at (4,1) {1};
+
+		\draw (3) -- (5);
+		\draw (5) -- (2);
+		\draw (1) -- (4);
+		\draw (4) -- (6);
+
+		\draw[thick, teal, dashed] (5) -- (6);
+	\end{tikzpicture}
+	\caption{Elimination tree for the example graph in \cref{fig:cch_precomputation_example}.}
+	\label{fig:cch_elimination_tree}
+\end{figure}
+
+The core query process operates iteratively.
+Let \(u_s\) and \(u_t\) be the current nodes in the upward search originating from \(s\) and \(t\), respectively; initially, \(u_s = s\) and \(u_t = t\).
+The algorithm proceeds as long as the search space needs exploration, effectively moving \(u_s\) and \(u_t\) towards the root of the elimination tree.
+In each step, the ranks of the current nodes \(u_s\) and \(u_t\) are compared.
+If \(u_s\) has a smaller rank than \(u_t\), the algorithm relaxes all outgoing edges \(\{u_s, v_i\}\) present in the (original, not the elimination tree) CCH graph.
+Subsequently, \(u_s\) is updated to become its parent node in the elimination tree.
+Otherwise (if \(u_t\) has a rank less than or equal to that of \(u_s\)), the algorithm relaxes all outgoing edges \(\{u_t, v_i\}\) existing in the CCH graph.
+Following the relaxation step, \(u_t\) is updated to its parent in the elimination tree.
+This process continues, effectively exploring paths upwards towards higher-ranked nodes.
+The algorithm ensures that the necessary parts of the search graph are explored by ascending the elimination tree structure.
+It has been proven that this query algorithm correctly computes the shortest path distance, although a detailed proof is beyond the scope of this thesis.
+
+\paragraph{Nested dissection}
+
+One method for generating the node ordering required for CCH are Nested Dissections, which rely on graph separators.
+The process begins by identifying a small, balanced separator in the graph.
+Nodes within this separator are conceptually removed, partitioning the graph into smaller components.
+These separator nodes are designated as high-rank nodes in the hierarchy and are consequently placed towards the end of the final node ordering.
+This procedure is then applied recursively to the remaining components.
+\Cref{fig:nested_dissection_example} provides a visual representation of this recursive partitioning strategy.
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[every node/.style={circle, draw, minimum size=1cm}]
+		\node (10)                {1};
+		\node (20)  [right=of 10, fill=purple!30] {3};
+		\node (30)  [right=of 20] {2};
+		\node (40)  [right=of 30, fill=teal!30] {21};
+		\node (50)  [right=of 40] {11};
+		\node (60)  [right=of 50, fill=orange!30] {18};
+		\node (70)  [right=of 60] {14};
+
+		\node (11)  [below=of 10, fill=orange!30] {9};
+		\node (21)  [below=of 20, fill=orange!30] {8};
+		\node (31)  [below=of 30, fill=orange!30] {7};
+		\node (41)  [below=of 40, fill=teal!30] {20};
+		\node (51)  [below=of 50, fill=purple!30] {12};
+		\node (61)  [below=of 60, fill=orange!30] {17};
+		\node (71)  [below=of 70, fill=purple!30] {15};
+
+		\node (12)  [below=of 11] {4};
+		\node (22)  [below=of 21, fill=purple!30] {6};
+		\node (32)  [below=of 31] {5};
+		\node (42)  [below=of 41, fill=teal!30] {19};
+		\node (52)  [below=of 51] {10};
+		\node (62)  [below=of 61, fill=orange!30] {16};
+		\node (72)  [below=of 71] {13};
+
+		\draw (10) -- (20) -- (30) -- (40) -- (50) -- (60) -- (70);
+		\draw (11) -- (21) -- (31) -- (41) -- (51) -- (61) -- (71);
+		\draw (12) -- (22) -- (32) -- (42) -- (52) -- (62) -- (72);
+		\foreach \i in {1,...,7} { \draw (\i0) -- (\i1) -- (\i2); }
+	\end{tikzpicture}
+	\caption{Example of a Nested Dissection. The top level separator is shown in teal, the second level in orange and the third level in purple. The nodes are named according to their rank in the resulting order.}
+	\label{fig:nested_dissection_example}
+\end{figure}
+
+The size of the separators found significantly impacts the efficiency of CCH queries.
+CCH queries restrict exploration to edges leading towards higher-ranked nodes (upward edges).
+Consider the separator identified at the highest level of the recursion, which might contain approximately \(n^\beta\) nodes, where \(n^\beta\) denotes the separator size.
+When a query initiates within a component defined by this separator, nodes located in other components cannot be reached without traversing downwards through a separator node, violating the upward search constraint.
+This containment effect applies recursively within the sub-components generated during the nested dissection.
+The sub components at recursion level \(i\) have at most \(\alpha^i\cdot n\) nodes, where \(\alpha\) is the balance factor of the separator and thus have separtors of size \((\alpha^i\cdot n)^\beta\).
+This leads to a complete search space of size:
+
+\begin{align*}
+	    &~\sum_{i=0}^{\infty} (\alpha^i\cdot n)^\beta \\
+	=   &~n^\beta \cdot \sum_{i=0}^{\infty} \alpha^{i\cdot \beta} \\
+	=   &~n^\beta \cdot \frac{1}{1 - \alpha^\beta} \qquad \text{Geometric series, since \(\alpha \in (0,1)\)} \\
+	\in &~\bigO{n^\beta}
+\end{align*}
+
+Thus, the performance of the CCH algorithm is directly linked to the ability to find small separators.
