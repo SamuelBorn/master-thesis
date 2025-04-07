@@ -1,8 +1,53 @@
-\chapter{Experimental Analysis} \label{ch:experimental_analysis}
+\chapter{Approach}
+\label{ch:experimental_analysis}
+
+\todo[inline]{Add a short introduction to the chapter.}
+
+\section{Empirical Analysis of Separator Scaling in Road Networks}
+\label{sec:empirical_analysis}
+
+To empirically investigate the relationship between graph size and separator size in road networks, we analyze data derived from a road network graph of Europe \cite{ptv_group_ptv_nodate}.
+A crucial first step in our research, addressed by this analysis, is to empirically validate whether road networks exhibit separators scaling near \(\bigO{n^{1/3}}\), as suggested by prior work \cite{dibbelt_customizable_2016}, as opposed to an alternative function, like \(\bigO{n^{1/2}}\), potentially appearing smaller due to a low constant factor.
+Figure \cref{fig:separator_size_vs_graph_size} plots the size of separators against the size of the corresponding subgraphs from which they were computed.
+Each data point \( (x, y) \) in this figure signifies that a subgraph containing \( x \) nodes possesses a separator of size \( y \).
+The data encompasses separators computed recursively, starting from the separator of the original graph and proceeding within the resulting subgraphs.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{graphics/Europe.png}
+	\caption{Empirical separator size versus subgraph size for the Europe road network. Each point represents a subgraph and its corresponding separator size.}
+	\label{fig:separator_size_vs_graph_size}
+\end{figure}
+
+Initial observations reveal outliers, particularly for very large subgraphs corresponding to continental or country scales.
+Specifically, analysis of the top-level separator structure for the Europe graph shows that the Scandinavian peninsula can be disconnected via separators significantly smaller than the general trend would suggest, due to specific geographic bottlenecks.
+This can be seen in \cref{fig:europe_top_separator}.
+Such outliers at the largest scales appear to be heavily influenced by macroscopic geographic features rather than intrinsic network structure representative of typical road networks.
+Consequently, these data points may not accurately reflect the general separator properties inherent in the finer structure of the road network graph.
+To mitigate the influence of these large-scale geographical artifacts and focus on more representative structural properties, our analysis primarily considers subgraphs with fewer than 10,000,000 nodes.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\linewidth]{graphics/europe-top-level-sep.png}
+	\caption{Illustration of a geographically influenced outlier at the continental scale: removal of a few nodes disconnects the whole Scandinavian peninsula.}
+	\label{fig:europe_top_separator}
+\end{figure}
+
+For enhanced visibility, particularly concerning the numerous data points corresponding to smaller subgraphs, and to avoid overrepresentation of larger subgraphs, we will also present data a log-log scale.
+This logarithmic scaling offers the additional advantage that a polynomial relationship between separator size \( y \) and subgraph size \( x \), such as \( y \propto x^c \), manifests as a linear trend in the log-log plot, facilitating the identification of potential power-law dependencies.
+Furthermore, to improve the interpretability of the visualization and emphasize the underlying trend over individual fluctuations or outliers present at various scales, the data points are aggregated into bins.
+Figure \cref{fig:separator_size_loglog_binned} presents this binned data on a log-log scale.
+
+\begin{figure}
+	\centering
+    \includegraphics[width=0.7\linewidth]{graphics/Europe-binned.pdf}
+	\caption{Log-log plot of binned separator size against subgraph size (limited to subgraphs < 10M nodes) for the Europe road network.}
+	\label{fig:separator_size_loglog_binned}
+\end{figure}
+
+\todo[inline]{Add statistical analysis}
 
 \section{Planarity} \label{sec:approach:planarity}
-
-%\todo{mention always intertial flow cutter to compute unless stated otherwise}
 
 Road networks can be modeled as graphs that are nearly planar, meaning they can
 be embedded in the plane with only a small number of edge crossings. It is a
