@@ -79,6 +79,84 @@ Specifically, after removing an \(\alpha\)-balanced separator \(S\) from \(G\), 
 	\label{fig:separator_example_balanced}
 \end{figure}
 
+To compute separators, various algorithms can be employed.
+In this thesis, we primarily utilize InertialFlowCutter \cite{gottesburen_faster_2019}.
+This algorithm leverages geometric embeddings, often available for road networks, to compute high-quality node orderings efficiently.
+These node orderings serve as the basis for extracting separators from the graph using the method described below.
+However, InertialFlowCutter requires such a geometric embedding as input.
+In cases where a geometric embedding was not available for a graph, we utilized the KaHIP (Karlsruhe High Quality Partitioning) framework \cite{sanders_think_2013}.
+Although known for graph partitioning, KaHIP includes algorithms for computing separators directly.
+
+When using InertialFlowCutter, the resulting node ordering is interpreted as an elimination order for the vertices of the graph \( G = (V, E) \).
+Based on this order, a chordal supergraph \( G' = (V, E \cup F) \) is implicitly constructed, where \( F \) represents the fill-in edges.
+This process can be visualized by processing vertices in reverse elimination order.
+For each vertex \(v\), edges are added to make its neighbors that appear later in the order form a clique.
+An efficient way to implement this chordalization involves connecting, for each node \(v\) (in reverse order), all its higher-numbered neighbors to its lowest-numbered neighbor among them.
+
+Simultaneously, a tree structure \(T\) based on this ordering can be constructed.
+Each node \(v \in V\) selects its parent in the tree as the neighbor \(u\) that appears earliest in the elimination order among all neighbors \(w\) with \( \text{rank}(w) > \text{rank}(v) \).
+If a node has no neighbors later in the order, it becomes the root.
+
+Separators in the original graph \(G\) can be derived from this tree structure using a traversal algorithm.
+The fundamental idea is to identify paths representing non-branching segments of the tree.
+Starting from a node \(r\) (representing the current subgraph), the traversal follows a path \(P = (v_1=r, v_2, \dots, v_k)\) downwards, where each node \(v_i\) (\(1 \le i < k\)) has exactly one child \(v_{i+1}\) in the tree.
+The path ends at node \(v_k\), which is the first node encountered that does not have exactly one child (i.e., it has zero or multiple children).
+The set of vertices on this path, \(S = \{v_1, v_2, \dots, v_k\}\), forms a potential separator.
+Its size is \(k\), the number of nodes on the path.
+The traversal algorithm continues recursively into these subtrees.
+An overview of this process is illustrated in \cref{fig:extract_separator_from_order}.
+
+For practical application in this thesis, particularly to ensure balanced partitions, this core logic is refined by introducing a significance threshold based on subtree sizes.
+This threshold defines whether a child node represents a sufficiently large part of the graph to be considered relevant for partitioning (e.g., exceeding a fraction of the parent's subtree size).
+In the refined process, the traversal path \(P\) only extends from \(v_i\) to \(v_{i+1}\) if \(v_{i+1}\) is the single child of \(v_i\) that meets this significance threshold.
+A node \(v_k\) is identified as a branching point yielding a separator \(S = \{v_1, \dots, v_k\}\) only if it has two or more children meeting the threshold.
+
+\begin{figure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
+			\node (4) {4};
+			\node (1) [right=of 4] {1};
+			\node (2) [below=of 4] {2};
+			\node (3) [right=of 2] {3};
+
+			\draw (4) -- (1) -- (3) -- (2) -- (4);
+		\end{tikzpicture}
+		\caption{Original graph \(G\)\newline}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
+			\node (4) {4};
+			\node (1) [right=of 4] {1};
+			\node (2) [below=of 4] {2};
+			\node (3) [right=of 2] {3};
+
+			\draw (4) -- (1) -- (3) -- (2) -- (4);
+			\draw[dashed] (4) -- (3);
+		\end{tikzpicture}
+		\caption{Chordal supergraph based on the order}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm, distance=0.1cm}, node distance=0.5cm and 0.8cm]
+			\node (3) [fill=teal!30]{3};
+			\node (4) [above=of 3, fill=teal!30] {4};
+			\node (1) [below left=of 3] {1};
+			\node (2) [below right=of 3] {2};
+
+			\draw (3) -- (1);
+			\draw (3) -- (2);
+			\draw (3) -- (4);
+		\end{tikzpicture}
+		\caption{Derived tree \(T\), Separator \{4,3\} highlighted}
+	\end{subfigure}
+	\caption{Example Process of deriving a separator from a node order. Node labels in indicate their rank in the node order.}
+	\label{fig:extract_separator_from_order}
+\end{figure}
+
 \section{Customizable Contraction Hierarchies}
 \label{sec:cch}
 
@@ -344,10 +422,10 @@ The sub components at recursion level \(i\) have at most \(\alpha^i\cdot n\) nod
 This leads to a complete search space of size:
 
 \begin{align*}
-	    &~\sum_{i=0}^{\infty} (\alpha^i\cdot n)^\beta \\
-	=   &~n^\beta \cdot \sum_{i=0}^{\infty} \alpha^{i\cdot \beta} \\
-	=   &~n^\beta \cdot \frac{1}{1 - \alpha^\beta} \qquad \text{Geometric series, since \(\alpha \in (0,1)\)} \\
-	\in &~\bigO{n^\beta}
+	    & ~\sum_{i=0}^{\infty} (\alpha^i\cdot n)^\beta                                                         \\
+	=   & ~n^\beta \cdot \sum_{i=0}^{\infty} \alpha^{i\cdot \beta}                                             \\
+	=   & ~n^\beta \cdot \frac{1}{1 - \alpha^\beta} \qquad \text{Geometric series, since \(\alpha \in (0,1)\)} \\
+	\in & ~\bigO{n^\beta}
 \end{align*}
 
 Thus, the performance of the CCH algorithm is directly linked to the ability to find small separators.
