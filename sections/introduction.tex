@@ -12,7 +12,7 @@ In graph theory, a separator is a subset of vertices whose removal divides the g
 The size of these separators significantly affects the performance of numerous algorithms, particularly those utilizing divide-and-conquer approaches.
 For instance, Tarjan's and Lipton's foundational work on planar graphs \cite{lipton_applications_1977} demonstrates their utility in optimizing algorithms for many problems like e.g. maximum flow.
 
-Empirical observations from the Customizable Contraction Hierarchies (CCH) paper indicate that road networks may possess remarkably small separators, on the order of \bigO{n^{1/3}} \cite{dibbelt_customizable_2016}.
+Empirical observations from the Customizable Contraction Hierarchies (CCH) paper indicate that road networks may possess remarkably small balanced separators, on the order of \bigO{n^{1/3}} \cite{dibbelt_customizable_2016}.
 This finding contrasts with the \bigO{n^{1/2}} separators typical of planar graphs \cite{lipton_separator_1979}, especially since road networks can be considered as nearly planar.
 In road networks, these separators enable the creation of effective node orderings, which are critical for the performance of search queries in advanced routing algorithms like CCH.
 This thesis seeks to uncover the properties responsible for the presence of such small separators in road networks.
