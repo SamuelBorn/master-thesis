@@ -90,7 +90,8 @@ Specifically, after removing an \(\alpha\)-balanced separator \(S\) from \(G\), 
 To compute separators, various algorithms can be employed.
 In this thesis, we primarily utilize InertialFlowCutter \cite{gottesburen_faster_2019}.
 This algorithm leverages geometric embeddings, often available for road networks, to compute high-quality node orderings efficiently.
-These node orderings serve as the basis for extracting separators from the graph using the method described below.
+These node orderings serve as the basis for extracting separators from the graph using the method described below \cite{blasius_customizable_2025}.
+Employing this combined approach provides a practical pathway to generate separators for our analysis, adapting the use of InertialFlowCutter's output to suit the specific requirements of this work.
 However, InertialFlowCutter requires such a geometric embedding as input.
 In cases where a geometric embedding was not available, we utilized the KaHIP (Karlsruhe High Quality Partitioning) framework \cite{sanders_think_2013}.
 
