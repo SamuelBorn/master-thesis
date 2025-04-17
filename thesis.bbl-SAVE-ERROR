@@ -1,0 +1,911 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{anyt/global//global/global/global}
+    \entry{bauer_search-space_2016}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=ff60de32d37f57e756655033b3e705a8}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Reinhard},
+           giveni={R\bibinitperiod}}}%
+        {{hash=69c5f6a4b960f6683ca6f87f565cadda}{%
+           family={Columbus},
+           familyi={C\bibinitperiod},
+           given={Tobias},
+           giveni={T\bibinitperiod}}}%
+        {{hash=33140dd44f57dc4a8e11a32a9a9a9f1d}{%
+           family={Rutter},
+           familyi={R\bibinitperiod},
+           given={Ignaz},
+           giveni={I\bibinitperiod}}}%
+        {{hash=f2f741491852a3b5c3ad17d40825e753}{%
+           family={Wagner},
+           familyi={W\bibinitperiod},
+           given={Dorothea},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{9a2188e6002c05d038654686b4236636}
+      \strng{fullhash}{9a2188e6002c05d038654686b4236636}
+      \strng{fullhashraw}{9a2188e6002c05d038654686b4236636}
+      \strng{bibnamehash}{9a2188e6002c05d038654686b4236636}
+      \strng{authorbibnamehash}{9a2188e6002c05d038654686b4236636}
+      \strng{authornamehash}{9a2188e6002c05d038654686b4236636}
+      \strng{authorfullhash}{9a2188e6002c05d038654686b4236636}
+      \strng{authorfullhashraw}{9a2188e6002c05d038654686b4236636}
+      \field{labelalpha}{BCRW16}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{03043975}
+      \field{journaltitle}{Theoretical Computer Science}
+      \field{langid}{english}
+      \field{month}{9}
+      \field{shortjournal}{Theoretical Computer Science}
+      \field{title}{Search-space size in contraction hierarchies}
+      \field{urlday}{30}
+      \field{urlmonth}{10}
+      \field{urlyear}{2024}
+      \field{volume}{645}
+      \field{year}{2016}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{112\bibrangedash 127}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1016/j.tcs.2016.07.003
+      \endverb
+      \verb{file}
+      \verb PDF:/home/born/Documents/Zotero/storage/RYVMGE5F/Bauer et al. - 2016 - Search-space size in contraction hierarchies.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://linkinghub.elsevier.com/retrieve/pii/S0304397516303176
+      \endverb
+      \verb{url}
+      \verb https://linkinghub.elsevier.com/retrieve/pii/S0304397516303176
+      \endverb
+    \endentry
+    \entry{blasius_customizable_2025}{misc}{}{}
+      \name{author}{5}{}{%
+        {{hash=dc0dcff3c6ae1bdfdfb6fb5e11448973}{%
+           family={Bläsius},
+           familyi={B\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=757f1304ca41e2c4aaf755eb3c3fee55}{%
+           family={Buchhold},
+           familyi={B\bibinitperiod},
+           given={Valentin},
+           giveni={V\bibinitperiod}}}%
+        {{hash=f2f741491852a3b5c3ad17d40825e753}{%
+           family={Wagner},
+           familyi={W\bibinitperiod},
+           given={Dorothea},
+           giveni={D\bibinitperiod}}}%
+        {{hash=4a90c15fc0d1e8d05eebc38222120748}{%
+           family={Zeitz},
+           familyi={Z\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod}}}%
+        {{hash=5ba60510b35e4395df82811b297e6d00}{%
+           family={Zündorf},
+           familyi={Z\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{a9c9d16d5f41680f0c76ab75c899b110}
+      \strng{fullhash}{19b20eee1bd6837f54db2da8b98af2c1}
+      \strng{fullhashraw}{19b20eee1bd6837f54db2da8b98af2c1}
+      \strng{bibnamehash}{19b20eee1bd6837f54db2da8b98af2c1}
+      \strng{authorbibnamehash}{19b20eee1bd6837f54db2da8b98af2c1}
+      \strng{authornamehash}{a9c9d16d5f41680f0c76ab75c899b110}
+      \strng{authorfullhash}{19b20eee1bd6837f54db2da8b98af2c1}
+      \strng{authorfullhashraw}{19b20eee1bd6837f54db2da8b98af2c1}
+      \field{labelalpha}{Blä+25}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This work establishes the technical fundamentals of a well-tuned Customizable Contraction Hierarchies ({CCH}) implementation that is simple and elegant. We give a detailed overview of the state of the art of {CCH}, review recent advances on {CCH} and show how to combine them. Additionally, we propose further refinements that improve the performance of {CCH}. An extensive evaluation confirms that a {CCH} framework is not only comprehensive in supported features but also competitive in performance to both Contraction Hierarchies ({CH}) and Customizable Route Planning ({CRP}).}
+      \field{day}{14}
+      \field{eprinttype}{arxiv}
+      \field{month}{2}
+      \field{number}{{arXiv}:2502.10519}
+      \field{title}{Customizable Contraction Hierarchies -- A Survey}
+      \field{urlday}{8}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.48550/arXiv.2502.10519
+      \endverb
+      \verb{eprint}
+      \verb 2502.10519 [cs]
+      \endverb
+      \verb{file}
+      \verb Preprint PDF:/home/born/Documents/Zotero/storage/24GREXQ6/Bläsius et al. - 2025 - Customizable Contraction Hierarchies -- A Survey.pdf:application/pdf;Snapshot:/home/born/Documents/Zotero/storage/LGVFWB7Z/2502.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/2502.10519
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/2502.10519
+      \endverb
+      \keyw{Computer Science - Data Structures and Algorithms}
+    \endentry
+    \entry{bentley_algorithms_1979}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=bfe50abf61f782af029924ba672c4888}{%
+           family={{Bentley}},
+           familyi={B\bibinitperiod}}}%
+        {{hash=714c46273bba96cf534fce0fcda19861}{%
+           family={{Ottmann}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{66197bf6812bc1bc2f433541eaccac07}
+      \strng{fullhash}{66197bf6812bc1bc2f433541eaccac07}
+      \strng{fullhashraw}{66197bf6812bc1bc2f433541eaccac07}
+      \strng{bibnamehash}{66197bf6812bc1bc2f433541eaccac07}
+      \strng{authorbibnamehash}{66197bf6812bc1bc2f433541eaccac07}
+      \strng{authornamehash}{66197bf6812bc1bc2f433541eaccac07}
+      \strng{authorfullhash}{66197bf6812bc1bc2f433541eaccac07}
+      \strng{authorfullhashraw}{66197bf6812bc1bc2f433541eaccac07}
+      \field{labelalpha}{BO79}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0018-9340}
+      \field{journaltitle}{{IEEE} Transactions on Computers}
+      \field{month}{9}
+      \field{number}{9}
+      \field{shortjournal}{{IEEE} Trans. Comput.}
+      \field{title}{Algorithms for Reporting and Counting Geometric Intersections}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2025}
+      \field{volume}{C-28}
+      \field{year}{1979}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{643\bibrangedash 647}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/TC.1979.1675432
+      \endverb
+      \verb{urlraw}
+      \verb http://ieeexplore.ieee.org/document/1675432/
+      \endverb
+      \verb{url}
+      \verb http://ieeexplore.ieee.org/document/1675432/
+      \endverb
+    \endentry
+    \entry{broder_generating_1989}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{hash=c8bde85b4b4874cd5e31aad334bd7af2}{%
+           family={Broder},
+           familyi={B\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Research Triangle Park, {NC}, {USA}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{c8bde85b4b4874cd5e31aad334bd7af2}
+      \strng{fullhash}{c8bde85b4b4874cd5e31aad334bd7af2}
+      \strng{fullhashraw}{c8bde85b4b4874cd5e31aad334bd7af2}
+      \strng{bibnamehash}{c8bde85b4b4874cd5e31aad334bd7af2}
+      \strng{authorbibnamehash}{c8bde85b4b4874cd5e31aad334bd7af2}
+      \strng{authornamehash}{c8bde85b4b4874cd5e31aad334bd7af2}
+      \strng{authorfullhash}{c8bde85b4b4874cd5e31aad334bd7af2}
+      \strng{authorfullhashraw}{c8bde85b4b4874cd5e31aad334bd7af2}
+      \field{labelalpha}{Bro89}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{30th Annual Symposium on Foundations of Computer Science}
+      \field{eventtitle}{30th Annual Symposium on Foundations of Computer Science}
+      \field{isbn}{978-0-8186-1982-3}
+      \field{title}{Generating random spanning trees}
+      \field{urlday}{16}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{year}{1989}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{442\bibrangedash 447}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/SFCS.1989.63516
+      \endverb
+      \verb{urlraw}
+      \verb http://ieeexplore.ieee.org/document/63516/
+      \endverb
+      \verb{url}
+      \verb http://ieeexplore.ieee.org/document/63516/
+      \endverb
+    \endentry
+    \entry{chlamtac_tree-based_1987}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=26badad32ef59293019d6804eb309786}{%
+           family={{Chlamtac}},
+           familyi={C\bibinitperiod}}}%
+        {{hash=6f5b129146d23f6cca9290631a06913c}{%
+           family={{Kutten}},
+           familyi={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{24b4c468fa238accdb5d541a2dd2383e}
+      \strng{fullhash}{24b4c468fa238accdb5d541a2dd2383e}
+      \strng{fullhashraw}{24b4c468fa238accdb5d541a2dd2383e}
+      \strng{bibnamehash}{24b4c468fa238accdb5d541a2dd2383e}
+      \strng{authorbibnamehash}{24b4c468fa238accdb5d541a2dd2383e}
+      \strng{authornamehash}{24b4c468fa238accdb5d541a2dd2383e}
+      \strng{authorfullhash}{24b4c468fa238accdb5d541a2dd2383e}
+      \strng{authorfullhashraw}{24b4c468fa238accdb5d541a2dd2383e}
+      \field{labelalpha}{CK87}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0018-9340}
+      \field{journaltitle}{{IEEE} Transactions on Computers}
+      \field{month}{10}
+      \field{number}{10}
+      \field{shortjournal}{{IEEE} Trans. Comput.}
+      \field{title}{Tree-Based Broadcasting in Multihop Radio Networks}
+      \field{urlday}{16}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{volume}{C-36}
+      \field{year}{1987}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1209\bibrangedash 1223}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1109/TC.1987.1676861
+      \endverb
+      \verb{urlraw}
+      \verb http://ieeexplore.ieee.org/document/1676861/
+      \endverb
+      \verb{url}
+      \verb http://ieeexplore.ieee.org/document/1676861/
+      \endverb
+    \endentry
+    \entry{delling_customizable_2011}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{hash=bc775b0bfe2f5eba2c0d55106a052b55}{%
+           family={Delling},
+           familyi={D\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+        {{hash=575546439bd6e9b2cbc49d9c92ced13f}{%
+           family={Goldberg},
+           familyi={G\bibinitperiod},
+           given={Andrew\bibnamedelima V.},
+           giveni={A\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=58fb32d0e500e97fc503f4e75953eaaf}{%
+           family={Pajor},
+           familyi={P\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=8839683a16ad350312493c2e29f35b86}{%
+           family={Werneck},
+           familyi={W\bibinitperiod},
+           given={Renato\bibnamedelima F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=d2d3f2408d645df2cf4e8142841c3647}{%
+           family={Pardalos},
+           familyi={P\bibinitperiod},
+           given={Panos\bibnamedelima M.},
+           giveni={P\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=dfa4f8a824d0dcd9cdf8d71c4f5757c1}{%
+           family={Rebennack},
+           familyi={R\bibinitperiod},
+           given={Steffen},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{4229870603702ec0afaa634b02e53d41}
+      \strng{fullhash}{4229870603702ec0afaa634b02e53d41}
+      \strng{fullhashraw}{4229870603702ec0afaa634b02e53d41}
+      \strng{bibnamehash}{4229870603702ec0afaa634b02e53d41}
+      \strng{authorbibnamehash}{4229870603702ec0afaa634b02e53d41}
+      \strng{authornamehash}{4229870603702ec0afaa634b02e53d41}
+      \strng{authorfullhash}{4229870603702ec0afaa634b02e53d41}
+      \strng{authorfullhashraw}{4229870603702ec0afaa634b02e53d41}
+      \strng{editorbibnamehash}{e20a3c06ea9fb77a025a5d9c0b393231}
+      \strng{editornamehash}{e20a3c06ea9fb77a025a5d9c0b393231}
+      \strng{editorfullhash}{e20a3c06ea9fb77a025a5d9c0b393231}
+      \strng{editorfullhashraw}{e20a3c06ea9fb77a025a5d9c0b393231}
+      \field{labelalpha}{DGPW11}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We present an algorithm to compute shortest paths on continental road networks with arbitrary metrics (cost functions). The approach supports turn costs, enables real-time queries, and can incorporate a new metric in a few seconds—fast enough to support real-time traffic updates and personalized optimization functions. The amount of metric-specific data is a small fraction of the graph itself, which allows us to maintain several metrics in memory simultaneously.}
+      \field{booktitle}{Experimental Algorithms}
+      \field{isbn}{978-3-642-20662-7}
+      \field{langid}{english}
+      \field{title}{Customizable Route Planning}
+      \field{year}{2011}
+      \field{dateera}{ce}
+      \field{pages}{376\bibrangedash 387}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1007/978-3-642-20662-7_32
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/home/born/Documents/Zotero/storage/SXSFYSP6/Delling et al. - 2011 - Customizable Route Planning.pdf:application/pdf
+      \endverb
+      \keyw{Query Time,Road Network,Boundary Vertex,Overlay Graph,Road Segment}
+    \endentry
+    \entry{dibbelt_customizable_2016}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=9a6b53c76ad354be4f8adeda3265771f}{%
+           family={Dibbelt},
+           familyi={D\bibinitperiod},
+           given={Julian},
+           giveni={J\bibinitperiod}}}%
+        {{hash=4ddd12af5ddfc9740dffd2b6610159ce}{%
+           family={Strasser},
+           familyi={S\bibinitperiod},
+           given={Ben},
+           giveni={B\bibinitperiod}}}%
+        {{hash=f2f741491852a3b5c3ad17d40825e753}{%
+           family={Wagner},
+           familyi={W\bibinitperiod},
+           given={Dorothea},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{af21695f56b470201ddddda5a92b2521}
+      \strng{fullhash}{af21695f56b470201ddddda5a92b2521}
+      \strng{fullhashraw}{af21695f56b470201ddddda5a92b2521}
+      \strng{bibnamehash}{af21695f56b470201ddddda5a92b2521}
+      \strng{authorbibnamehash}{af21695f56b470201ddddda5a92b2521}
+      \strng{authornamehash}{af21695f56b470201ddddda5a92b2521}
+      \strng{authorfullhash}{af21695f56b470201ddddda5a92b2521}
+      \strng{authorfullhashraw}{af21695f56b470201ddddda5a92b2521}
+      \field{labelalpha}{DSW16}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We consider the problem of quickly computing shortest paths in weighted graphs. Often, this is achieved in two phases: (1) derive auxiliary data in an expensive preprocessing phase, and (2) use this auxiliary data to speed up the query phase. By adding a fast weight-customization phase, we extend Contraction Hierarchies to support a three-phase workflow. The expensive preprocessing is split into a phase exploiting solely the unweighted topology of the graph and a lightweight phase that adapts the auxiliary data to a specific weight. We achieve this by basing our Customizable Contraction Hierarchies ({CCHs}) on nested dissection orders. We provide an in-depth experimental analysis on large road and game maps showing that {CCHs} are a very practicable solution in scenarios where edge weights often change.}
+      \field{day}{4}
+      \field{issn}{1084-6654, 1084-6654}
+      \field{journaltitle}{{ACM} Journal of Experimental Algorithmics}
+      \field{langid}{english}
+      \field{month}{11}
+      \field{shortjournal}{{ACM} J. Exp. Algorithmics}
+      \field{title}{Customizable Contraction Hierarchies}
+      \field{urlday}{30}
+      \field{urlmonth}{10}
+      \field{urlyear}{2024}
+      \field{volume}{21}
+      \field{year}{2016}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1\bibrangedash 49}
+      \range{pages}{49}
+      \verb{doi}
+      \verb 10.1145/2886843
+      \endverb
+      \verb{file}
+      \verb 2886843(2):/home/born/Documents/Zotero/storage/QWX5TZYT/2886843(2).pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://dl.acm.org/doi/10.1145/2886843
+      \endverb
+      \verb{url}
+      \verb https://dl.acm.org/doi/10.1145/2886843
+      \endverb
+    \endentry
+    \entry{eppstein_studying_2008}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{hash=4f12b592ce9b6b46eaf40b65ed198f41}{%
+           family={Eppstein},
+           familyi={E\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=23dc8c63965c7c18e5e1ec4d33197e0d}{%
+           family={Goodrich},
+           familyi={G\bibinitperiod},
+           given={Michael\bibnamedelima T.},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, {NY}, {USA}}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{b777caff2412870cb2f65c68ccd9d773}
+      \strng{fullhash}{b777caff2412870cb2f65c68ccd9d773}
+      \strng{fullhashraw}{b777caff2412870cb2f65c68ccd9d773}
+      \strng{bibnamehash}{b777caff2412870cb2f65c68ccd9d773}
+      \strng{authorbibnamehash}{b777caff2412870cb2f65c68ccd9d773}
+      \strng{authornamehash}{b777caff2412870cb2f65c68ccd9d773}
+      \strng{authorfullhash}{b777caff2412870cb2f65c68ccd9d773}
+      \strng{authorfullhashraw}{b777caff2412870cb2f65c68ccd9d773}
+      \field{labelalpha}{EG08}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper studies real-world road networks from an algorithmic perspective, focusing on empirical studies that yield useful properties of road networks that can be exploited in the design of fast algorithms that deal with geographic data. Unlike previous approaches, our study is not based on the assumption that road networks are planar graphs. Indeed, based on the a number of experiments we have performed on the road networks of the 50 United States and District of Columbia, we provide strong empirical evidence that road networks are quite non-planar. Our approach therefore instead is directed at finding algorithmically-motivated properties of road networks as non-planar geometric graphs, focusing on alternative properties of road networks that can still lead to efficient algorithms for such problems as shortest paths and Voronoi diagrams. In particular, we study road networks as multiscale-dispersed graphs, which is a concept we formalize in terms of disk neighborhood systems. This approach allows us to develop fast algorithms for road networks without making any additional assumptions about the distribution of edge weights. In fact, our algorithms can allow for non-metric weights.}
+      \field{booktitle}{Proceedings of the 16th {ACM} {SIGSPATIAL} international conference on Advances in geographic information systems}
+      \field{day}{5}
+      \field{isbn}{978-1-60558-323-5}
+      \field{month}{11}
+      \field{series}{{GIS} '08}
+      \field{title}{Studying (non-planar) road networks through an algorithmic lens}
+      \field{urlday}{11}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{year}{2008}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1\bibrangedash 10}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1145/1463434.1463455
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/home/born/Documents/Zotero/storage/NX3MWKSS/Eppstein and Goodrich - 2008 - Studying (non-planar) road networks through an algorithmic lens.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://dl.acm.org/doi/10.1145/1463434.1463455
+      \endverb
+      \verb{url}
+      \verb https://dl.acm.org/doi/10.1145/1463434.1463455
+      \endverb
+    \endentry
+    \entry{eppstein_linear-time_2010}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=4f12b592ce9b6b46eaf40b65ed198f41}{%
+           family={Eppstein},
+           familyi={E\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=23dc8c63965c7c18e5e1ec4d33197e0d}{%
+           family={Goodrich},
+           familyi={G\bibinitperiod},
+           given={Michael\bibnamedelima T.},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=855a06bea0b075b7622b995c5dd605c8}{%
+           family={Strash},
+           familyi={S\bibinitperiod},
+           given={Darren},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{71f7354c128cd550320dc3d76aa7d8a1}
+      \strng{fullhash}{71f7354c128cd550320dc3d76aa7d8a1}
+      \strng{fullhashraw}{71f7354c128cd550320dc3d76aa7d8a1}
+      \strng{bibnamehash}{71f7354c128cd550320dc3d76aa7d8a1}
+      \strng{authorbibnamehash}{71f7354c128cd550320dc3d76aa7d8a1}
+      \strng{authornamehash}{71f7354c128cd550320dc3d76aa7d8a1}
+      \strng{authorfullhash}{71f7354c128cd550320dc3d76aa7d8a1}
+      \strng{authorfullhashraw}{71f7354c128cd550320dc3d76aa7d8a1}
+      \field{labelalpha}{EGS10}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0097-5397, 1095-7111}
+      \field{journaltitle}{{SIAM} Journal on Computing}
+      \field{langid}{english}
+      \field{month}{1}
+      \field{number}{8}
+      \field{shortjournal}{{SIAM} J. Comput.}
+      \field{title}{Linear-Time Algorithms for Geometric Graphs with Sublinearly Many Edge Crossings}
+      \field{urlday}{22}
+      \field{urlmonth}{1}
+      \field{urlyear}{2025}
+      \field{volume}{39}
+      \field{year}{2010}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{3814\bibrangedash 3829}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1137/090759112
+      \endverb
+      \verb{file}
+      \verb Submitted Version:/home/born/Documents/Zotero/storage/IRLZSI5A/Eppstein et al. - 2010 - Linear-Time Algorithms for Geometric Graphs with Sublinearly Many Edge Crossings.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://epubs.siam.org/doi/10.1137/090759112
+      \endverb
+      \verb{url}
+      \verb http://epubs.siam.org/doi/10.1137/090759112
+      \endverb
+    \endentry
+    \entry{gottesburen_faster_2019}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=714b4f29acf88779486888e9ea0f5732}{%
+           family={Gottesbüren},
+           familyi={G\bibinitperiod},
+           given={Lars},
+           giveni={L\bibinitperiod}}}%
+        {{hash=8c885eb84eebd45fc90789b2eb6e5112}{%
+           family={Hamann},
+           familyi={H\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=c5c8bfd884961321eaffa8d4098e71b3}{%
+           family={Uhl},
+           familyi={U\bibinitperiod},
+           given={Tim\bibnamedelima Niklas},
+           giveni={T\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=f2f741491852a3b5c3ad17d40825e753}{%
+           family={Wagner},
+           familyi={W\bibinitperiod},
+           given={Dorothea},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{b721730d78ea1cf66e1c8f2f83e1bb3b}
+      \strng{fullhash}{b721730d78ea1cf66e1c8f2f83e1bb3b}
+      \strng{fullhashraw}{b721730d78ea1cf66e1c8f2f83e1bb3b}
+      \strng{bibnamehash}{b721730d78ea1cf66e1c8f2f83e1bb3b}
+      \strng{authorbibnamehash}{b721730d78ea1cf66e1c8f2f83e1bb3b}
+      \strng{authornamehash}{b721730d78ea1cf66e1c8f2f83e1bb3b}
+      \strng{authorfullhash}{b721730d78ea1cf66e1c8f2f83e1bb3b}
+      \strng{authorfullhashraw}{b721730d78ea1cf66e1c8f2f83e1bb3b}
+      \field{labelalpha}{GHUW19}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Graph partitioning has many applications. We consider the acceleration of shortest path queries in road networks using Customizable Contraction Hierarchies ({CCH}). It is based on computing a nested dissection order by recursively dividing the road network into parts. Recently, with {FlowCutter} and Inertial Flow, two flow-based graph bipartitioning algorithms have been proposed for road networks. While {FlowCutter} achieves high-quality results and thus fast query times, it is rather slow. Inertial Flow is particularly fast due to the use of geographical information while still achieving decent query times. We combine the techniques of both algorithms to achieve more than six times faster preprocessing times than {FlowCutter} and even faster queries on the Europe road network. We show that using 16 cores of a shared-memory machine, this preprocessing needs four minutes.}
+      \field{day}{16}
+      \field{eprinttype}{arxiv}
+      \field{issn}{1999-4893}
+      \field{journaltitle}{Algorithms}
+      \field{month}{9}
+      \field{number}{9}
+      \field{shortjournal}{Algorithms}
+      \field{title}{Faster and Better Nested Dissection Orders for Customizable Contraction Hierarchies}
+      \field{urlday}{22}
+      \field{urlmonth}{1}
+      \field{urlyear}{2025}
+      \field{volume}{12}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{196}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/a12090196
+      \endverb
+      \verb{eprint}
+      \verb 1906.11811 [cs]
+      \endverb
+      \verb{file}
+      \verb Preprint PDF:/home/born/Documents/Zotero/storage/CM2KMK4Y/Gottesbüren et al. - 2019 - Faster and Better Nested Dissection Orders for Customizable Contraction Hierarchies.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1906.11811
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1906.11811
+      \endverb
+      \keyw{Computer Science - Data Structures and Algorithms}
+    \endentry
+    \entry{geisberger_contraction_2008}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{hash=d304bbf1a7d34c7a7f3d2b0e6bdcbea8}{%
+           family={Geisberger},
+           familyi={G\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=be6c7f12620ef1a8d1d85d96d476a158}{%
+           family={Sanders},
+           familyi={S\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=29b0627d9ddb65dcdfd14ddc22291e93}{%
+           family={Schultes},
+           familyi={S\bibinitperiod},
+           given={Dominik},
+           giveni={D\bibinitperiod}}}%
+        {{hash=bc775b0bfe2f5eba2c0d55106a052b55}{%
+           family={Delling},
+           familyi={D\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=ee133419feae3b251d207f65236f409b}{%
+           family={{McGeoch}},
+           familyi={M\bibinitperiod},
+           given={Catherine\bibnamedelima C.},
+           giveni={C\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{a32eba686734a2bd671868e8108841ae}
+      \strng{fullhash}{a32eba686734a2bd671868e8108841ae}
+      \strng{fullhashraw}{a32eba686734a2bd671868e8108841ae}
+      \strng{bibnamehash}{a32eba686734a2bd671868e8108841ae}
+      \strng{authorbibnamehash}{a32eba686734a2bd671868e8108841ae}
+      \strng{authornamehash}{a32eba686734a2bd671868e8108841ae}
+      \strng{authorfullhash}{a32eba686734a2bd671868e8108841ae}
+      \strng{authorfullhashraw}{a32eba686734a2bd671868e8108841ae}
+      \strng{editorbibnamehash}{ee133419feae3b251d207f65236f409b}
+      \strng{editornamehash}{ee133419feae3b251d207f65236f409b}
+      \strng{editorfullhash}{ee133419feae3b251d207f65236f409b}
+      \strng{editorfullhashraw}{ee133419feae3b251d207f65236f409b}
+      \field{labelalpha}{GSSD08}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{We present a route planning technique solely based on the concept of node contraction. The nodes are first ordered by ‘importance’. A hierarchy is then generated by iteratively contracting the least important node. Contracting a node v means replacing shortest paths going through v by shortcuts. We obtain a hierarchical query algorithm using bidirectional shortest-path search. The forward search uses only edges leading to more important nodes and the backward search uses only edges coming from more important nodes. For fastest routes in road networks, the graph remains very sparse throughout the contraction process using rather simple heuristics for ordering the nodes. We have five times lower query times than the best previous hierarchical Dijkstra-based speedup techniques and a negative space overhead, i.e., the data structure for distance computation needs less space than the input graph. {CHs} can be combined with many other route planning techniques, leading to improved performance for many-to-many routing, transit-node routing, goal-directed routing or mobile and dynamic scenarios.}
+      \field{booktitle}{Experimental Algorithms}
+      \field{isbn}{978-3-540-68552-4}
+      \field{langid}{english}
+      \field{shorttitle}{Contraction Hierarchies}
+      \field{title}{Contraction Hierarchies: Faster and Simpler Hierarchical Routing in Road Networks}
+      \field{year}{2008}
+      \field{dateera}{ce}
+      \field{pages}{319\bibrangedash 333}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1007/978-3-540-68552-4_24
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/home/born/Documents/Zotero/storage/7WNZ6Y45/Geisberger et al. - 2008 - Contraction Hierarchies Faster and Simpler Hierarchical Routing in Road Networks.pdf:application/pdf
+      \endverb
+      \keyw{Input Graph,Priority Queue,Query Time,Road Network,Short Path}
+    \endentry
+    \entry{lipton_applications_1977}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{hash=44166fb39cf702e9ba98a4092c35db66}{%
+           family={Lipton},
+           familyi={L\bibinitperiod},
+           given={Richard\bibnamedelima J.},
+           giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=09f1ee63063ed5ad11c3baa87f800eb7}{%
+           family={Tarjan},
+           familyi={T\bibinitperiod},
+           given={Robert\bibnamedelima Endre},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Providence, {RI}, {USA}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{fullhash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{fullhashraw}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{bibnamehash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{authorbibnamehash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{authornamehash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{authorfullhash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{authorfullhashraw}{d3cd1f37842bda34a5c3b355865c01c5}
+      \field{extraname}{1}
+      \field{labelalpha}{LT77}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{18th Annual Symposium on Foundations of Computer Science (sfcs 1977)}
+      \field{eventtitle}{18th Annual Symposium on Foundations of Computer Science (sfcs 1977)}
+      \field{month}{9}
+      \field{title}{Applications of a planar separator theorem}
+      \field{urlday}{2}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{year}{1977}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{162\bibrangedash 170}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1109/SFCS.1977.6
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/home/born/Documents/Zotero/storage/J8HRSR6D/Lipton and Tarjan - 1977 - Applications of a planar separator theorem.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://ieeexplore.ieee.org/document/4567938/
+      \endverb
+      \verb{url}
+      \verb http://ieeexplore.ieee.org/document/4567938/
+      \endverb
+    \endentry
+    \entry{lipton_separator_1979}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=44166fb39cf702e9ba98a4092c35db66}{%
+           family={Lipton},
+           familyi={L\bibinitperiod},
+           given={Richard\bibnamedelima J.},
+           giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=09f1ee63063ed5ad11c3baa87f800eb7}{%
+           family={Tarjan},
+           familyi={T\bibinitperiod},
+           given={Robert\bibnamedelima Endre},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{fullhash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{fullhashraw}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{bibnamehash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{authorbibnamehash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{authornamehash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{authorfullhash}{d3cd1f37842bda34a5c3b355865c01c5}
+      \strng{authorfullhashraw}{d3cd1f37842bda34a5c3b355865c01c5}
+      \field{extraname}{2}
+      \field{labelalpha}{LT79}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0036-1399, 1095-712X}
+      \field{journaltitle}{{SIAM} Journal on Applied Mathematics}
+      \field{langid}{english}
+      \field{month}{4}
+      \field{number}{2}
+      \field{shortjournal}{{SIAM} J. Appl. Math.}
+      \field{title}{A Separator Theorem for Planar Graphs}
+      \field{urlday}{6}
+      \field{urlmonth}{1}
+      \field{urlyear}{2025}
+      \field{volume}{36}
+      \field{year}{1979}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{177\bibrangedash 189}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1137/0136016
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/home/born/Documents/Zotero/storage/WAYBJ8Z3/Lipton and Tarjan - 1979 - A Separator Theorem for Planar Graphs.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://epubs.siam.org/doi/10.1137/0136016
+      \endverb
+      \verb{url}
+      \verb http://epubs.siam.org/doi/10.1137/0136016
+      \endverb
+    \endentry
+    \entry{ptv_group_dimacs-europe_2009}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=be97ff3f41a4938c759957841a4e9179}{%
+           family={{PTV Group}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{be97ff3f41a4938c759957841a4e9179}
+      \strng{fullhash}{be97ff3f41a4938c759957841a4e9179}
+      \strng{fullhashraw}{be97ff3f41a4938c759957841a4e9179}
+      \strng{bibnamehash}{be97ff3f41a4938c759957841a4e9179}
+      \strng{authorbibnamehash}{be97ff3f41a4938c759957841a4e9179}
+      \strng{authornamehash}{be97ff3f41a4938c759957841a4e9179}
+      \strng{authorfullhash}{be97ff3f41a4938c759957841a4e9179}
+      \strng{authorfullhashraw}{be97ff3f41a4938c759957841a4e9179}
+      \field{labelalpha}{PTV09}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{DIMACS}-Europe Graph for the 9th {DIMACS} Implementation Challenge. Visit www.iti.kit.edu/resources/roadgraphs.php for details on how to acquire this graph.}
+      \field{year}{2009}
+      \field{dateera}{ce}
+    \endentry
+    \entry{sanders_think_2013}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{hash=be6c7f12620ef1a8d1d85d96d476a158}{%
+           family={Sanders},
+           familyi={S\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=687669742165d7a49a8816f5f97f5701}{%
+           family={Schulz},
+           familyi={S\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod}}}%
+      }
+      \name{editor}{3}{}{%
+        {{hash=209e826b1061a1743e2635e7a57708c2}{%
+           family={Bonifaci},
+           familyi={B\bibinitperiod},
+           given={Vincenzo},
+           giveni={V\bibinitperiod}}}%
+        {{hash=0d818aa3e968cd8759e8d31211dc6382}{%
+           family={Demetrescu},
+           familyi={D\bibinitperiod},
+           given={Camil},
+           giveni={C\bibinitperiod}}}%
+        {{hash=0a32a40115a59553203cbd569e19218d}{%
+           family={Marchetti-Spaccamela},
+           familyi={M\bibinithyphendelim S\bibinitperiod},
+           given={Alberto},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{1daf05c73841e4ed98aada3e43e2b433}
+      \strng{fullhash}{1daf05c73841e4ed98aada3e43e2b433}
+      \strng{fullhashraw}{1daf05c73841e4ed98aada3e43e2b433}
+      \strng{bibnamehash}{1daf05c73841e4ed98aada3e43e2b433}
+      \strng{authorbibnamehash}{1daf05c73841e4ed98aada3e43e2b433}
+      \strng{authornamehash}{1daf05c73841e4ed98aada3e43e2b433}
+      \strng{authorfullhash}{1daf05c73841e4ed98aada3e43e2b433}
+      \strng{authorfullhashraw}{1daf05c73841e4ed98aada3e43e2b433}
+      \strng{editorbibnamehash}{64c953d70206eb28f5b7b1329b997a49}
+      \strng{editornamehash}{64c953d70206eb28f5b7b1329b997a49}
+      \strng{editorfullhash}{64c953d70206eb28f5b7b1329b997a49}
+      \strng{editorfullhashraw}{64c953d70206eb28f5b7b1329b997a49}
+      \field{labelalpha}{SS13}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{We present a novel local improvement scheme for graph partitions that allows to enforce strict balance constraints. Using negative cycle detection algorithms this scheme combines local searches that individually violate the balance constraint into a more global feasible improvement. We combine this technique with an algorithm to balance unbalanced solutions and integrate it into a parallel multi-level evolutionary algorithm, {KaFFPaE}, to tackle the problem. Overall, we obtain a system that is fast on the one hand and on the other hand is able to improve or reproduce many of the best known perfectly balanced partitioning results reported in the Walshaw benchmark.}
+      \field{booktitle}{Experimental Algorithms}
+      \field{isbn}{978-3-642-38527-8}
+      \field{langid}{english}
+      \field{shorttitle}{Think Locally, Act Globally}
+      \field{title}{Think Locally, Act Globally: Highly Balanced Graph Partitioning}
+      \field{year}{2013}
+      \field{dateera}{ce}
+      \field{pages}{164\bibrangedash 175}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1007/978-3-642-38527-8_16
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/home/born/Documents/Zotero/storage/P6ATTRIQ/Sanders and Schulz - 2013 - Think Locally, Act Globally Highly Balanced Graph Partitioning.pdf:application/pdf
+      \endverb
+      \keyw{Balance Constraint,Graph Partitioning,Local Search,Local Search Algorithm,Node Movement}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
