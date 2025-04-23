@@ -38,7 +38,7 @@ The size of the separator is typically evaluated asymptotically as a function of
 The concept of \emph{recursive} \(\alpha\)-balanced separators extends this idea by ensuring that the property of finding small, balanced separators persists in the resulting subgraphs.
 Specifically, after removing an \(\alpha\)-balanced separator \(S\) from \(G\), each induced subgraph \(G[V_i]\) (for \(i = 1, 2, \dots, k\)) can itself be partitioned using another \(\alpha\)-balanced separator of small size.
 
-\begin{figure}
+\begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.45\linewidth}
 		\centering
@@ -115,7 +115,7 @@ Its size is \(k\), the number of nodes on the path.
 The traversal algorithm continues recursively into these subtrees.
 An overview of this process is illustrated in \cref{fig:extract_separator_from_order}.
 
-\begin{figure}
+\begin{figure}[tbhp]
 	\begin{subfigure}{0.3\linewidth}
 		\centering
 		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
@@ -168,7 +168,7 @@ The path \(S = \{v_1, \dots, v_k\}\) is finalized as the separator upon reaching
 This ensures separators correspond to meaningful branches in the tree structure concerning substantial graph parts.
 \cref{fig:separator_extraction_threshold_example} illustrates an example of this process.
 
-\begin{figure}
+\begin{figure}[tbhp]
 	\centering
 	\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}, node distance=0.2cm and 0.0cm]
 		\node (1) [fill = teal!30]{1};
@@ -231,7 +231,7 @@ Resulting multi-edges are simplified.
 We call the resulting graph \( G_C = (V, E_C) \), where \( E_C = E \cup F \) and \( F \) represents the set of shortcut edges.
 The contraction process is illustrated in \cref{fig:cch_precomputation_example}.
 
-\begin{figure}
+\begin{figure}[tbhp]
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
@@ -292,7 +292,7 @@ These separator nodes are designated as high-rank nodes in the hierarchy and are
 This procedure is then applied recursively to the remaining components.
 \Cref{fig:nested_dissection_example} provides a visual representation of this recursive partitioning strategy.
 
-\begin{figure}
+\begin{figure}[tbhp]
 	\centering
 	\begin{tikzpicture}[every node/.style={circle, draw, minimum size=1cm}]
 		\node (10)                {1};
@@ -358,7 +358,7 @@ Note that the outlined algorithm only considers undirected edge weights, the alg
 	\label{alg:customization}
 \end{algorithm}
 
-\begin{figure}
+\begin{figure}[tbhp]
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\begin{tikzpicture}
@@ -421,7 +421,7 @@ The parent of a node \(v\) in the elimination tree is the neighbor \(p\) of \(v\
 \cref{fig:cch_elimination_tree} illustrates the elimination tree for the example graph shown in \cref{fig:cch_precomputation_example}.
 The query algorithm performs a bidirectional search upwards in this elimination tree, starting from \(s\) and \(t\).
 
-\begin{figure}
+\begin{figure}[tbhp]
 	\centering
 	\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
 		\node (3) at (-0.5,2) {3};
