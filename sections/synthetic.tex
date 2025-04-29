@@ -364,7 +364,7 @@ Consequently, if the recursion depth is limited and the highest-level structures
 		\caption{Separator size scaling for the hierarchical Voronoi graph, showing local minima at layer transitions.}
 		\label{fig:voronoi_hierarchy_sep_plot}
 	\end{subfigure}
-    \caption{Analysis of synthetic graphs generated using the hierarchical Voronoi approach from Bauer et al. \cite{hutchison_synthetic_2010}.}
+	\caption{Analysis of synthetic graphs generated using the hierarchical Voronoi approach from Bauer et al. \cite{hutchison_synthetic_2010}.}
 	\label{fig:voronoi_hierarchy}
 \end{figure}
 
@@ -374,7 +374,7 @@ To explore hierarchical effects in a more controlled manner, we also investigate
 This method aims to construct a hierarchical graph by recursively embedding grid graphs within the cells of a parent grid, potentially allowing us to deliberately engineer specific separator scaling properties.
 The fundamental idea involves placing copies of a subgraph (e.g., a standard grid) into selected cells of a higher-level grid.
 This resulting composite graph can then itself be treated as a subgraph to be placed within cells of a grid at an even higher level, and so on.
-\Cref{fig:nested_grid_analysis} shows a small conceptual example of a nested grid with three layers.
+\cref{fig:nested_grid_analysis} shows a small conceptual example of a nested grid with three layers.
 
 \begin{figure}[tbhp]
 	\centering
@@ -390,7 +390,7 @@ This resulting composite graph can then itself be treated as a subgraph to be pl
 		\caption{Separator size scaling for nested grids, showing pronounced local minima.}
 		\label{fig:nested_grid_sep_plot}
 	\end{subfigure}
-    \caption{Analysis of synthetic graphs generated using the nested grid approach.}
+	\caption{Analysis of synthetic graphs generated using the nested grid approach.}
 	\label{fig:nested_grid_analysis}
 \end{figure}
 
@@ -403,11 +403,62 @@ We can then estimate the total number of vertices \(|V|\) at a given stage based
 This estimate is approximate as it may double-count vertices along the boundaries where subgraphs connect to the parent grid.
 To enforce \bigO{n^{1/3}} scaling specifically at this layer transition, we can equate the separator size (approximated by \(w\)) with \(|V|^{1/3}\):
 \[ w \approx (|V|)^{1/3} \approx (w^2 + ks)^{1/3} \]
-This leads to the cubic equation \( w^3 - w^2 - ks \approx 0 \).
+This leads to the cubic equation \( w^3 - w^2 - ks = 0 \).
 If we fix the subgraph count \(k\) and subgraph size \(s\), we can solve for the grid width \(w\) required to satisfy this condition at the transition.
 One root of this cubic equation for \(w\) is given by:
-\[ w \approx \frac{(27 k s + \sqrt{(27 k s + 2)^2 - 4} + 2)^{1/3}}{3 \cdot 2^{1/3}} + \frac{2^{1/3}}{3 (27 k s + \sqrt{(27 k s + 2)^2 - 4} + 2)^{1/3}} + \frac{1}{3} \]
+\[ w = \frac{(27 k s + \sqrt{(27 k s + 2)^2 - 4} + 2)^{1/3}}{3 \cdot 2^{1/3}} + \frac{2^{1/3}}{3 (27 k s + \sqrt{(27 k s + 2)^2 - 4} + 2)^{1/3}} + \frac{1}{3} \]
 
 By carefully selecting \(w\) based on \(k\) and \(s\) using this relationship at each hierarchical level, one can attempt to construct a graph where the separator size scales roughly as the cube root of the number of nodes at each layer transition.
 This controlled approach allows the local minima in separator sizes, already seen in the Voronoi method, to be made more pronounced and regular, as all subgraphs at a given level transition can be designed with the same size \(s\).
-However, achieving a consistent overall \bigO{n^{1/3}} scaling for the entire graph across all sizes \(n\) remains a complex challenge.
+However, achieving a consistent overall \bigO{n^{1/3}} scaling for the entire graph across all sizes \(n\) remains a challenge.
+
+The observed local minima in separator size occur systematically at the transitions between hierarchical levels.
+This is because the construction method inherently creates sparse connections between components defined at different levels.
+\cref{fig:nested_grid_connectivity_example} provides a simplified illustration of this principle, showing two example components from the same levels within the hierarchy, not the entire structure of a layer.
+In this specific illustration, the components (represented by nodes 1-4 and 5-8) are linked only by the edges (3)--(5) and (4)--(6).
+Consequently, removing just one endpoint from each connecting edge suffices to disconnect them.
+This demonstrates how a vertex separator of small, constant size (size 2) exist between levels, regardless of the internal size of the components themselves.
+Such constant-size separators at every level transition are the underlying cause of the pronounced local minima observed in the separator scaling plots for these nested structures.
+
+\begin{figure}[tbhp]
+	\centering
+	\begin{tikzpicture}[every node/.style={draw, circle, minimum size=0.7cm}]
+		\node (1) at (0,2) {1};
+		\node (2) at (0,0) {2};
+		\node (3) at (2,2) {3};
+		\node (4) at (2,0) {4};
+
+		\node (5) at (5,2) {5};
+		\node (6) at (5,0) {6};
+		\node (7) at (7,2) {7};
+		\node (8) at (7,0) {8};
+
+		\draw (1) -- (2) -- (4) -- (3) -- (1);
+		\draw (5) -- (7) -- (8) -- (6) -- (5);
+
+		\draw[color=green, thick] (3) -- (5);
+		\draw[color=green, thick] (4) -- (6);
+
+		\draw (1,1) -- (1,0);
+		\draw (1,1) -- (1,2);
+		\draw (1,1) -- (0,1);
+		\draw (1,1) -- (2,1);
+
+		\draw (6,1) -- (5,1);
+		\draw (6,1) -- (6,0);
+		\draw (6,1) -- (6,2);
+		\draw (6,1) -- (7,1);
+
+		\node[draw=none] at (0.5,0.5) {\(\dots\)};
+		\node[draw=none] at (1.5,0.5) {\(\dots\)};
+		\node[draw=none] at (1.5,1.5) {\(\dots\)};
+		\node[draw=none] at (0.5,1.5) {\(\dots\)};
+
+		\node[draw=none] at (5.5,0.5) {\(\dots\)};
+		\node[draw=none] at (6.5,0.5) {\(\dots\)};
+		\node[draw=none] at (6.5,1.5) {\(\dots\)};
+		\node[draw=none] at (5.5,1.5) {\(\dots\)};
+	\end{tikzpicture}
+	\caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges (3)--(5) and (4)--(6). Removing one endpoint from each edge (e.g., \{3, 6\}) forms a size-2 vertex separator, irrespective of component sizes.}
+	\label{fig:nested_grid_connectivity_example}
+\end{figure}
