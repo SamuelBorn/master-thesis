@@ -15,7 +15,18 @@ Furthermore, as the concept of separators primarily applies to connectivity, we 
 An edge connecting vertices \(u\) and \(v\) in an undirected graph is denoted as the set \(\{u,v\}\).
 The neighborhood of a vertex \(v\) is defined as the set of vertices adjacent to \(v\), denoted as \(N : V \to \mathcal{P}(V)\).
 
-A graph \emph{embedding} assigns each vertex \(v \in V\) of a graph \(G = (V, E)\) to a unique point \(p\) in a specific geometric space, such as the Euclidean plane \(\mathbb{R}^2\) or the surface of a sphere, where edges are represented as straight line segments connecting the points corresponding to their incident vertices.
+A graph \emph{embedding} assigns each vertex \(v \in V\) of a graph \(G = (V, E)\) to a unique point \(p\) in a specific geometric space, such as the Euclidean plane \(\mathbb{R}^2\) or the surface of a sphere.
+We then consider edges as straight line segments connecting the points corresponding to their incident vertices.
+
+Throughout this thesis, the term \emph{graph size} refers specifically to the number of vertices, \(|V|\).
+We frequently adopt the notation \(n\) for the number of vertices, \(|V|\), and \(m\) for the number of edges, \(|E|\).
+It is worth noting that for many graph classes discussed herein, particularly sparse graphs like road networks, the number of edges \(m\) is asymptotically linear in the number of vertices \(n\).
+For planar graphs, a specific bound guarantees this linear growth.
+Euler's formula for connected planar graphs states that \(n - m + f = 2\), where \(f\) is the number of faces (regions) defined by the graph embedding.
+By observing that each face is bounded by at least three edges (for \(n \ge 3\)) and each edge separates at most two faces, we derive the inequality \(2m \ge 3f\).
+Substituting \(f = 2 - n + m\) from Euler's formula into this inequality yields \(m \le 3n - 6\).
+This confirms the linear relationship between the number of edges and vertices for planar graphs.
+Therefore, the choice of \(n\) as the measure of size generally does not impact asymptotic complexity results for the graphs under consideration.
 
 \section{Graph Separators}
 \label{sec:graphseparators}
@@ -93,7 +104,7 @@ This algorithm leverages geometric embeddings, often available for road networks
 These node orderings serve as the basis for extracting separators from the graph using the method described below \cite{blasius_customizable_2025}.
 Employing this combined approach provides a practical pathway to generate separators for our analysis, adapting the use of InertialFlowCutter's output to suit the specific requirements of this work.
 However, InertialFlowCutter requires such a geometric embedding as input.
-In cases where a geometric embedding was not available, we utilized the KaHIP (Karlsruhe High Quality Partitioning) framework \cite{sanders_think_2013}.
+For graphs without an embedding, we utilize the KaHIP (Karlsruhe High Quality Partitioning) framework \cite{sanders_think_2013}.
 
 When using InertialFlowCutter, the resulting node ordering is interpreted as an elimination order for the vertices of the graph \( G = (V, E) \).
 Based on this order, a chordal supergraph \( G_C = (V, E \cup F) \) is constructed, where \( F \) represents the fill-in edges.
