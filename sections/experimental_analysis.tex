@@ -41,6 +41,12 @@ Let \( x_{\max} \) denote the maximum observed subgraph size, assuming \( x_{\ma
 A data point \( (x, y) \) is assigned to the bin with index \( \floor{\frac{x \cdot b}{x_{\max}}} \).
 After assigning all points to their respective bins, a single representative point is computed for each non-empty bin.
 This representative point \( (\overline{x}_i, \overline{y}_i) \) for bin \( i \) is determined by calculating the arithmetic mean of the \( x \) coordinates and the arithmetic mean of the \( y \) coordinates of all data points \( (x, y) \) assigned to bin \( i \).
+A primary consideration for using the arithmetic mean was the nature of subsequent analysis steps, such as curve fitting.
+While methods like box plots offer detailed distributional insights, they do not provide the single-point representation required for these analyses.
+Furthermore, the choice of the mean over the median, which is known for its robustness to outliers, was deliberate in this context.
+Outliers within bins are not necessarily disregarded as noise but are considered potentially informative data points reflecting relevant variations.
+Supporting this decision are the mean's straightforward calculation, computational efficiency, and clear interpretation as the centroid or center of mass of the points within the bin.
+
 When constructing the log-log plot, this binning procedure is applied to the logarithmically transformed data.
 \cref{fig:separator_size_loglog_binned} illustrates the binned data points on logarithmic axes.
 
@@ -64,14 +70,24 @@ When constructing the log-log plot, this binning procedure is applied to the log
 
 To quantify the relationship between separator size \( y \) and subgraph size \( x \), we performed statistical curve fitting on the empirical data.
 A preliminary linear regression applied to the logarithmically transformed data across all points yields a fitted line \( \log y \approx 0.2676 \log x - 0.8704 \).
-This initial fit suggests a scaling behavior close to \( \bigO{x^{0.2676}} \), which is better than the hypothesized \( \bigO{x^{1/3}} \).
-However, this result might be skewed by the large number of small subgraphs, particularly those with trivial separators of size one, which do not fully represent the scaling trend at larger sizes.
+This initial fit suggests a scaling behavior close to \( \bigO{x^{0.2676}} \), which is seemingly better than the hypothesized \( \bigO{x^{1/3}} \).
+However, this result might be skewed by the large number of small subgraphs, particularly those with trivial separators, which may not fully represent the scaling trend at larger sizes.
+To test this hypothesis, we performed a second regression exclusively on data points corresponding to subgraphs with more than \( 2^8 = 256 \) vertices.
+This analysis yielded the relationship \( \log y \approx 0.3650 \log x - 1.7322 \).
+
+We report these coefficients to four decimal places as is conventional in scientific reporting.
+However, it is important to acknowledge that this level of precision might overstate the certainty of the fit, given the inherent noise in empirical measurements derived from complex graph algorithms.
+Minor variations in experimental conditions, such as changing the random seed used in the nested dissection algorithm, can cause slight fluctuations in these fitted parameters.
+Therefore, the reported values should be interpreted as indicative of the general trend rather than exact constants.
 
 We also explore direct non-linear curve fitting to the original data points using several functional forms.
 Fitting \( y = a \cdot x^{1/3} + b \) results in \( y \approx 0.4599 \cdot x^{1/3} - 0.0341 \) with an \( R^2 \) value of \( 0.4724 \).
 Fitting \( y = a \cdot x^{1/2} + b \) yields \( y \approx 0.1087 \cdot x^{1/2} + 0.5000 \), but with a very low \( R^2 \) value of \( 0.0873 \), suggesting that a square-root dependency is unlikely.
 A more general power-law fit \( y = a \cdot x^c + b \) results in \( y \approx 0.2346 \cdot x^{0.3980} + 0.6140 \) with an \( R^2 \) value of \( 0.4832 \).
 While these direct fits indicate a scaling exponent potentially closer to \( 0.4 \) than \( 1/3 \) or \( 1/2 \), the overall \( R^2 \) scores remain relatively low, indicating only a moderate goodness of fit.
+The above mentioned curves are visualized in \cref{fig:separator_size_loglog}.
+The fitted lines displayed in \cref{fig:separator_size_loglog_binned} are those computed from the non-binned data and shown previously in \cref{fig:separator_size_loglog}. 
+They are reproduced here to facilitate comparison with the binned averages, although visual alignment may differ due to the underlying averaging represented by the bins.
 
 Observations from the binned log-log plot in \cref{fig:separator_size_loglog_binned} suggest that the relationship between \( \log y \) and \( \log x \) is most consistent within a specific range of subgraph sizes.
 The data appears particularly stable for subgraph sizes \( x \) between approximately \( 2^7 \) and \( 2^{18} \) nodes.
@@ -98,8 +114,6 @@ The statistical significance of the slope is confirmed by an extremely low p-val
 Visually, this line provides an excellent fit to the binned data points within the considered range, as illustrated in \cref{fig:separator_size_loglog_fit}.
 
 The slope of \( 0.3702 \) in the log-log regression corresponds to the exponent in the power-law relationship \( y \propto x^c \).
-Therefore, this refined analysis strongly suggests that separator sizes in the studied road network scale empirically the \( \bigO{n^{1/2}} \) bound for general planar graphs.
-The empirically determined exponent is slightly larger than the initially suggested \( 1/3 \approx 0.333 \).
 Based on the high quality of the fit (\( R^2 \approx 0.9994 \)) and the statistical significance of the result, we can state with relatively high confidence that the observed scaling behavior is close to, yet slightly above, \( \bigO{n^{1/3}} \).
 
 \section{Planarity} \label{sec:approach:planarity}
