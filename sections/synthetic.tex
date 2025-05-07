@@ -27,7 +27,7 @@ The process continues until all vertices are visited, resulting in a uniformly s
 
 It is noteworthy that random trees generated in this manner exhibit properties distinct from those of road networks.
 For instance, the diameter of such random trees is known to be in \bigO{n^{1/2}} \cite{chlamtac_tree-based_1987}.
-This differs from empirical observations on road networks, such as subgraphs from the nested dissection of the Karlsruhe graph, where the diameter appears smaller, estimated empirically as \bigO{n^{0.3891}}.
+This differs from empirical observations on road networks, such as subgraphs from the nested dissection of the Karlsruhe graph, where the diameter appears smaller, estimated empirically as \bigO{n^{0.3683}}.
 This observed diameter growth is visualized in \cref{fig:diameter_karlsruhe}.
 
 \begin{figure}[tbhp]
@@ -91,6 +91,17 @@ As before, we begin by generating a random spanning tree using Broder's algorith
 Subsequently, edges are added between non-adjacent vertices until a target average degree, chosen as \(2.5\) to approximate that of road networks, is achieved.
 To incorporate locality, the probability of adding an edge between two vertices \(u\) and \(v\) is made dependent on their distance \( \text{dist}_T(u, v) \) within the initial spanning tree \(T\).
 Specifically, we select a random vertex \(x\) and choose a second vertex \(y\) with a probability related to \(f(\text{dist}_T(x, y))\), where \(f\) is a decreasing function.
+
+The computation of tree distances \(\text{dist}_T(x, y)\) for numerous candidate pairs \((x,y)\) is a critical step in this edge addition phase.
+Initially, for each randomly selected vertex \(x\) and potential neighbor \(y\), we performed a Breadth-First Search (BFS) within the tree \(T\) to find \(\text{dist}_T(x, y)\).
+While BFS on a tree is linear in the number of vertices \(n\), repeated invocations for many pairs proved computationally intensive for larger graphs.
+To accelerate this, we adopted an approach based on Lowest Common Ancestor (LCA) queries.
+This involved an initial precomputation of an LCA data structure for the tree \(T\), which can be achieved in \bigO{n \log n} time (e.g., using an Euler tour and sparse table for Range Minimum Queries, enabling \bigO{1} query time).
+Once the LCA of two nodes \(u\) and \(v\) is known, their tree distance is given by \(\text{dist}_T(u, v) = \text{depth}(u) + \text{depth}(v) - 2 \cdot \text{depth}(lca(u,v))\).
+Although the initial BFS for a single pair is also linear, this LCA-based method yielded a significant speedup, approximately an order of magnitude, due to better parallelization.
+Nevertheless, even with this optimization, the approach of potentially considering many \(y\) candidates for each \(x\) (full sampling) remained too slow for large graphs.
+A further refinement is to involve capping the search for \(y\) (e.g., limiting BFS depth or number of hops from \(x\)), under the assumption that for rapidly decaying probability functions \(f\), the likelihood of adding edges to very distant nodes becomes negligible.
+
 Experiments using functions such as \( f(\text{dist}) = 1/\text{dist} \) result in graphs that still exhibit large separators scaling as \bigO{n}.
 For subgraphs of the nested dissection we observe again the super-linear decrease in separator size, but the top-level separators remain large.
 Using moderately decaying functions like \( f(\text{dist}) = 1/\text{dist}^2 \) leads to separators that scale sub-linearly but they are still significantly larger than \bigO{n^{1/3}}, especially the constant factor, where we are one to two orders of magnitude larger than the expected size, despite having the same average degree.
@@ -112,10 +123,6 @@ The graph generation then proceeds by initially taking the edges of the MST.
 Subsequently, additional edges \((u, v)\) between non-adjacent vertices are iteratively added, but crucially, only if their Euclidean distance is less than or equal to the threshold \(\ell_{\max}\).
 This edge addition process continues until the overall graph reaches the target average degree of \(2.5\).
 For efficient implementation of the edge addition step, we utilize spatial queries: for a randomly selected vertex \(u\), we query for potential neighbors \(v\) within the radius \(\ell_{\max}\) and randomly select one to connect to, avoiding multi-edges and self-loops.
-
-Despite incorporating this explicit geometric constraint, the resulting synthetic graphs fail to exhibit the desired separator sizes.
-Our experiments indicate that separators in these geometrically generated graphs scale with \bigO{n^{1/2}}.
-This outcome is visualized in \cref{fig:geometric_locality_separators}.
 
 Despite incorporating this explicit geometric constraint, the resulting synthetic graphs fail to exhibit the desired small separator sizes characteristic of road networks.
 To analyze the separator properties of these graphs, we computed recursive separators.
