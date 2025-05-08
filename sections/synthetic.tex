@@ -44,14 +44,13 @@ A consequence of adding these random edges is a notable decrease in the graph di
 For example, graphs generated with one million nodes using this method exhibit diameters of approximately 40.
 
 These synthetic graphs do not replicate the small separator sizes observed in real-world road networks.
-Experiments conducted on these graphs yielded large separators, particularly for the initial partition of the entire graph (the top-level separator).
-The sizes of these top-level separators scaled approximately linearly with the graph size \(n\), i.e., as \bigO{n}.
-However, a different behavior was observed for separators found during subsequent recursive partitioning.
-As the algorithm recursed on smaller subgraphs created by removing previous separators, the resulting separator sizes decreased super-linearly relative to the initial trend; that is, they were significantly smaller than what the \bigO{n} scaling would predict for those subgraph sizes.
-We hypothesize that this occurs because the graphs become increasingly dominated by their underlying tree structure as they are recursively partitioned.
-With relatively few random 'shortcut' edges added initially compared to the number of tree edges, smaller subgraphs retain much of the tree's characteristics, potentially leading to smaller separators compared to denser random graphs of equivalent size.
-This hypothesis was not investigated further.
-This phenomenon is illustrated in \cref{fig:same_degree}: the data points corresponding to the top-level separators generally follow the linear trend line, while points from subsequent recursive levels fall distinctly below this line, showing the super-linear decrease relative to the trend.
+Experiments yielded large top-level separators, whose sizes scaled approximately linearly with the graph size \(n\), i.e., as \bigO{n}.
+However, separators found during subsequent recursive partitioning behaved differently: their sizes were significantly smaller than this linear trend would predict for the corresponding subgraph sizes.
+We attribute this deviation to structural changes in the subgraphs induced by the partitioning process.
+Specifically, the large top-level separators often remove a significant fraction of the non-tree edges that were originally added to achieve the target average degree of approximately \(2.5\) in the parent graph.
+Consequently, the resulting subgraphs become sparser—our observations showed a decrease in average degree to approximately \(2.2\)—and increasingly dominated by their underlying tree structure.
+This shift means these subgraphs effectively belong to a different, more tree-like graph class than initially generated, which naturally leads to smaller relative separator sizes.
+The separator scaling is illustrated in \cref{fig:same_degree}.
 
 
 
@@ -98,9 +97,9 @@ While BFS on a tree is linear in the number of vertices \(n\), repeated invocati
 To accelerate this, we adopted an approach based on Lowest Common Ancestor (LCA) queries.
 This involved an initial precomputation of an LCA data structure for the tree \(T\), which can be achieved in \bigO{n \log n} time (e.g., using an Euler tour and sparse table for Range Minimum Queries, enabling \bigO{1} query time).
 Once the LCA of two nodes \(u\) and \(v\) is known, their tree distance is given by \(\text{dist}_T(u, v) = \text{depth}(u) + \text{depth}(v) - 2 \cdot \text{depth}(lca(u,v))\).
-Although the initial BFS for a single pair is also linear, this LCA-based method yielded a significant speedup, approximately an order of magnitude, due to better parallelization.
+Although a single BFS is also linear, this LCA-based method yielded a significant speedup, due to better parallelization.
 Nevertheless, even with this optimization, the approach of potentially considering many \(y\) candidates for each \(x\) (full sampling) remained too slow for large graphs.
-A further refinement is to involve capping the search for \(y\) (e.g., limiting BFS depth or number of hops from \(x\)), under the assumption that for rapidly decaying probability functions \(f\), the likelihood of adding edges to very distant nodes becomes negligible.
+A possible further refinement, not explored in this work, could involve capping the search for \(y\) (e.g., limiting BFS depth or number of hops from \(x\)), under the assumption that for rapidly decaying probability functions \(f\), the likelihood of adding edges to very distant nodes becomes negligible.
 
 Experiments using functions such as \( f(\text{dist}) = 1/\text{dist} \) result in graphs that still exhibit large separators scaling as \bigO{n}.
 For subgraphs of the nested dissection we observe again the super-linear decrease in separator size, but the top-level separators remain large.
