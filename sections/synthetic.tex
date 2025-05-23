@@ -12,10 +12,10 @@ The specific PTV Europe road network dataset \cite{ptv_group_dimacs-europe_2009}
 A detailed visualization of the degree distribution for this network is provided in \cref{fig:degree_dist_europe}.
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.6\linewidth]{graphics/degree_overview_europe.pdf}
-    \caption{Degree distribution of the PTV Europe road network. The x-axis represents the vertex degree, and the y-axis shows the fraction of vertices with that degree. A single node with degree 12 has the highest degree.}
-    \label{fig:degree_dist_europe}
+	\centering
+	\includegraphics[width=0.6\linewidth]{graphics/degree_overview_europe.pdf}
+	\caption{Degree distribution of the PTV Europe road network. The x-axis represents the vertex degree, and the y-axis shows the fraction of vertices with that degree. A single node with degree 12 has the highest degree.}
+	\label{fig:degree_dist_europe}
 \end{figure}
 
 To examine whether this low average degree alone is sufficient to yield small separators, we generate connected random graphs matching this average degree.
@@ -31,10 +31,10 @@ This differs from empirical observations on road networks, such as subgraphs fro
 This observed diameter growth is visualized in \cref{fig:diameter_karlsruhe}.
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.6\linewidth]{graphics/diameters.pdf}
-    \caption{Empirical diameter growth observed in the Karlsruhe road network subgraph. The plot shows the diameter (y-axis) as a function of the number of nodes \(n\) (x-axis, log scale).}
-    \label{fig:diameter_karlsruhe}
+	\centering
+	\includegraphics[width=0.6\linewidth]{graphics/diameters.pdf}
+	\caption{Empirical diameter growth observed in the Karlsruhe road network subgraph. The plot shows the diameter (y-axis) as a function of the number of nodes \(n\) (x-axis, log scale).}
+	\label{fig:diameter_karlsruhe}
 \end{figure}
 
 Following the generation of the initial random spanning tree, we proceed to the second step: adding edges randomly between pairs of non-adjacent vertices.
@@ -55,10 +55,10 @@ The separator scaling is illustrated in \cref{fig:same_degree}.
 
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.6\linewidth]{graphics/RandomAvgDeg2.5.pdf}
-    \caption{Separator sizes observed in random graphs generated with an average degree matching the PTV Europe road network (\( \approx 2.5 \)).}
-    \label{fig:same_degree}
+	\centering
+	\includegraphics[width=0.6\linewidth]{graphics/RandomAvgDeg2.5.pdf}
+	\caption{Separator sizes observed in random graphs generated with an average degree matching the PTV Europe road network (\( \approx 2.5 \)).}
+	\label{fig:same_degree}
 \end{figure}
 
 We also conduct experiments generating graphs that match not just the average degree, but the specific degree distribution of the reference road network.
@@ -130,21 +130,21 @@ Our experiments using these methods indicate that separators in these geometrica
 This outcome is visualized in \cref{fig:geometric_locality_separators}.
 
 \begin{figure}[tbhp]
-    \begin{subfigure}{0.35\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/local_embedding.png}
-        \caption{Visualization of a graph with 10K nodes generated using the geometric locality method.}
-        \label{fig:geometric_locality_graph_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.55\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/sep_local_embedding.pdf}
-        \caption{Separator size scaling for synthetic graphs generated with geometric locality. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separatos. }
-        \label{fig:geometric_locality_sep_plot}
-    \end{subfigure}
-    \caption{Synthetic graph generation using geometric locality and analysis of separator sizes. }
-    \label{fig:geometric_locality_separators}
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/local_embedding.png}
+		\caption{Visualization of a graph with 10K nodes generated using the geometric locality method.}
+		\label{fig:geometric_locality_graph_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/sep_local_embedding.pdf}
+		\caption{Separator size scaling for synthetic graphs generated with geometric locality. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separatos. }
+		\label{fig:geometric_locality_sep_plot}
+	\end{subfigure}
+	\caption{Synthetic graph generation using geometric locality and analysis of separator sizes. }
+	\label{fig:geometric_locality_separators}
 \end{figure}
 
 The results from the geometric locality approach suggest that merely combining low average degree with this specific form of locality is insufficient to reproduce the cubic root separator sizes of road networks.
@@ -165,22 +165,22 @@ Specifically, \cref{fig:real_europe_hist} shows this phenomenon for European roa
 These plots reveal an initial peak in relative separator size for small graphs, followed by a slight decrease, before the data align with the more dominant scaling trend observed for larger graphs.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.48\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/Germany-hist.pdf}
-        \caption{Histogram of separator sizes for the European road network.}
-        \label{fig:real_europe_hist}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/local_embedding-hist.pdf}
-        \caption{Histogram of separator sizes for synthetic graphs using geometric locality.  }
-        \label{fig:local_embedding_hist}
-    \end{subfigure}
-    \caption{Histograms illustrating the distribution of separator sizes, comparing real road networks (left) and the geometric locality model (right). A slight increase in separator size is observed for graphs with \(\approx 2^6\) nodes.}
-    \label{fig:outlier_histograms}
+	\centering
+	\begin{subfigure}{0.48\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/Germany-hist.pdf}
+		\caption{Histogram of separator sizes for the European road network.}
+		\label{fig:real_europe_hist}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/local_embedding-hist.pdf}
+		\caption{Histogram of separator sizes for synthetic graphs using geometric locality.  }
+		\label{fig:local_embedding_hist}
+	\end{subfigure}
+	\caption{Histograms illustrating the distribution of separator sizes, comparing real road networks (left) and the geometric locality model (right). A slight increase in separator size is observed for graphs with \(\approx 2^6\) nodes.}
+	\label{fig:outlier_histograms}
 \end{figure}
 
 Our synthetic graphs generated using the geometric locality approach exhibit a similar initial pattern, as can be discerned from the histogram in \cref{fig:local_embedding_hist}.
@@ -209,22 +209,22 @@ This finding highlights that sparsity, even within a simple planar structure lik
 \Cref{fig:sparse_grid_separators} illustrates a sample sparse grid and the observed separator scaling.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.35\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/grid_avg_deg.png}
-        \caption{Visualization of the largest connected component of a grid graph with \(\approx 10\text{K}\) nodes after random edge removal to achieve an average degree of \(2.5\).}
-        \label{fig:sparse_grid_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.55\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/sep_grid_avg_deg.png}
-        \caption{Separator size scaling for sparse grid graphs (average degree \(2.5\)). Separator sizes scale approximately as \bigO{n^{1/2}}, but with a small constant factor leading to absolute sizes comparable to road networks at practical scales. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separators.}
-        \label{fig:sparse_grid_sep_plot}
-    \end{subfigure}
-    \caption{Analysis of sparse grid graphs with average degree \(2.5\).}
-    \label{fig:sparse_grid_separators}
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/grid_avg_deg.png}
+		\caption{Visualization of the largest connected component of a grid graph with \(\approx 10\text{K}\) nodes after random edge removal to achieve an average degree of \(2.5\).}
+		\label{fig:sparse_grid_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/sep_grid_avg_deg.png}
+		\caption{Separator size scaling for sparse grid graphs (average degree \(2.5\)). Separator sizes scale approximately as \bigO{n^{1/2}}, but with a small constant factor leading to absolute sizes comparable to road networks at practical scales. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separators.}
+		\label{fig:sparse_grid_sep_plot}
+	\end{subfigure}
+	\caption{Analysis of sparse grid graphs with average degree \(2.5\).}
+	\label{fig:sparse_grid_separators}
 \end{figure}
 
 We extend this investigation to Delaunay triangulations, which can be viewed as a generalization of grids derived from point sets.
@@ -237,22 +237,22 @@ This again leads to absolute separator sizes that are numerically comparable to 
 These findings are depicted in \cref{fig:sparse_delaunay_separators}.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.35\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/delaunay_avg_deg.png}
-        \caption{Visualization of a sparse Delaunay triangulation with 5K nodes after random edge removal to achieve an average degree of \(2.5\).}
-        \label{fig:sparse_delaunay_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.55\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/sep_delaunay_avg_deg.png}
-        \caption{Separator size scaling for sparse Delaunay graphs (average degree \(2.5\)). Separator sizes scale approximately as \bigO{n^{1/2}} with small constant factors, yielding absolute sizes similar to road networks at practical scales. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separatos.}
-        \label{fig:sparse_delaunay_sep_plot}
-    \end{subfigure}
-    \caption{Analysis of sparse Delaunay graphs with average degree \(2.5\).}
-    \label{fig:sparse_delaunay_separators}
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/delaunay_avg_deg.png}
+		\caption{Visualization of a sparse Delaunay triangulation with 5K nodes after random edge removal to achieve an average degree of \(2.5\).}
+		\label{fig:sparse_delaunay_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/sep_delaunay_avg_deg.png}
+		\caption{Separator size scaling for sparse Delaunay graphs (average degree \(2.5\)). Separator sizes scale approximately as \bigO{n^{1/2}} with small constant factors, yielding absolute sizes similar to road networks at practical scales. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separatos.}
+		\label{fig:sparse_delaunay_sep_plot}
+	\end{subfigure}
+	\caption{Analysis of sparse Delaunay graphs with average degree \(2.5\).}
+	\label{fig:sparse_delaunay_separators}
 \end{figure}
 
 The experiments with sparse grids and Delaunay triangulations suggest that combining geometry with low average degree results in graphs whose practical separator sizes are close to those of road networks, despite differing asymptotic scaling.
@@ -290,22 +290,22 @@ It serves as a reminder that observing \bigO{n^{1/2}} separator scaling does not
 \Cref{fig:abr_graph_separators} provides a visual example of an ABR-generated graph and illustrates the observed separator scaling.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.35\linewidth}
-        \centering
-        \includegraphics[height=\linewidth, angle=90]{graphics/highway.png}
-        \caption{Visualization of a synthetic graph generated using the ABR low highway dimension algorithm with 10K nodes.}
-        \label{fig:abr_graph_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.55\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/sep_highway.pdf}
-        \caption{Separator size scaling observed during recursive partitioning of ABR-generated graphs. Separator sizes scale approximately as \bigO{n^{1/2}}. The fit shown excludes subgraphs with \( \le 256 \) vertices due to their disproportionately large separatos.}
-        \label{fig:abr_graph_sep_plot}
-    \end{subfigure}
-    \caption{Analysis of synthetic graphs generated using the ABR algorithm \cite{abraham_highway_2010}.}
-    \label{fig:abr_graph_separators}
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[height=\linewidth, angle=90]{graphics/highway.png}
+		\caption{Visualization of a synthetic graph generated using the ABR low highway dimension algorithm with 10K nodes.}
+		\label{fig:abr_graph_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/sep_highway.pdf}
+		\caption{Separator size scaling observed during recursive partitioning of ABR-generated graphs. Separator sizes scale approximately as \bigO{n^{1/2}}. The fit shown excludes subgraphs with \( \le 256 \) vertices due to their disproportionately large separatos.}
+		\label{fig:abr_graph_sep_plot}
+	\end{subfigure}
+	\caption{Analysis of synthetic graphs generated using the ABR algorithm \cite{abraham_highway_2010}.}
+	\label{fig:abr_graph_separators}
 \end{figure}
 
 \section{Hierarchical Structure}
@@ -316,11 +316,11 @@ Depending on the specific taxonomy used, road networks are categorized into vari
 For instance, a common classification for Germany includes (using original German terms alongside translations):
 
 \begin{itemize}
-    \item Federal Motorways (Bundesautobahnen)
-    \item Federal Highways (Bundesstraßen)
-    \item State Roads (Landesstraßen)
-    \item District Roads (Kreisstraßen)
-    \item Municipal Roads (Gemeindestraßen)
+	\item Federal Motorways (Bundesautobahnen)
+	\item Federal Highways (Bundesstraßen)
+	\item State Roads (Landesstraßen)
+	% \item District Roads (Kreisstraßen)
+	\item Municipal Roads (Gemeindestraßen)
 \end{itemize}
 
 This inherent hierarchy is another potentially relevant feature influencing separator sizes, which we investigate using synthetic models.
@@ -365,22 +365,22 @@ Consequently, if the recursion depth is limited and the highest-level structures
 \Cref{fig:voronoi_hierarchy} illustrates the structure and separator behavior of the final sparse graph.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.35\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/voronoi.png}
-        \caption{Visualization of a synthetic graph generated using the Voronoi method.}
-        \label{fig:voronoi_hierarchy_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.55\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/sep-voronoi.pdf}
-        \caption{Separator size scaling for the hierarchical Voronoi graph, showing local minima at layer transitions.}
-        \label{fig:voronoi_hierarchy_sep_plot}
-    \end{subfigure}
-    \caption{Analysis of synthetic graphs generated using the hierarchical Voronoi approach from Bauer et al. \cite{hutchison_synthetic_2010}.}
-    \label{fig:voronoi_hierarchy}
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/voronoi.png}
+		\caption{Visualization of a synthetic graph generated using the Voronoi method.}
+		\label{fig:voronoi_hierarchy_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/sep-voronoi.pdf}
+		\caption{Separator size scaling for the hierarchical Voronoi graph, showing local minima at layer transitions.}
+		\label{fig:voronoi_hierarchy_sep_plot}
+	\end{subfigure}
+	\caption{Analysis of synthetic graphs generated using the hierarchical Voronoi approach from Bauer et al. \cite{hutchison_synthetic_2010}.}
+	\label{fig:voronoi_hierarchy}
 \end{figure}
 
 \subsection{Nested Grids}
@@ -392,22 +392,22 @@ This resulting composite graph can then itself be treated as a subgraph to be pl
 \cref{fig:nested_grid_analysis} shows a small conceptual example of a nested grid with three layers.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.35\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/nestedgrid.pdf}
-        \caption{Conceptual illustration of a simple nested grid structure with three hierarchical levels.}
-        \label{fig:nested_grid_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.55\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/sep-nestedgrid.pdf}
-        \caption{Separator size scaling for nested grids, showing pronounced local minima.}
-        \label{fig:nested_grid_sep_plot}
-    \end{subfigure}
-    \caption{Analysis of synthetic graphs generated using the nested grid approach.}
-    \label{fig:nested_grid_analysis}
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/nestedgrid.pdf}
+		\caption{Conceptual illustration of a simple nested grid structure with three hierarchical levels.}
+		\label{fig:nested_grid_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/sep-nestedgrid.pdf}
+		\caption{Separator size scaling for nested grids, showing pronounced local minima.}
+		\label{fig:nested_grid_sep_plot}
+	\end{subfigure}
+	\caption{Analysis of synthetic graphs generated using the nested grid approach.}
+	\label{fig:nested_grid_analysis}
 \end{figure}
 
 A nested grid construction with \(l\) layers is determined by \(l\) grid sizes (specifying the dimensions of the grid at each layer) and \(l-1\) placement parameters (specifying how many subgraphs from layer \(i+1\) are placed within layer \(i\)).
@@ -437,44 +437,193 @@ This demonstrates how a vertex separator of small, constant size (size 2) exists
 Such constant-size separators at every level transition are the underlying cause of the pronounced local minima observed in the separator scaling plots for these nested structures.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{tikzpicture}[every node/.style={draw, circle, minimum size=0.7cm}]
-        \node (1) at (0,2) {1};
-        \node (2) at (0,0) {2};
-        \node (3) at (2,2) {3};
-        \node (4) at (2,0) {4};
+	\centering
+	\begin{tikzpicture}[every node/.style={draw, circle, minimum size=0.7cm}]
+		\node (1) at (0,2) {1};
+		\node (2) at (0,0) {2};
+		\node (3) at (2,2) {3};
+		\node (4) at (2,0) {4};
 
-        \node (5) at (5,2) {5};
-        \node (6) at (5,0) {6};
-        \node (7) at (7,2) {7};
-        \node (8) at (7,0) {8};
+		\node (5) at (5,2) {5};
+		\node (6) at (5,0) {6};
+		\node (7) at (7,2) {7};
+		\node (8) at (7,0) {8};
 
-        \draw (1) -- (2) -- (4) -- (3) -- (1);
-        \draw (5) -- (7) -- (8) -- (6) -- (5);
+		\draw (1) -- (2) -- (4) -- (3) -- (1);
+		\draw (5) -- (7) -- (8) -- (6) -- (5);
 
-        \draw[color=green, thick] (3) -- (5);
-        \draw[color=green, thick] (4) -- (6);
+		\draw[color=green, thick] (3) -- (5);
+		\draw[color=green, thick] (4) -- (6);
 
-        \draw (1,1) -- (1,0);
-        \draw (1,1) -- (1,2);
-        \draw (1,1) -- (0,1);
-        \draw (1,1) -- (2,1);
+		\draw (1,1) -- (1,0);
+		\draw (1,1) -- (1,2);
+		\draw (1,1) -- (0,1);
+		\draw (1,1) -- (2,1);
 
-        \draw (6,1) -- (5,1);
-        \draw (6,1) -- (6,0);
-        \draw (6,1) -- (6,2);
-        \draw (6,1) -- (7,1);
+		\draw (6,1) -- (5,1);
+		\draw (6,1) -- (6,0);
+		\draw (6,1) -- (6,2);
+		\draw (6,1) -- (7,1);
 
-        \node[draw=none] at (0.5,0.5) {\(\dots\)};
-        \node[draw=none] at (1.5,0.5) {\(\dots\)};
-        \node[draw=none] at (1.5,1.5) {\(\dots\)};
-        \node[draw=none] at (0.5,1.5) {\(\dots\)};
+		\node[draw=none] at (0.5,0.5) {\(\dots\)};
+		\node[draw=none] at (1.5,0.5) {\(\dots\)};
+		\node[draw=none] at (1.5,1.5) {\(\dots\)};
+		\node[draw=none] at (0.5,1.5) {\(\dots\)};
 
-        \node[draw=none] at (5.5,0.5) {\(\dots\)};
-        \node[draw=none] at (6.5,0.5) {\(\dots\)};
-        \node[draw=none] at (6.5,1.5) {\(\dots\)};
-        \node[draw=none] at (5.5,1.5) {\(\dots\)};
-    \end{tikzpicture}
-    \caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges (3)--(5) and (4)--(6). Removing one endpoint from each edge (e.g., \{3, 6\}) forms a size-2 vertex separator, irrespective of component sizes.}
-    \label{fig:nested_grid_connectivity_example}
+		\node[draw=none] at (5.5,0.5) {\(\dots\)};
+		\node[draw=none] at (6.5,0.5) {\(\dots\)};
+		\node[draw=none] at (6.5,1.5) {\(\dots\)};
+		\node[draw=none] at (5.5,1.5) {\(\dots\)};
+	\end{tikzpicture}
+	\caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges (3)--(5) and (4)--(6). Removing one endpoint from each edge (e.g., \{3, 6\}) forms a size-2 vertex separator, irrespective of component sizes.}
+	\label{fig:nested_grid_connectivity_example}
 \end{figure}
+
+
+
+
+
+
+
+
+
+\section{Hierarchical Delaunay Graph Generation}
+\label{sec:hierarchical_delaunay_generation}
+
+Our efforts to generate synthetic graphs with realistic road network properties, particularly small separators, led us to refine techniques inspired by prior work on synthetic road network generation by \cite{hutchison_synthetic_2010}.
+A significant artifact of Voronoi-based hierarchical models was that major transport arteries, analogous to motorways, could never be  crossed by lower-level roads.
+This arose because new expansion sites were generated strictly within the polygonal cells defined by the higher-level Voronoi tessellation, making top-level edges hard boundaries.
+Our revised core idea is to allow new centers of development to emerge from the existing network infrastructure itself; thus, new expansion sites are selected from the nodes of the current graph structure rather than from within areal polygons.
+
+Our first refined concept based on this idea involved an iterative Delaunay approach.
+This process would begin with an initial global Delaunay triangulation of a point set.
+Then, in subsequent hierarchical levels, a subset of existing points would be selected as \emph{expansion sites}.
+New points would be sampled in the vicinity of each of these sites.
+We then perform a new Delaunay triangulation, localized to the region around these newly added points.
+This iterative process aimed to simulate a \enquote{rich get richer} phenomenon: regions with a higher density of points would be more likely to have their constituent points selected as expansion sites for subsequent levels, leading to further concentrated development in those areas.
+This recursive generation would continue for a desired number of levels.
+As a final step, a planarization process, like described in \cref{alg:planarization}, is applied: edges interpreted as straight line segments are checked for intersections, and any intersections found are resolved by introducing new vertices at these points and subdividing the original edges.
+This method showed initial promise in creating structures that could yield separators with the same scaling as road networks.
+
+Building upon insights from this approach, we developed a more streamlined and effective method, which is the primary focus of this section.
+Instead of performing Delaunay triangulations at each hierarchical level and planarizing in the end, we first generate the complete set of points across all desired levels.
+Only after all points have been generated is a single, global Delaunay triangulation performed on the entire final point set.
+The pseudocode for this hierarchical delaunay generation is detailed in \cref{alg:hierarchical_delaunay}.
+
+\begin{algorithm}[tbhp]
+	\Input{Number of hierarchical levels \(L\), \\
+		Level expansion fractions \(f_i\) (where \(f_1 = 1.0\)), \\
+		Points to generate per expansion site \(k_i\), \\
+		Expansion radii \(r_i\), \\
+		\(1 \le i \le L\)}
+	\Output{Geometric graph \(G=(V, E)\)}
+	\BlankLine
+	\(P \longleftarrow \{p_\text{random}\}\)\;
+	\BlankLine
+	\ForAll{\(i \in [1, L]\)}{
+		\(C_i \longleftarrow\) chooseRandom(\(P, \left\lfloor f_i \cdot |P|\right\rfloor\))\;
+		\ForAll{center \(\in C_i\)}{
+			\(P \longleftarrow P~\cup\) sampleRandomPointsInCircle(center, \(r_i\), \(k_i\))\;
+		}
+	}
+	\BlankLine
+	\(G \longleftarrow\) delaunay(\(P\))\;
+	pruneEdges(\(G\))\;
+	\Return{\(G\)}\;
+	\caption{Hierarchical Delaunay Graph Generation}
+	\label{alg:hierarchical_delaunay}
+\end{algorithm}
+
+\paragraph{Pruning}
+
+This global Delaunay triangulation typically results in a graph with an average vertex degree of approximately six, which is denser than typical road networks.
+To better emulate the characteristics of real road networks, e.g. an average degree around \(2.5\) and few nodes with high degree, we apply a pruning step.
+A pruning step was also part of the methodology suggested by Bauer et al. \cite{hutchison_synthetic_2010}; however, we adopt a different pruning strategy designed to complement the specific underlying structure of our generated graphs.
+Edges are considered in order of increasing Euclidean length (shortest first).
+An edge \((u,v)\) is removed from the graph if the shortest path distance between \(u\) and \(v\) in the graph, after the hypothetical removal of \((u,v)\), is no more than a factor \(\alpha\) times the original direct length of \((u,v)\), i.e., \( \text{dist}_{G \setminus (u,v)}(u,v) \le \alpha \cdot \text{length}(u,v) \).
+Through experimentation, we found that a pruning parameter of \(\alpha = 2.5\) effectively reduced the average degree to the target range comparable to road networks.
+The pseudocode for this edge pruning process is given in \cref{alg:prune_edges}.
+To compare the graphs of pruned and non  \cref{fig:delaunay_vs_no_pruning_graph}.
+
+\begin{algorithm}[tbhp]
+	\Input{Graph \(G=(V, E)\), \\
+		Pruning parameter \(t\)}
+	\Output{Pruned version of \(G\)}
+	\BlankLine
+	sortByLength(\(E\))\;
+	\ForAll{\((u, v) \in E\)}{
+		\If{\(dist(u, v) > t \cdot len(u, v)\)}{
+			\(G \longleftarrow G \setminus (u, v)\)\;
+		}
+	}
+	\caption{Prune edges in \(G\) based on distance threshold.}
+	\label{alg:prune_edges}
+\end{algorithm}
+
+\begin{figure}[tbhp]
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\vspace{2cm}
+		\caption{Graph before pruning.}
+		\label{fig:delaunay_pre_pruned_degree}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\vspace{2cm}
+		\caption{Graph after pruning.}
+		\label{fig:delaunay_post_pruned_degree}
+	\end{subfigure}
+	\caption{Comparison of a pruned and unpruned hierarchical Delaunay graph.}
+	\label{fig:delaunay_vs_no_pruning_graph}
+\end{figure}
+
+The pruning step, while beneficial for achieving a target average degree and a more realistic degree distribution, does not fundamentally alter the asymptotic separator scaling of the generated Delaunay graphs.
+\Cref{fig:delaunay_pruned_vs_pre_pruned_sep} illustrates that the separator size scaling remains similar for both pruned and unpruned graphs.
+
+\begin{figure}[tbhp]
+	\centering
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\vspace{2cm}
+		\caption{Separator scaling before pruning.}
+		\label{fig:delaunay_pre_pruned_sep}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\vspace{2cm}
+		\caption{Separator scaling after pruning.}
+		\label{fig:delaunay_post_pruned_sep}
+	\end{subfigure}
+	\caption{Comparison of separator size scaling in hierarchical Delaunay graphs before and after the pruning step.}
+	\label{fig:delaunay_pruned_vs_pre_pruned_sep}
+\end{figure}
+
+Given that the pruning step can be computationally intensive due to the numerous shortest path computations (Dijkstra, as precomputation is not possible because we are altering the graph) required, we also explored an approximated parallel version.
+In this variant, edges are processed in chunks, typically matching the number of available processing threads.
+The shortest path computations for all candidate edges within a chunk are performed in parallel, based on the graph state before any edges in that chunk are removed.
+After all checks for the current chunk are complete, the identified edges are removed.
+This parallelization is only an approximation: an edge \((u,v)\) might be removed because its check relied on a path through another edge \((x,y)\) from the same chunk, which is also simultaneously identified for removal.
+If \((x,y)\) is removed, the shortest path for \((u,v)\) might have become longer than the threshold, but this would not be caught as the checks were concurrent.
+Despite this potential for over-pruning, our empirical results suggest that this approximation has a negligible impact on the final graph structure and its properties.
+This is likely because edges are sorted by length before being chunked, meaning edges within a single chunk are often spatially distributed across the graph rather than being locally interdependent, minimizing negative interference.
+
+% \begin{algorithm}[tbhp]
+% 	\Input{Graph \(G=(V, E)\), \\
+% 		Pruning parameter \(t\)}
+% 	\Output{Pruned version of \(G\)}
+% 	\BlankLine
+% 	sortByLength(\(E\))\;
+% 	\ForAll{chunk \(\in E\).chunks(num\_threads)}{
+% 		\textbf{parallel} \ForAll{\((u, v) \in\) chunk}{
+% 			\If{\(\dist(u, v) > t \cdot \len(u, v)\)}{
+% 				\(G \longleftarrow G \setminus (u, v)\)\;
+% 			}
+% 		}
+% 	}
+%     \caption{APPROXIMATEION PARALLEL\todo{x}}
+% 	\label{alg:prune_edges_parallel}
+% \end{algorithm}
+%
