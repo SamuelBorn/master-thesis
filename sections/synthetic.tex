@@ -195,6 +195,9 @@ We examine separator properties in two classes of planar graphs: grids and Delau
 These serve as fundamental theoretical models for planar structures relevant to the study of road networks due to their near-planarity.
 In our study, these graph classes are sparsified to achieve a low average degree (approximately \(2.5\)), reflecting the sparsity observed in road networks.
 
+\subsection{Sparse Grids}
+\label{sec:synthetic:grid}
+
 Our initial investigation focuses on grid graphs, a fundamental class known to possess separators scaling as \bigO{n^{1/2}}.
 To align their sparsity with road networks, we generate modified grids with an average degree of approximately \(2.5\).
 The generation process starts with a square two-dimensional grid graph.
@@ -227,9 +230,14 @@ This finding highlights that sparsity, even within a simple planar structure lik
 	\label{fig:sparse_grid_separators}
 \end{figure}
 
+\subsection{Delaunay Triangulations}
+\label{sec:synthetic:delaunay}
+
 We extend this investigation to Delaunay triangulations, which can be viewed as a generalization of grids derived from point sets.
 Our process involves sampling points uniformly at random in a two-dimensional space and computing their Delaunay triangulation.
-Similar to the grid experiments, we then randomly delete edges from the triangulation until the average degree reaches the target value of \(2.5\), again analyzing the largest connected component.
+The Delaunay triangulation results in a graph with an average vertex degree of approximately 6, which is denser than typical road networks.
+This density is consistent with properties of triangulations; for a planar graph forming a triangulation of \(|V|\) vertices, Euler's formula (\(|V| - |E| + |F| = 2\), where \(|F|\) is the number of faces) combined with the observation that \(3|F| \approx 2|E|\) (since most faces are triangles and each edge borders two faces) implies that the average degree \(2|E|/|V|\) approaches 6 for large \(|V|\).
+Similar to the grid experiments, we thus randomly delete edges from the triangulation until the average degree reaches the target value of \(2.5\), again analyzing the largest connected component.
 
 As might be expected, the results obtained from these sparse Delaunay graphs are largely analogous to those from sparse grids.
 The separators exhibit scaling consistent with \bigO{n^{1/2}}, characteristic of planar graphs, yet the associated constant factors are small.
@@ -350,8 +358,7 @@ An edge \((u, v)\) with length \(len(u, v)\) is added to the spanner \(H\) only 
 To compute \(dist_H(u, v)\), Dijkstra's algorithm is employed.
 Additionally, a union-find data structure maintains the connected components of \(H\), allowing for immediate addition of edges connecting previously disconnected vertices.
 Bauer et al. propose processing edges in non-increasing order (longest first) as a heuristic primarily intended to improve the computational efficiency of the spanner construction; the idea is to handle long edges while the intermediate spanner graph \(H\) is still sparse, potentially speeding up distance computations \cite{hutchison_synthetic_2010}.
-In our own experiments, however, we explore alternative edge processing orders.
-We observe that processing the edges in a random order, or even in increasing order of length (shortest first), appears to produce graph structures with greater visual resemblance to actual road networks compared to the longest-first approach described by Bauer et al., without substantially increasing computation times in our experiments.
+We observe that our pruning strategy, the specifics of which are presented in a later section in \cref{alg:prune_edges}, tends to yield graph structures more visually akin to real-world road networks compared to the Bauer et al. method, although this involves an increased computational expense.
 
 This generation method introduces artifacts.
 For example, connections between major structures defined at higher levels (like large "cities") might be unrealistically sparse, potentially consisting of only a few edges.
@@ -490,175 +497,143 @@ Such constant-size separators at every level transition are the underlying cause
 \section{Hierarchical Delaunay Graph Generation}
 \label{sec:hierarchical_delaunay_generation}
 
-Our efforts to generate synthetic graphs with realistic road network properties, particularly small separators, led us to refine techniques inspired by prior work on synthetic road network generation by \cite{hutchison_synthetic_2010}.
-A significant artifact of Voronoi-based hierarchical models was that major transport arteries, analogous to motorways, could never be  crossed by lower-level roads.
-This arose because new expansion sites were generated strictly within the polygonal cells defined by the higher-level Voronoi tessellation, making top-level edges hard boundaries.
-Our revised core idea is to allow new centers of development to emerge from the existing network infrastructure itself; thus, new expansion sites are selected from the nodes of the current graph structure rather than from within areal polygons.
+Our efforts to generate synthetic graphs with realistic road network properties, particularly small separators, led us to refine techniques inspired by prior work on synthetic road network generation, such as that of Bauer et al. \cite{hutchison_synthetic_2010}.
+A significant artifact observed in some Voronoi-based hierarchical models was that major transport arteries, analogous to motorways, could not be realistically crossed by lower-level roads.
+This limitation arose because new expansion sites were generated strictly within the polygonal cells defined by the higher-level Voronoi tessellation, effectively making top-level Voronoi edges hard boundaries.
+Our revised core idea allows new centers of expansion to emerge from the existing network infrastructure itself; thus, new expansion sites are selected from the nodes of the current graph structure rather than from within predefined areal polygons.
 
-Our first refined concept based on this idea involved an iterative Delaunay approach.
-This process would begin with an initial global Delaunay triangulation of a point set.
-Then, in subsequent hierarchical levels, a subset of existing points would be selected as \emph{expansion sites}.
-New points would be sampled in the vicinity of each of these sites.
-We then perform a new Delaunay triangulation, localized to the region around these newly added points.
-This iterative process aimed to simulate a \enquote{rich get richer} phenomenon: regions with a higher density of points would be more likely to have their constituent points selected as expansion sites for subsequent levels, leading to further concentrated development in those areas.
-This recursive generation would continue for a desired number of levels.
-As a final step, a planarization process, like described in \cref{alg:planarization}, is applied: edges interpreted as straight line segments are checked for intersections, and any intersections found are resolved by introducing new vertices at these points and subdividing the original edges.
-This method showed initial promise in creating structures that could yield separators with the same scaling as road networks.
+An initial refined concept explored an iterative Delaunay approach.
+This process would commence with a global Delaunay triangulation of an initial point set.
+In subsequent hierarchical levels, a subset of existing points would be selected as \emph{expansion sites}.
+New points would then be sampled in the vicinity of each of these sites.
+Following this, a new Delaunay triangulation would be performed, localized to the region around these newly added points and their respective expansion sites, and then integrated into the larger graph structure.
+This iterative process aimed to simulate a \enquote{rich get richer} phenomenon: regions with a higher density of points would be more likely to have their constituent points selected as expansion sites for subsequent levels, leading to further concentrated growth in those areas.
+This recursive generation would continue for a specified number of levels.
+As a final step, a planarization process, as described in \cref{alg:planarization}, would be applied: edges, interpreted as straight line segments, are checked for intersections. Any intersections found are resolved by introducing new vertices at these points and subdividing the original edges accordingly.
+This method showed initial promise in creating structures that could yield separators with scaling behavior similar to that of road networks.
 
-Building upon insights from this approach, we developed a more streamlined and effective method, which is the primary focus of this section.
-Instead of performing Delaunay triangulations at each hierarchical level and planarizing in the end, we first generate the complete set of points across all desired levels.
+Building upon insights from this iterative strategy, we developed a more streamlined and effective method, which is the primary focus of this section.
+Instead of performing Delaunay triangulations at each hierarchical level followed by a final planarization step, we first generate the complete set of points across all desired levels.
 Only after all points have been generated is a single, global Delaunay triangulation performed on the entire final point set.
-The pseudocode for this hierarchical delaunay generation is detailed in \cref{alg:hierarchical_delaunay}.
+The pseudocode for this hierarchical Delaunay generation process is detailed in \cref{alg:hierarchical_delaunay}.
 
-A deliberate design choice in our hierarchical point generation process (\cref{alg:hierarchical_delaunay}) is that candidates for new expansion sites at each level \(i\) are selected from the entire set of currently existing points \(P\), rather than exclusively from points generated in the immediately preceding level \(i-1\).
-This approach reflects the real-world phenomenon where new developments, even smaller ones, can connect to or emerge around established, major infrastructure hubs that might have formed at much earlier stages of development; for instance, a small town developing near a major motorway interchange.
+A deliberate design choice in our hierarchical point generation process (\cref{alg:hierarchical_delaunay}) is that candidates for new expansion sites at each level \(i\) are selected from the \emph{entire} set of currently existing points \(P\), rather than exclusively from points generated in the immediately preceding level \(i-1\).
+This approach reflects the real-world phenomenon where new settlements, even smaller ones, can emerge around and connect to established, major infrastructure hubs that might have formed at much earlier stages of network growth; for instance, a small town developing near a major motorway interchange.
 We also experimented with an alternative strategy where expansion sites for a given level were chosen only from the points generated in the previous level.
 However, this restriction did not yield any noticeable differences in the overall structural properties or separator characteristics of the resulting graphs, thus validating our choice of the more inclusive selection method.
 
-A deliberate design choice in our hierarchical point generation process (\cref{alg:hierarchical_delaunay}) is that candidates for new expansion sites at each level \(i\) are selected from the \emph{entire} set of currently existing points \(P\), rather than exclusively from points generated in the immediately preceding level \(i-1\).
-This approach reflects the real-world phenomenon where new settlements, even smaller ones, can emerge around established, major infrastructure hubs that.
-For instance, a small town developing near a major motorway interchange.
-We also experimented with an alternative strategy where expansion sites for a given level were chosen only from the points generated in the previous level.
-However, this restriction did not yield any noticeable differences in the overall structural properties or separator characteristics of the resulting graphs.
-
 \begin{algorithm}[tbhp]
-	\Input{Number of hierarchical levels \(L\), \\
-		Level expansion fractions \(f_i\) (where \(f_1 = 1.0\)), \\
-		Points to generate per expansion site \(k_i\), \\
-		Expansion radii \(r_i\), \\
-		\(1 \le i \le L\)}
-	\Output{Geometric graph \(G=(V, E)\)}
-	\BlankLine
-	\(P \longleftarrow \{p_\text{random}\}\)\;
-	\BlankLine
-	\ForAll{\(i \in [1, L]\)}{
-		\(C_i \longleftarrow\) P.chooseRandom(\(\left\lfloor f_i \cdot |P|\right\rfloor\))\;
-		\ForAll{center \(\in C_i\)}{
-			\(P \longleftarrow P~\cup\) randomPointsInCircle(center, \(r_i\), \(k_i\))\;
-		}
-	}
-	\BlankLine
-	\(G \longleftarrow\) delaunay(\(P\))\;
-	pruneEdges(\(G\))\;
-	\Return{\(G\)}\;
-	\caption{Hierarchical Delaunay Graph Generation}
-	\label{alg:hierarchical_delaunay}
+    \Input{Number of hierarchical levels \(L\), \\
+           Level expansion fractions \(f_i\) (where \(f_1 = 1.0\)), \\
+           Points to generate per expansion site \(k_i\), \\
+           Expansion radii \(r_i\), \\
+           for \(1 \le i \le L\)}
+    \Output{Geometric graph \(G=(V, E)\)}
+    \BlankLine
+    \(P \longleftarrow \{p_\text{random}\}\)\;
+    \BlankLine
+    \ForAll{\(i \in [1, L]\)}{
+        \(C_i \longleftarrow\) chooseRandom(\(P, \left\lfloor f_i \cdot |P|\right\rfloor\))\;
+        \ForAll{center \(\in C_i\)}{
+            \(P \longleftarrow P~\cup\) sampleRandomPointsInCircle(center, \(r_i\), \(k_i\))\;
+        }
+    }
+    \BlankLine
+    \(G \longleftarrow\) delaunay(\(P\))\;
+    pruneEdges(\(G\))\;
+    \Return{\(G\)}\;
+    \caption{Hierarchical Delaunay Graph Generation}
+    \label{alg:hierarchical_delaunay}
 \end{algorithm}
 
 \paragraph{Pruning}
 
-This global Delaunay triangulation typically results in a graph with an average vertex degree of 6, which is denser than typical road networks.
-This again can see by looking at Euler's formula for planar graphs, \(V - E + F = 2\).
-Since every face (but the outer face) of the graph is a triangle and each edge is shared by two faces, we have approximately \(3F \approx 2E\).
-If we use this approximation to eliminate \(F\) from the equation and solve for \(2E / V\) (the average degree).
+Analogous to the delaunay triangulation approach in \cref{sec:synthetic:delaunay}, the global Delaunay triangulation performed in \cref{alg:hierarchical_delaunay} results in a graph with an average vertex degree of approximately 6, which is denser than typical road networks.
 
-To better emulate the characteristics of real road networks, e.g. an average degree around \(2.5\) and few nodes with high degree, we apply a pruning step.
-A pruning step was also part of the methodology suggested by Bauer et al. \cite{hutchison_synthetic_2010}; however, we adopt a different pruning strategy designed to complement the specific underlying structure of our generated graphs.
-Edges are considered in order of increasing Euclidean length (shortest first).
-An edge \((u,v)\) is removed from the graph if the shortest path distance between \(u\) and \(v\) in the graph, after the hypothetical removal of \((u,v)\), is no more than a factor \(\alpha\) times the original direct length of \((u,v)\), i.e., \( \text{dist}_{G \setminus (u,v)}(u,v) \le \alpha \cdot \text{length}(u,v) \).
-Through experimentation, we found that a pruning parameter of \(\alpha = 2.5\) effectively reduced the average degree to the target range comparable to road networks.
+To better emulate the characteristics of real road networks, such as an average degree around \(2.5\) and fewer nodes with very high degrees, we apply an edge pruning step.
+While Bauer et al. \cite{hutchison_synthetic_2010} also suggested a pruning methodology, we adopt a different strategy tailored to our generated graph structures.
+In our approach, edges are considered in order of increasing Euclidean length (shortest first).
+An edge \((u,v)\) is removed if the shortest path distance between \(u\) and \(v\) in the graph, after the hypothetical removal of \((u,v)\), is no more than a factor \(\alpha\) times the original direct length of \((u,v)\); i.e., if \( \text{dist}_{G \setminus \{(u,v)\}}(u,v) \le \alpha \cdot \text{length}(u,v) \).
+Through experimentation, we found that a pruning parameter of \(\alpha = 2.5\) effectively reduces the average degree to the target range comparable to that of road networks.
 The pseudocode for this edge pruning process is given in \cref{alg:prune_edges}.
-To compare the graphs of pruned and non  \cref{fig:delaunay_vs_no_pruning_graph}.
+A visual comparison of graph structures before and after pruning is provided in \cref{fig:delaunay_vs_no_pruning_graph}.
 
 \begin{algorithm}[tbhp]
-	\Input{Graph \(G=(V, E)\), \\
-		Pruning parameter \(\alpha\)}
-	\Output{Pruned version of \(G\)}
-	\BlankLine
-	\ForAll{\((u, v) \in E\) sorted by length}{
-		\If{\(dist(u, v) > \alpha \cdot len(u, v)\)}{
-			\(G \longleftarrow G \setminus (u, v)\)\;
-		}
-	}
-	\caption{Prune edges in \(G\) based on distance threshold.}
-	\label{alg:prune_edges}
+    \Input{Graph \(G=(V, E)\), \\
+           Pruning parameter \(\alpha\)}
+    \Output{Pruned version of \(G\)}
+    \BlankLine
+    \ForAll{\((u, v) \in E\) sorted by increasing length}{
+        \If{\(\text{dist}_{G \setminus \{(u,v)\}}(u, v) \le \alpha \cdot \text{length}(u, v)\)}{
+            \(G \longleftarrow G \setminus \{(u, v)\}\)\;
+        }
+    }
+    \caption{Edge pruning based on path length redundancy.}
+    \label{alg:prune_edges}
 \end{algorithm}
 
 \begin{figure}[tbhp]
-	\centering
-	\begin{subfigure}{0.45\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{graphics/delaunay_pre_prune.png}
-		\caption{Graph before pruning.}
-		\label{fig:delaunay_pre_pruned_degree}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{0.45\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{graphics/delaunay_post_prune.png}
-		\caption{Graph after pruning.}
-		\label{fig:delaunay_post_pruned_degree}
-	\end{subfigure}
-	\caption{Comparison of a pruned and unpruned hierarchical Delaunay graph.}
-	\label{fig:delaunay_vs_no_pruning_graph}
+    \centering
+    \begin{subfigure}{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/delaunay_pre_prune.png}
+        \caption{Graph structure before pruning.}
+        \label{fig:delaunay_pre_prune_viz}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/delaunay_post_prune.png}
+        \caption{Graph structure after pruning.}
+        \label{fig:delaunay_post_prune_viz}
+    \end{subfigure}
+    \caption{Visual comparison of a hierarchical Delaunay graph before and after edge pruning.}
+    \label{fig:delaunay_vs_no_pruning_graph}
 \end{figure}
 
 The pruning step, while beneficial for achieving a target average degree and a more realistic degree distribution, does not fundamentally alter the asymptotic separator scaling of the generated Delaunay graphs.
 \Cref{fig:delaunay_pruned_vs_pre_pruned_sep} illustrates that the separator size scaling remains similar for both pruned and unpruned graphs.
 
 \begin{figure}[tbhp]
-	\centering
-	\includegraphics[width=0.7\linewidth]{graphics/delaunay_pre_post_pruning_sep_size.pdf}
-	\caption{Comparison of separator size scaling in hierarchical Delaunay graphs before and after the pruning step.}
-	\label{fig:delaunay_pruned_vs_pre_pruned_sep}
+    \centering
+    \includegraphics[width=0.7\linewidth]{graphics/delaunay_pre_post_pruning_sep_size.pdf}
+    \caption{Comparison of separator size scaling in hierarchical Delaunay graphs before and after the pruning step.}
+    \label{fig:delaunay_pruned_vs_pre_pruned_sep}
 \end{figure}
 
-Given that the pruning step can be computationally intensive due to the numerous shortest path computations (Dijkstra, as precomputation is not possible because we are altering the graph) required, we also explored an approximated parallel version.
-In this variant, edges are processed in chunks, typically matching the number of available processing threads.
-The shortest path computations for all candidate edges within a chunk are performed in parallel, based on the graph state before any edges in that chunk are removed.
-After all checks for the current chunk are complete, the identified edges are removed.
-This parallelization is only an approximation: an edge \((u,v)\) might be removed because its check relied on a path through another edge \((x,y)\) from the same chunk, which is also simultaneously identified for removal.
-If \((x,y)\) is removed, the shortest path for \((u,v)\) might have become longer than the threshold, but this would not be caught as the checks were concurrent.
+Given that sequential pruning can be computationally intensive due to numerous shortest path computations (typically Dijkstra's algorithm, where path precomputation is infeasible as the graph changes), we also explored an approximate parallel version.
+In this variant, edges are processed in chunks, often corresponding to the number of available processing threads.
+Shortest path computations for all candidate edges within a chunk are performed in parallel, based on the graph state \emph{before} any edges in that chunk are removed.
+After all checks for the current chunk are complete, the identified edges are removed simultaneously.
+This parallelization introduces an approximation: an edge \((u,v)\) might be removed because its shortest alternative path relied on another edge \((x,y)\) from the same chunk, which is also concurrently identified for removal.
+If \((x,y)\) is removed, the true shortest path for \((u,v)\) in the updated graph might have become longer than the \(\alpha \cdot \text{length}(u,v)\) threshold, but this would not be detected as the checks were based on the graph state at the beginning of the chunk processing.
 Despite this potential for over-pruning, our empirical results suggest that this approximation has a negligible impact on the final graph structure and its properties.
-This is likely because edges are sorted by length before being chunked, meaning edges within a single chunk are often spatially distributed across the graph rather than being locally interdependent, minimizing negative interference.
-
-% \begin{algorithm}[tbhp]
-% 	\Input{Graph \(G=(V, E)\), \\
-% 		Pruning parameter \(t\)}
-% 	\Output{Pruned version of \(G\)}
-% 	\BlankLine
-% 	sortByLength(\(E\))\;
-% 	\ForAll{chunk \(\in E\).chunks(num\_threads)}{
-% 		\textbf{parallel} \ForAll{\((u, v) \in\) chunk}{
-% 			\If{\(\dist(u, v) > t \cdot \len(u, v)\)}{
-% 				\(G \longleftarrow G \setminus (u, v)\)\;
-% 			}
-% 		}
-% 	}
-%     \caption{APPROXIMATEION PARALLEL\todo{x}}
-% 	\label{alg:prune_edges_parallel}
-% \end{algorithm}
-%
+This outcome is likely because edges are sorted by length before being chunked; thus, edges within a single chunk are often spatially distributed across the graph rather than being highly locally interdependent, minimizing negative interference from concurrent removals.
 
 \paragraph{Parameterization}
-
 The number of hierarchical layers, denoted \(L\), is a key parameter for the generation process detailed in \cref{alg:hierarchical_delaunay}.
-Drawing from observations of real road networks and prior work on synthetic graph generation \cite{hutchison_synthetic_2010}, \(L\) is often set to 4, which has been shown suitable for generating graphs with up to approximately 20 million nodes.
-With \(L=4\), the algorithm requires parameters for level expansion fractions \(f_i\), points per expansion site \(k_i\), and expansion radii \(r_i\), for \(i \in [1, L]\), totaling \(3L = 12\) parameters.
+Drawing from observations of real road networks and prior work on synthetic graph generation \cite{hutchison_synthetic_2010}, \(L\) is often set to 4, a choice suitable for generating graphs with up to approximately 20 million nodes.
+With \(L=4\), the algorithm requires parameters for level expansion fractions \(f_i\), points per expansion site \(k_i\), and expansion radii \(r_i\), for \(i \in [1, L]\), totaling \(3L\) (i.e., 12 for \(L=4\)) parameters.
 However, the effective number of free parameters is lower.
-The specific value of the first expansion radius, \(r_1\), primarily scales the entire embedding without altering its topological structure, effectively reducing the count to 11 if \(r_1\) is fixed or normalized.
-Furthermore, the algorithm specifies that the first level expansion fraction \(f_1 = 1.0\) (ensuring the initial point always seeds the first level of expansion), which reduces the free parameters to 10.
-If we aim for a target total number of vertices, \(n_{\text{target}}\), one additional parameter (e.g., \(k_L\)) can be adjusted to meet this target, potentially leaving 9 free parameters for a 4-layer model.
-
-The total number of points after level \(j\), denoted \(n_j\) (where \(n_1\) represents the points after the first expansion around the initial seed point), is given by the recurrence relation:
+The specific value of the first expansion radius, \(r_1\), primarily scales the entire embedding without fundamentally altering its topological structure, effectively reducing the count to 11 if \(r_1\) is fixed or normalized.
+Furthermore, the algorithm specifies that the first level expansion fraction \(f_1 = 1.0\) (ensuring the initial point always seeds the first level of expansion), reducing the free parameters to 10.
+If a target total number of vertices, \(n_{\text{target}}\), is desired, one additional parameter (e.g., \(k_L\)) can be adjusted to meet this target, potentially leaving 9 free parameters for a 4-layer model.
+The total number of points after level \(j\), denoted \(n_j\) (where \(n_0=1\) is the initial seed point, so \(n_1 = k_1 + 1\) represents the total points after the first expansion), is given by the recurrence relation:
 \[
-	n_j =
-	\begin{cases}
-		k_1 + 1                               & \text{if } j=1                        \\
-		n_{j-1} + n_{j-1} \cdot f_j \cdot k_j & \text{if } j > 1 \text{ and } j \le L
-	\end{cases}
+n_j =
+\begin{cases}
+k_1 + 1 & \text{if } j=1 \\
+n_{j-1} + n_{j-1} \cdot f_j \cdot k_j & \text{if } j > 1 \text{ and } j \le L
+\end{cases}
 \]
 For example, for a 4-layer generation (\(L=4\)), the total number of points \(n_4\) is calculated iteratively:
 \begin{align*}
-	n_1 & = k_1 + 1                       \\
-	n_2 & = n_1 + n_1 \cdot f_2 \cdot k_2 \\
-	n_3 & = n_2 + n_2 \cdot f_3 \cdot k_3 \\
-	n_4 & = n_3 + n_3 \cdot f_4 \cdot k_4
+n_1 &= k_1 + 1 \\
+n_2 &= n_1 + n_1 \cdot f_2 \cdot k_2 \\
+n_3 &= n_2 + n_2 \cdot f_3 \cdot k_3 \\
+n_4 &= n_3 + n_3 \cdot f_4 \cdot k_4
 \end{align*}
-
-
-
-
+The final graph size is thus \(n_L\).
 
 \paragraph{Parameter Interplay and Heuristics for Separator Properties}
 Achieving road network-like separator scaling with the hierarchical Delaunay generator involves a nuanced interplay between the expansion fractions \(f_i\), points per site \(k_i\), and expansion radii \(r_i\).
@@ -666,21 +641,37 @@ A critical aspect for developing well-behaved separators appears to be ensuring 
 This helps to avoid overly simplistic connections between hierarchical components, which can lead to pronounced local minima in separator scaling plots.
 
 It is observed that decreasing expansion radii \(r_i\) contributes to desirable separator properties.
-The median edge length in a Delaunay triangulation of \(n\) points within a region of effective radius \(r\) is heuristically proportional to \bigO{r\cdot n^{-1/2}}.
-Thus, to maintain somewhat consistent local geometric scales as density increases within nested expansions (if \(k_i\) is relatively stable), \(r_i\) needs to decrease.
-Our empirical observations suggested that without exponential decrease in radii across levels, achieving consistently small separators was not possible.
+The median edge length in a Delaunay triangulation of \(n\) points within a region of effective radius \(r\) is heuristically proportional to \(r \cdot n^{-1/2}\).
+Thus, to maintain somewhat consistent local geometric scales as density increases within nested expansions (if \(k_i\) is relatively stable), \(r_i\) generally needs to decrease.
+Our empirical observations suggested that without an exponential decrease in radii across levels, achieving consistently small separators was not possible.
 
 However, if radii become too small too quickly, the graph might develop insufficient connectivity between clusters originating from different parent sites.
-Consider a thought experiment: if each expansion site has an infinitesimally small influence radius for generating points for next level, these new points primarily connect among themselves.
-The number of points on the effective \enquote{perimeter} of such an expanded site (those able to connect to other, distant parts of the graph) may grow much slower than the number of points generated internally within the site thus keeping its external connectivity limited (this is exaggerated by by the hierachical sampling).
-In such a scenario, one can find a separator for the graph defined by the top-level points (e.g., \(n_1\) points for the first level) with a size scaling as \bigO{n_1^{1/2}}.
-If each of these top-level separator nodes is a gateway to a large hierarchical substructure that is only sparsely connected back to this top-level framework (via the few \enquote{perimeter} connections), the separator for the entire graph \(G_L\) can be estimated based on this top-level cut extended by these few perimeter vertices that are not part of the top-level separator.
-Given that the total number of nodes \(n_L\) is typically much larger than \(n_1\), such a separator (e.g., related to a \bigO{n_1^{1/2}} scaling) would likely be disproportionately small for \(n_L\).
-This issue can also exists on subsequent levels.
-An attempt to achieve a desired global scaling \bigO{n_L^{1/3}} can involve setting parameters so that the initial \bigO{n_1^{1/2}} separator scaling corresponds to this overall target.
-This, however, can lead to a different problem: distinct top-level expansion sites, even if spatially close, end up connected by very few paths.
+Consider a thought experiment: if each expansion site has an infinitesimally small influence radius for generating points for the next level, these new points primarily connect among themselves and back to their parent site from the higher level.
+The number of points on the effective \enquote{perimeter} of such an expanded site (those able to connect to other, distant parts of the graph) may grow much slower than the number of points generated internally, thereby keeping its external connectivity limited; this effect is amplified by the hierarchical sampling which tends to concentrate points internally.
+In such a scenario, one might find a separator for the graph defined by the top-level points (e.g., \(n_1\) points after the first level) with a size scaling as \bigOSmall{n_1^{1/2}}.
+If each of these top-level separator nodes is a gateway to a large hierarchical substructure that is only sparsely connected back to this top-level framework (via few \enquote{perimeter} connections or the gateway node itself), the separator for the entire graph \(G_L\) might be estimated based on this top-level cut, extended by these few perimeter vertices.
+Given that the total number of nodes \(n_L\) is typically much larger than \(n_1\), such a separator (e.g., related to a \bigOSmall{n_1^{1/2}} scaling) would likely be disproportionately small for \(n_L\).
+This issue can also manifest at subsequent levels.
+An attempt to achieve a desired global \bigOSmall{n_L^{1/3}} scaling can involve setting parameters so that the initial \bigOSmall{n_1^{1/2}} separator scaling corresponds to this overall target.
+This, however, can lead to a different problem: distinct top-level expansion sites, even if spatially close, might end up connected by very few paths.
 This sparse inter-connectivity between major components results in the re-emergence of pronounced local minima in the separator scaling plots at transitions between hierarchical levels, an issue similar to that encountered in simpler nested grid or Voronoi generation schemes where components are too easily fractured.
 Therefore, for generating graphs with well-behaved separators, it is critical that the expansion areas originating from different sites \emph{overlap} or interact sufficiently to build an integrated and robustly connected graph structure, rather than a collection of dense clusters weakly linked through a sparse higher-level skeleton. \todo{possibly needs graphical illustration}
+
+The degree of spatial overlap between regions expanded from different sites is fundamental to achieving desirable separator characteristics, as it dictates the strength of connectivity between hierarchical components.
+The parameters \(f_i\), \(k_i\), and \(r_i\) jointly determine this overlap:
+A higher expansion fraction \(f_i\) results in a greater number of nodes from the parent level being selected as expansion sites.
+This reduces the average distance between chosen sites, causing their respective areas of influence for the current level to naturally adjoin or overlap significantly.
+Increasing \(k_i\), the number of points generated per expansion site, primarily makes each local cluster denser.
+Such high local density implies that partitioning these individual dense regions themselves requires larger separators, reflecting their increased internal complexity.
+Simultaneously, by populating the same expansion radius \(r_i\) with more points, the average distances between points decrease on this level, increasing the likelihood of inter-cluster connections.
+The effect of the expansion radius \(r_i\) is direct: a larger radius straightforwardly increases the spatial extent of each new cluster, leading to more substantial overlap with adjacent expansion zones and, consequently, also contributing to larger overall separators due to increased linkage.
+Radii at deeper hierarchical levels must also be scaled appropriately relative to those at higher levels to ensure desired structural properties and avoid unintended consequences on separator sizes.
+Therefore, a careful balance of these parameters—\(f_i, k_i,\) and \(r_i\)—is essential to cultivate a graph structure with the intended connectivity and separator properties.
+
+The parameterization offers flexibility.
+For instance, to simulate prominent \enquote{urban centers} at higher levels, a larger initial radius \(r_1\) might be employed.
+This would typically be balanced by adjusting subsequent parameters, such as reducing \(f_2\) (selecting fewer centers from the points generated by these large initial expansions), to maintain overall structural integrity and desired separator characteristics.
+However, such compensations have practical limits; if radii do not shrink sufficiently across levels, adjustments to \(f_i\) or \(k_i\) may not fully mitigate adverse effects on separator scaling.
 
 For generating structures visually akin to road networks, allowing the number of active expansion sites (primarily controlled by \(f_i\)) to decrease at deeper hierarchical levels often yields favorable results.
 This complements the inherent tendency of the generation process where all existing points are candidates for seeding new expansions (the \enquote{rich get richer} effect), helping to manage density while still fostering hierarchical differentiation.
@@ -688,66 +679,49 @@ Plausible structures can emerge even with constant \(k_i\) values across levels,
 For instance, the parameter set comprising level expansion fractions \(f_i = (1.0, 0.3, 0.2, 0.1)\), points per expansion site \(k_i = (50, 50, 50, 50)\), and expansion radii \(r_i = (1000, 424, 120, 17)\) produces graphs whose separator characteristics are illustrated in \Cref{fig:hier_delaunay_example_params_sep}.
 
 \begin{figure}[tbhp]
-	\centering
-	\includegraphics[width=0.7\linewidth]{graphics/hierachcial_delaunay_const_sites.pdf}
-	\caption{Separator size scaling for a hierarchical Delaunay graph generated with a constant number of expansion sites parameters: \(f_i=(1.0, 0.3, 0.2, 0.1)\); \(k_i=(50, 50, 50, 50)\); \(r_i=(1000, 424, 120, 17)\).}
-	\label{fig:hier_delaunay_example_params_sep}
+    \centering
+    \includegraphics[width=0.7\linewidth]{graphics/hierachcial_delaunay_const_sites.pdf}
+    \caption{Separator size scaling for a hierarchical Delaunay graph generated with constant expansion sites: \(f_i=(1.0, 0.3, 0.2, 0.1)\); \(k_i=(50, 50, 50, 50)\); \(r_i=(1000, 424, 120, 17)\).}
+    \label{fig:hier_delaunay_example_params_sep}
 \end{figure}
-
-The degree of spatial overlap between regions expanded from different sites is fundamental to achieving desirable separator characteristics, as it dictates the strength of connectivity between hierarchical components.
-The parameters \(f_i\), \(k_i\), and \(r_i\) jointly determine this overlap:
-A higher expansion fraction \(f_i\) results in a greater number of nodes from the parent level being selected as expansion sites.
-This reduces the average distance between chosen sites causing their respective areas of influence for the current level to naturally adjoin or overlap significantly.
-Increasing \(k_i\), the number of points generated per expansion site, primarily makes each local cluster denser.
-Such high local density means that partitioning these individual dense regions themselves requires larger separators, reflecting their increased internal complexity (if these dense regions were considered as isolated subgraphs, their own separator sizes would be expected to be larger).
-Simultaneously, by populating the same expansion radius \(r_i\) with more points, the average distances between points decrease on this level.
-The effect of the expansion radius \(r_i\) is direct: a larger radius straightforwardly increases the spatial extent of each new cluster, leading to more substantial overlap with adjacent expansion zones and, consequently, also contributing to larger overall separators due to increased linkage.
-Note that radii on levels deeper in the hierachy have to be changed too, as otherwise a larger radius at the higher level would decrease the average distance between points in the next level, which would lead to a smaller separator size.
-Therefore, a careful balance of these parameters—\(f_i, k_i,\) and \(r_i\)—is essential to cultivate a graph structure with the intended connectivity and separator properties.
-
-The parameterization offers flexibility.
-For instance, to simulate prominent \enquote{urban centers} at higher levels, a larger radius \(r_2\) might be employed.
-This would typically be balanced by adjusting subsequent parameters, such as reducing \(f_2\) (selecting fewer centers from the points generated by these large initial expansions), to maintain overall structural integrity and desired separator characteristics.
-However, such compensations have practical limits; if radii do not shrink sufficiently across levels, adjustments to \(f_i\) or \(k_i\) may not fully mitigate adverse effects on separator scaling.
-
 
 To further illustrate the interplay of these parameters, \Cref{fig:hier_delaunay_param_interplay} presents separator scaling plots for four different parameter configurations.
 The baseline configuration, shown in \cref{fig:param_interplay_baseline}, is chosen to produce separators with characteristics similar to those observed in real road networks.
 \Cref{fig:param_interplay_low_f2} then demonstrates the impact of significantly decreasing the expansion fraction for the second level (\(f_2\)) while other parameters are held constant relative to the baseline; this results in a notable drop in separator sizes, indicative of a less interconnected structure.
-Subsequently, \cref{fig:param_interplay_fix1_radii} shows that this reduction in separator size due to a low \(f_2\) can be counteracted by proportionally increasing the expansion radius of the second level (\(r_2\)) and the subsequent radii (\(r_3, r_4\)) to match the same ratio.
+Subsequently, \cref{fig:param_interplay_fix1_radii} shows that this reduction in separator size due to a low \(f_2\) can be counteracted by proportionally increasing the expansion radius of the second level (\(r_2\)) and the subsequent radii (\(r_3, r_4\)).
 Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing the number of points generated at the first level (\(k_1\)) can also compensate for the reduced \(f_2\), again achieving separator scaling similar to the baseline by enhancing overall density and connectivity from the initial expansion phase.
 
 \begin{figure}[tbhp]
-	\centering
-	\begin{subfigure}{0.45\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{graphics/interplay_baseline.pdf}
-		\caption{Baseline: \(f_i=(1.0, 0.5, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
-		\label{fig:param_interplay_baseline}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{0.45\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{graphics/interplay_low_f1.pdf}
-		\caption{Low \(f_2\): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
-		\label{fig:param_interplay_low_f2}
-	\end{subfigure}
+    \centering
+    \begin{subfigure}{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/interplay_baseline.pdf}
+        \caption{Baseline: \(f_i=(1.0, 0.5, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+        \label{fig:param_interplay_baseline}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/interplay_low_f1.pdf} % Filename implies f1, caption says f2
+        \caption{Low \(f_2\): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+        \label{fig:param_interplay_low_f2}
+    \end{subfigure}
 
-	\vspace{0.5cm}
+    \vspace{0.5cm}
 
-	\begin{subfigure}{0.45\linewidth}
-		\centering
+    \begin{subfigure}{0.45\linewidth}
+        \centering
         \includegraphics[width=\linewidth]{graphics/interplay_increased_r2.pdf}
-		\caption{Fix 1 (Increase radii for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, \textcolor{green}{283}, \textcolor{green!50}{52}, \textcolor{green!50}{11})\).}
-		\label{fig:param_interplay_fix1_radii}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{0.45\linewidth}
-		\centering
+        \caption{Fix 1 (Increase radii for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, \textcolor{green}{283}, \textcolor{green!50}{52}, \textcolor{green!50}{11})\).}
+        \label{fig:param_interplay_fix1_radii}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\linewidth}
+        \centering
         \includegraphics[width=\linewidth]{graphics/interplay_increased_k1.pdf}
-		\caption{Fix 2 (Increase \(k_1\) for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(\textcolor{green}{1000}, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
-		\label{fig:param_interplay_fix2_k1}
-	\end{subfigure}
-	\caption{Illustration of parameter interplay on separator size scaling in hierarchical Delaunay graphs. Changed parameters in (b), (c), and (d) are relative to (a) or the specific modification being tested.}
-	\label{fig:hier_delaunay_param_interplay}
+        \caption{Fix 2 (Increase \(k_1\) for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(\textcolor{green}{1000}, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+        \label{fig:param_interplay_fix2_k1}
+    \end{subfigure}
+    \caption{Illustration of parameter interplay on separator size scaling in hierarchical Delaunay graphs. Changed parameters in (b), (c), and (d) are relative to (a) or the specific modification being tested.}
+    \label{fig:hier_delaunay_param_interplay}
 \end{figure}
