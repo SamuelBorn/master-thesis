@@ -533,9 +533,9 @@ However, this restriction did not yield any noticeable differences in the overal
     \(P \longleftarrow \{p_\text{random}\}\)\;
     \BlankLine
     \ForAll{\(i \in [1, L]\)}{
-        \(C_i \longleftarrow\) chooseRandom(\(P, \left\lfloor f_i \cdot |P|\right\rfloor\))\;
+        \(C_i \longleftarrow\) P.chooseRandom(\(\left\lfloor f_i \cdot |P|\right\rfloor\))\;
         \ForAll{center \(\in C_i\)}{
-            \(P \longleftarrow P~\cup\) sampleRandomPointsInCircle(center, \(r_i\), \(k_i\))\;
+            \(P \longleftarrow P~\cup\) randomPointsInCircle(center, \(r_i\), \(k_i\))\;
         }
     }
     \BlankLine
