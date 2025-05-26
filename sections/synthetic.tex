@@ -61,21 +61,31 @@ The separator scaling is illustrated in \cref{fig:same_degree}.
 	\label{fig:same_degree}
 \end{figure}
 
-We also conduct experiments generating graphs that match not just the average degree, but the specific degree distribution of the reference road network.
-This involves a similar process of starting with a random tree and adding edges randomly.
-However, edge addition is constrained: an edge \( (u, v) \) is added only if adding it does not cause either vertex \(u\) or \(v\) to exceed the count allocated for their respective degrees according to the target distribution sampled from the road network.
-The results obtained from this refined approach are largely similar to those using only the average degree constraint.
-It is important to note, however, that precisely replicating the target degree distribution using this generation process presents challenges.
-While the maximum degree observed in the generated graphs generally approximately aligns with that of the reference road network, discrepancies arise in the distribution concerning nodes with higher degrees.
-Specifically, the underlying structure of the initial random spanning tree tends to produce more vertices with high degrees compared to the road network.
-Approximately 1.8\% of vertices in the random tree had a degree of 5 or greater, substantially more than the 0.2\% observed in the actual Europe dataset \cite{ptv_group_dimacs-europe_2009}.
-Therefore, the process achieves an approximation of the target distribution rather than an exact match.
-We contend, however, that this approximation is sufficiently close for the purposes of this investigation, and argue that the relatively small fraction of vertices whose degrees exceed the target constraints are unlikely to fundamentally alter the observed separator scaling behavior for this class of graphs.
+We also conducted experiments to generate graphs that match not just the average degree but also the specific degree distribution of a reference road network.
+This process involved starting with a random tree and then adding edges subject to constraints: an edge \((u, v)\) was incorporated only if doing so would not cause either vertex \(u\) or \(v\) to exceed the degree count specified for them by the target distribution, which was sampled from the road network.
+The separator results from this more refined approach were largely similar to those from graphs matching only the average degree.
 
-The generated graphs continue to exhibit large separators, reinforcing the conclusion drawn from the average-degree matching experiments.
-These findings suggest that the degree distribution alone is likely insufficient to explain the empirically observed small separators.
-Nevertheless, the low average degree remains an important factor.
-Intuitively, sparser graphs, possessing fewer edges overall, should generally be easier to partition compared to denser graphs.
+It is important to note, however, that precisely replicating a target degree distribution with this method is not possible.
+While the maximum degree in the generated graphs generally aligns with that of the reference network, discrepancies emerge, particularly for nodes with higher degrees.
+The underlying random spanning tree structure tends to produce a higher proportion of such nodes compared to actual road networks.
+For instance, in synthetic graphs designed to match the Europe dataset \cite{ptv_group_dimacs-europe_2009}, approximately 1.8\% of vertices had a degree of 5 or greater, exceeding the 0.2\% observed in the real dataset.
+Thus, our process achieves an approximation of the target distribution.
+Nevertheless, we posit that this approximation is sufficiently close for our investigation, as the relatively small fraction of vertices with degrees deviating from the target constraints is unlikely to fundamentally alter the observed separator scaling behavior for this graph class.
+
+These findings reinforce the suggestion that the specific degree distribution, in isolation, is likely insufficient to fully explain the empirically observed small separators.
+Nevertheless, the low average degree remains a noteworthy property.
+While a lower average degree may not fundamentally alter the inherent asymptotic separator scaling characteristic of a specific graph class, it often correlates with smaller constant factors in the observed separator sizes; the practical effect of sparsity on separator magnitudes will be discussed further in a subsequent section.
+
+Beyond the influence of average degree on constant factors, it is also crucial to recognize that neither a low average degree nor a specific sparse degree distribution are strict prerequisites for achieving small separators.
+Indeed, graphs can be constructed that possess both deliberately small separators (as a function of \(n\)) and a high average degree.
+Consider, for instance, the following recursive graph generation scheme designed to produce a graph on \(n\) vertices with a target separator of size \(s(n)\) (e.g., \(s(n) = n^{1/3}\)):
+First, a separator clique \(S\) on \(s(n)\) vertices, denoted \(K_{s(n)}\), is designated.
+Then, two subgraphs, \(G_1\) and \(G_2\), each containing approximately \((n-s(n))/2\) vertices, are generated recursively by the same procedure (with a base case, such as returning a clique \(K_n\), for small \(n\), e.g., when \(n \le 2\)).
+Finally, every vertex in \(G_1\) is connected to every vertex in \(S\), and likewise, every vertex in \(G_2\) is connected to every vertex in \(S\).
+By construction, the set \(S\) (forming a \(K_{s(n)}\)) is a separator of size \(s(n)\) that partitions the graph into \(G_1\) and \(G_2\).
+Despite this small, built-in separator, the average degree of the resulting graph can be substantial.
+For example, using \(s(n) = n^{1/3}\), a graph of \(n=10,000\) vertices generated via this method has an average degree of approximately 169 and a maximum degree of 6202.
+This example illustrates that specific structural properties enabling small separators can coexist with high overall edge density, suggesting that the global organization of edges, beyond mere sparsity, significantly influences separator characteristics.
 
 \section{Locality}
 \label{sec:synthetic:locality}
@@ -188,6 +198,27 @@ This initial behavior in the synthetic model appears qualitatively comparable, a
 This correspondence is noteworthy.
 It suggests that the geometric locality model, despite failing to replicate the overall asymptotic separator scaling of \bigO{n^{1/3}}, may capture certain structural properties relevant at smaller graph scales that are present in actual road networks.
 
+
+
+
+\paragraph{Minimum Spanning Trees from Higher-Dimensional Embeddings}
+\label{sec:synthetic:mst}
+Observing that real road networks often exhibit diameters smaller than the \bigO{n^{1/2}} found in our random tree models, we sought to determine if an initial tree structure with an intrinsically smaller diameter could lead to graphs with correspondingly smaller separators after edge augmentation.
+This motivated an exploration of generating initial trees as Minimum Spanning Trees (MSTs) of points sampled in \(d\)-dimensional Euclidean space, since the diameter of such an MST on \(n\) random points in \(d\)-space (for \(d \ge 2\)) is typically \bigO{n^{1/d}}.
+Our experiments focused on the case where \(d=3\), for which the MST diameter is approximately \bigO{n^{1/3}}.
+This involved sampling \(n\) points uniformly in 3D space and computing their MST.
+When edges were subsequently added to such 3D-MSTs to achieve a target average degree, the resulting graphs exhibited separators that scaled as \bigO{n^{2/3}}.
+This scaling aligns with a general geometric intuition: a \(d\)-dimensional hypervolume containing \(n\) points is naturally bisected by a \((d-1)\)-dimensional separator.
+If the characteristic linear extent of the volume is proportional to \(n^{1/d}\), the \((d-1)\)-dimensional measure (e.g., area for \(d=3\), length for \(d=2\)) of such a separator would be proportional to \((n^{1/d})^{d-1} = n^{(d-1)/d}\).
+For \(d=2\), this yields the familiar \bigO{n^{1/2}} scaling for planar-like separators, and for our \(d=3\) experiment, it corresponds to the observed \bigO{n^{2/3}}.
+While this suggests a general hypothesis that augmenting MSTs from \(d\)-dimensional point sets might lead to graphs with \bigO{n^{(d-1)/d}} separators, this avenue was not pursued further.
+Since for \(d=3\) the \bigO{n^{2/3}} separators do not offer an improvement over the \bigO{n^{1/2}} separators of planar graphs in the context of finding exceptionally small separators (and higher dimensions \(d > 3\) would yield even larger exponents as \((d-1)/d \to 1\)), this specific line of inquiry was not extended.
+
+
+
+
+
+
 \section{Planarity}
 \label{sec:synthetic:planarity}
 
@@ -195,7 +226,7 @@ We examine separator properties in two classes of planar graphs: grids and Delau
 These serve as fundamental theoretical models for planar structures relevant to the study of road networks due to their near-planarity.
 In our study, these graph classes are sparsified to achieve a low average degree (approximately \(2.5\)), reflecting the sparsity observed in road networks.
 
-\subsection{Sparse Grids}
+\subsection{Grids}
 \label{sec:synthetic:grid}
 
 Our initial investigation focuses on grid graphs, a fundamental class known to possess separators scaling as \bigO{n^{1/2}}.
@@ -229,6 +260,37 @@ This finding highlights that sparsity, even within a simple planar structure lik
 	\caption{Analysis of sparse grid graphs with average degree \(2.5\).}
 	\label{fig:sparse_grid_separators}
 \end{figure}
+
+
+Analogous to the earlier example where dense graphs were constructed with a specific separator function, it is also possible to engineer grid-like graphs to exhibit a target separator scaling, such as \(\bigO{n^{1/3}}\).
+This approach involves a recursive construction: two smaller grid-like subgraphs, \(G_1\) and \(G_2\), each comprising approximately \(n/2\) vertices, are generated recursively.
+These subgraphs are then interconnected.
+Instead of forming dense connections or connecting all border vertices, a controlled number of edges, specifically chosen to match the desired separator size (e.g., approximately \(n^{1/3}\) for the combined graph of size \(n\)), are added between \(G_1\) and \(G_2\).
+For instance, this can be achieved by selecting approximately \(n^{1/3}\) nodes along the boundary of one subgraph and connecting each to its closest corresponding node on the boundary of the other.
+The set of these inter-connecting edges (or one of their incident vertices) is, by construction, a separator of the desired \(\bigO{n^{1/3}}\) size.
+An example of such a graph and its resulting separator scaling is illustrated in \cref{fig:engineered_grid_sep}.
+While this method demonstrates that specific separator sizes can be achieved by deliberate construction in grid-like structures, it offers limited insight into which intrinsic graph properties of real road networks lead to their empirically observed small separators.
+The desired scaling is explicitly engineered into the generation process here, rather than emerging naturally from more fundamental characteristics.
+
+\begin{figure}[tbhp]
+    \centering
+    \begin{subfigure}{0.35\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/cbrt_grid.png}
+        \caption{A recursively constructed grid with engineered \(\bigO{n^{1/3}}\) inter-connections.}
+        \label{fig:engineered_grid_structure_viz}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.55\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/cbrt_grid_sep_scaling.pdf}
+        \caption{Separator scaling for the engineered grid graph, exhibiting the constructed \(\bigO{n^{1/3}}\) behavior.}
+        \label{fig:engineered_grid_sep_plot}
+    \end{subfigure}
+    \caption{Grid-like graph with engineered separators designed to scale as \(\bigO{n^{1/3}}\).}
+    \label{fig:engineered_grid_sep}
+\end{figure}
+
 
 \subsection{Delaunay Triangulations}
 \label{sec:synthetic:delaunay}
@@ -641,7 +703,7 @@ A critical aspect for developing well-behaved separators appears to be ensuring 
 This helps to avoid overly simplistic connections between hierarchical components, which can lead to pronounced local minima in separator scaling plots.
 
 It is observed that decreasing expansion radii \(r_i\) contributes to desirable separator properties.
-The median edge length in a Delaunay triangulation of \(n\) points within a region of effective radius \(r\) is heuristically proportional to \(r \cdot n^{-1/2}\).
+The median edge length in a Delaunay triangulation of \(n\) points within a region of radius \(r\) scales as \(r \cdot n^{-1/2}\).
 Thus, to maintain somewhat consistent local geometric scales as density increases within nested expansions (if \(k_i\) is relatively stable), \(r_i\) generally needs to decrease.
 Our empirical observations suggested that without an exponential decrease in radii across levels, achieving consistently small separators was not possible.
 
