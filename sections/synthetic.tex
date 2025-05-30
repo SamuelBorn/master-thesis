@@ -118,22 +118,22 @@ Through further experimentation and fine-tuning, it is found that a function of 
 \cref{fig:tree_dist_locality_scaling} provides a visual comparison of the separator sizes for various decay functions.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/tree_local_pow_overview.pdf}
-        \caption{Separator scaling for various decay functions \(f(\text{dist})\).}
-        \label{fig:tree_dist_compare_functions}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/tree_locality_33_1000000.pdf}
-        \caption{Separator scaling for \(f(\text{dist}) = 1/\text{dist}^{3.3}\) with line fit.}
-        \label{fig:tree_dist_best_fit_scaling}
-    \end{subfigure}
-    \caption{Separator size scaling for graphs generated with tree-distance based locality, comparing various decay functions and highlighting the fit for \(f(\text{dist}) = 1/\text{dist}^{3.3}\).}
-    \label{fig:tree_dist_locality_scaling}
+	\centering
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/tree_local_pow_overview.pdf}
+		\caption{Separator scaling for various decay functions \(f(\text{dist})\).}
+		\label{fig:tree_dist_compare_functions}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/tree_locality_33_1000000.pdf}
+		\caption{Separator scaling for \(f(\text{dist}) = 1/\text{dist}^{3.3}\) with line fit.}
+		\label{fig:tree_dist_best_fit_scaling}
+	\end{subfigure}
+	\caption{Separator size scaling for graphs generated with tree-distance based locality, comparing various decay functions and highlighting the fit for \(f(\text{dist}) = 1/\text{dist}^{3.3}\).}
+	\label{fig:tree_dist_locality_scaling}
 \end{figure}
 
 Despite achieving the target scaling with \(f(\text{dist}) = 1/\text{dist}^{3.3}\), this result offers limited insight into the intrinsic structural properties of real road networks that lead to their small separators.
@@ -297,22 +297,22 @@ While this method demonstrates that specific separator sizes can be achieved by 
 The desired scaling is explicitly engineered into the generation process here, rather than emerging naturally from more fundamental characteristics.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.35\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/cbrt_grid.png}
-        \caption{A recursively constructed grid with engineered \(\bigO{n^{1/3}}\) inter-connections.}
-        \label{fig:engineered_grid_structure_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.55\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/cbrt_grid_sep_scaling.pdf}
-        \caption{Separator scaling for the engineered grid graph, exhibiting the constructed \(\bigO{n^{1/3}}\) behavior.}
-        \label{fig:engineered_grid_sep_plot}
-    \end{subfigure}
-    \caption{Grid-like graph with engineered separators designed to scale as \(\bigO{n^{1/3}}\).}
-    \label{fig:engineered_grid_sep}
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/cbrt_grid.png}
+		\caption{A recursively constructed grid with engineered \(\bigO{n^{1/3}}\) inter-connections.}
+		\label{fig:engineered_grid_structure_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/cbrt_grid_sep_scaling.pdf}
+		\caption{Separator scaling for the engineered grid graph, exhibiting the constructed \(\bigO{n^{1/3}}\) behavior.}
+		\label{fig:engineered_grid_sep_plot}
+	\end{subfigure}
+	\caption{Grid-like graph with engineered separators designed to scale as \(\bigO{n^{1/3}}\).}
+	\label{fig:engineered_grid_sep}
 \end{figure}
 
 
@@ -609,27 +609,27 @@ We also experimented with an alternative strategy where expansion sites for a gi
 However, this restriction did not yield any noticeable differences in the overall structural properties or separator characteristics of the resulting graphs, thus validating our choice of the more inclusive selection method.
 
 \begin{algorithm}[tbhp]
-    \Input{Number of hierarchical levels \(L\), \\
-           Level expansion fractions \(f_i\) (where \(f_1 = 1.0\)), \\
-           Points to generate per expansion site \(k_i\), \\
-           Expansion radii \(r_i\), \\
-           for \(1 \le i \le L\)}
-    \Output{Geometric graph \(G=(V, E)\)}
-    \BlankLine
-    \(P \longleftarrow \{p_\text{random}\}\)\;
-    \BlankLine
-    \ForAll{\(i \in [1, L]\)}{
-        \(C_i \longleftarrow\) P.chooseRandom(\(\left\lfloor f_i \cdot |P|\right\rfloor\))\;
-        \ForAll{center \(\in C_i\)}{
-            \(P \longleftarrow P~\cup\) randomPointsInCircle(center, \(r_i\), \(k_i\))\;
-        }
-    }
-    \BlankLine
-    \(G \longleftarrow\) delaunay(\(P\))\;
-    pruneEdges(\(G\))\;
-    \Return{\(G\)}\;
-    \caption{Hierarchical Delaunay Graph Generation}
-    \label{alg:hierarchical_delaunay}
+	\Input{Number of hierarchical levels \(L\), \\
+		Level expansion fractions \(f_i\) (where \(f_1 = 1.0\)), \\
+		Points to generate per expansion site \(k_i\), \\
+		Expansion radii \(r_i\), \\
+		for \(1 \le i \le L\)}
+	\Output{Geometric graph \(G\)}
+	\BlankLine
+	\(P \longleftarrow \{p_\text{random}\}\)\;
+	\BlankLine
+	\ForAll{\(i \in [1, L]\)}{
+		\(C_i \longleftarrow\) P.chooseRandom(\(\left\lfloor f_i \cdot |P|\right\rfloor\))\;
+		\ForAll{center \(\in C_i\)}{
+			\(P \longleftarrow P~\cup\) randomPointsInCircle(center, \(r_i\), \(k_i\))\;
+		}
+	}
+	\BlankLine
+	\(G \longleftarrow\) delaunay(\(P\))\;
+	pruneEdges(\(G\))\;
+	\Return{\(G\)}\;
+	\caption{Hierarchical Delaunay Graph Generation}
+	\label{alg:hierarchical_delaunay}
 \end{algorithm}
 
 \paragraph{Pruning}
@@ -647,46 +647,46 @@ The pseudocode for this edge pruning process is given in \cref{alg:prune_edges}.
 A visual comparison of graph structures before and after pruning is provided in \cref{fig:delaunay_vs_no_pruning_graph}.
 
 \begin{algorithm}[tbhp]
-    \Input{Graph \(G=(V, E)\), \\
-           Pruning parameter \(\alpha\)}
-    \Output{Pruned version of \(G\)}
-    \BlankLine
-    \ForAll{\((u, v) \in E\) sorted by increasing length}{
-        \If{\(\text{dist}_{G \setminus \{(u,v)\}}(u, v) \le \alpha \cdot \text{length}(u, v)\)}{
-            \(G \longleftarrow G \setminus \{(u, v)\}\)\;
-        }
-    }
-    \caption{Edge pruning based on path length redundancy.}
-    \label{alg:prune_edges}
+	\Input{Graph \(G=(V, E)\), \\
+		Pruning parameter \(\alpha\)}
+	\Output{Pruned version of \(G\)}
+	\BlankLine
+	\ForAll{\((u, v) \in E\) sorted by increasing length}{
+		\If{\(\text{dist}_{G \setminus \{(u,v)\}}(u, v) \le \alpha \cdot \text{length}(u, v)\)}{
+			\(G \longleftarrow G \setminus \{(u, v)\}\)\;
+		}
+	}
+	\caption{Edge pruning based on path length redundancy.}
+	\label{alg:prune_edges}
 \end{algorithm}
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/delaunay_pre_prune.png}
-        \caption{Graph structure before pruning.}
-        \label{fig:delaunay_pre_prune_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/delaunay_post_prune.png}
-        \caption{Graph structure after pruning.}
-        \label{fig:delaunay_post_prune_viz}
-    \end{subfigure}
-    \caption{Visual comparison of a hierarchical Delaunay graph before and after edge pruning.}
-    \label{fig:delaunay_vs_no_pruning_graph}
+	\centering
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/delaunay_pre_prune.png}
+		\caption{Graph structure before pruning.}
+		\label{fig:delaunay_pre_prune_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/delaunay_post_prune.png}
+		\caption{Graph structure after pruning.}
+		\label{fig:delaunay_post_prune_viz}
+	\end{subfigure}
+	\caption{Visual comparison of a hierarchical Delaunay graph before and after edge pruning.}
+	\label{fig:delaunay_vs_no_pruning_graph}
 \end{figure}
 
 The pruning step, while beneficial for achieving a target average degree and a more realistic degree distribution, does not fundamentally alter the asymptotic separator scaling of the generated Delaunay graphs.
 \Cref{fig:delaunay_pruned_vs_pre_pruned_sep} illustrates that the separator size scaling remains similar for both pruned and unpruned graphs.
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{graphics/delaunay_pre_post_pruning_sep_size.pdf}
-    \caption{Comparison of separator size scaling in hierarchical Delaunay graphs before and after the pruning step.}
-    \label{fig:delaunay_pruned_vs_pre_pruned_sep}
+	\centering
+	\includegraphics[width=0.7\linewidth]{graphics/delaunay_pre_post_pruning_sep_size.pdf}
+	\caption{Comparison of separator size scaling in hierarchical Delaunay graphs before and after the pruning step.}
+	\label{fig:delaunay_pruned_vs_pre_pruned_sep}
 \end{figure}
 
 Given that sequential pruning can be computationally intensive due to numerous shortest path computations (typically Dijkstra's algorithm, where path precomputation is infeasible as the graph changes), we also explored an approximate parallel version.
@@ -708,18 +708,18 @@ Furthermore, the algorithm specifies that the first level expansion fraction \(f
 If a target total number of vertices, \(n_{\text{target}}\), is desired, one additional parameter (e.g., \(k_L\)) can be adjusted to meet this target, potentially leaving 9 free parameters for a 4-layer model.
 The total number of points after level \(j\), denoted \(n_j\) (where \(n_0=1\) is the initial seed point, so \(n_1 = k_1 + 1\) represents the total points after the first expansion), is given by the recurrence relation:
 \[
-n_j =
-\begin{cases}
-k_1 + 1 & \text{if } j=1 \\
-n_{j-1} + n_{j-1} \cdot f_j \cdot k_j & \text{if } j > 1 \text{ and } j \le L
-\end{cases}
+	n_j =
+	\begin{cases}
+		k_1 + 1                               & \text{if } j=1                        \\
+		n_{j-1} + n_{j-1} \cdot f_j \cdot k_j & \text{if } j > 1 \text{ and } j \le L
+	\end{cases}
 \]
 For example, for a 4-layer generation (\(L=4\)), the total number of points \(n_4\) is calculated iteratively:
 \begin{align*}
-n_1 &= k_1 + 1 \\
-n_2 &= n_1 + n_1 \cdot f_2 \cdot k_2 \\
-n_3 &= n_2 + n_2 \cdot f_3 \cdot k_3 \\
-n_4 &= n_3 + n_3 \cdot f_4 \cdot k_4
+	n_1 & = k_1 + 1                       \\
+	n_2 & = n_1 + n_1 \cdot f_2 \cdot k_2 \\
+	n_3 & = n_2 + n_2 \cdot f_3 \cdot k_3 \\
+	n_4 & = n_3 + n_3 \cdot f_4 \cdot k_4
 \end{align*}
 The final graph size is thus \(n_L\).
 
@@ -767,10 +767,10 @@ Plausible structures can emerge even with constant \(k_i\) values across levels,
 For instance, the parameter set comprising level expansion fractions \(f_i = (1.0, 0.3, 0.2, 0.1)\), points per expansion site \(k_i = (50, 50, 50, 50)\), and expansion radii \(r_i = (1000, 424, 120, 17)\) produces graphs whose separator characteristics are illustrated in \Cref{fig:hier_delaunay_example_params_sep}.
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{graphics/hierachcial_delaunay_const_sites.pdf}
-    \caption{Separator size scaling for a hierarchical Delaunay graph generated with constant expansion sites: \(f_i=(1.0, 0.3, 0.2, 0.1)\); \(k_i=(50, 50, 50, 50)\); \(r_i=(1000, 424, 120, 17)\).}
-    \label{fig:hier_delaunay_example_params_sep}
+	\centering
+	\includegraphics[width=0.7\linewidth]{graphics/hierachcial_delaunay_const_sites.pdf}
+	\caption{Separator size scaling for a hierarchical Delaunay graph generated with constant expansion sites: \(f_i=(1.0, 0.3, 0.2, 0.1)\); \(k_i=(50, 50, 50, 50)\); \(r_i=(1000, 424, 120, 17)\).}
+	\label{fig:hier_delaunay_example_params_sep}
 \end{figure}
 
 To further illustrate the interplay of these parameters, \Cref{fig:hier_delaunay_param_interplay} presents separator scaling plots for four different parameter configurations.
@@ -780,36 +780,176 @@ Subsequently, \cref{fig:param_interplay_fix1_radii} shows that this reduction in
 Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing the number of points generated at the first level (\(k_1\)) can also compensate for the reduced \(f_2\), again achieving separator scaling similar to the baseline by enhancing overall density and connectivity from the initial expansion phase.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/interplay_baseline.pdf}
-        \caption{Baseline: \(f_i=(1.0, 0.5, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
-        \label{fig:param_interplay_baseline}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/interplay_low_f1.pdf} % Filename implies f1, caption says f2
-        \caption{Low \(f_2\): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
-        \label{fig:param_interplay_low_f2}
-    \end{subfigure}
+	\centering
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/interplay_baseline.pdf}
+		\caption{Baseline: \(f_i=(1.0, 0.5, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+		\label{fig:param_interplay_baseline}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/interplay_low_f1.pdf} % Filename implies f1, caption says f2
+		\caption{Low \(f_2\): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+		\label{fig:param_interplay_low_f2}
+	\end{subfigure}
 
-    \vspace{0.5cm}
+	\vspace{0.5cm}
 
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/interplay_increased_r2.pdf}
-        \caption{Fix 1 (Increase radii for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, \textcolor{green}{283}, \textcolor{green!50}{52}, \textcolor{green!50}{11})\).}
-        \label{fig:param_interplay_fix1_radii}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/interplay_increased_k1.pdf}
-        \caption{Fix 2 (Increase \(k_1\) for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(\textcolor{green}{1000}, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
-        \label{fig:param_interplay_fix2_k1}
-    \end{subfigure}
-    \caption{Illustration of parameter interplay on separator size scaling in hierarchical Delaunay graphs. Changed parameters in (b), (c), and (d) are relative to (a) or the specific modification being tested.}
-    \label{fig:hier_delaunay_param_interplay}
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/interplay_increased_r2.pdf}
+		\caption{Fix 1 (Increase radii for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, \textcolor{green}{283}, \textcolor{green!50}{52}, \textcolor{green!50}{11})\).}
+		\label{fig:param_interplay_fix1_radii}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/interplay_increased_k1.pdf}
+		\caption{Fix 2 (Increase \(k_1\) for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(\textcolor{green}{1000}, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+		\label{fig:param_interplay_fix2_k1}
+	\end{subfigure}
+	\caption{Illustration of parameter interplay on separator size scaling in hierarchical Delaunay graphs. Changed parameters in (b), (c), and (d) are relative to (a) or the specific modification being tested.}
+	\label{fig:hier_delaunay_param_interplay}
 \end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Physical Barriers}
+\label{sec:synthetic:physical_barriers}
+
+To investigate the influence of physical features of varying scales on road network structure and separator sizes—ranging from large-scale elements like mountains or lakes to smaller features like challenging terrain or rivers—we explore a generative approach based on iterating Perlin noise functions across multiple scales.
+The core idea is to use procedurally generated noise to define regions that are less favorable for node placement, simulating natural or man-made obstacles.
+
+Our initial attempt utilizes a common method for generating additive fractal noise (often termed pink noise).
+This process involves summing multiple layers of Perlin noise, where at each step, the sampling frequency doubles and the amplitude halves.
+To avoid artifacts from sampling identical coordinates across different scales, we apply both scaling and translational offsets to the input coordinates for each noise layer: for instance, for a point \((x,y)\) and a given scale, the noise is sampled at \((x \cdot \text{scale} + 3 \cdot \text{scale}, y \cdot \text{scale} + 3 \cdot \text{scale})\).
+Points are then sampled in a domain, and their acceptance probability is modulated by the resulting smooth, cloud-like noise value at their location.
+However, this additive approach produces noise that is too smooth, and the resulting \enquote{obstacles} are not sufficiently \enquote{hard} or prohibitive.
+Graphs generated by accepting points based on this smooth additive fractal noise exhibit separator sizes scaling as \bigO{n^{1/2}}.
+
+To create more defined, \enquote{harder} obstacle boundaries across multiple scales, we develop an alternative approach using multiplicative Perlin noise.
+For each point \((x,y)\), Perlin noise is first sampled at \(M\) different scales (often referred to as octaves), where the frequency typically doubles at each successive scale.
+The output from the Perlin noise function for each of these \(M\) scales, usually in the range \([-1, 1]\), is then normalized to \([0, 1]\).
+Finally, the overall noise value for the point is determined by the product of these \(M\) normalized values.
+As more scales \(M\) are multiplied, this product naturally tends towards zero.
+To transform this continuous output into a binary map of allowed versus disallowed regions, we apply a threshold \(T_{\text{noise}}\) (e.g., \(0.5^M\)): a point is considered in an \enquote{allowed} region if its final product value is greater than \(T_{\text{noise}}\); otherwise, it is \enquote{disallowed}.
+This method yields a binary noise field with sharp boundaries and features at various frequencies, as \cref{fig:multiplicative_binary_noise_viz} illustrates.
+
+\begin{figure}[tbhp]
+	\centering
+	\includegraphics[width=\linewidth]{graphics/noise_image.png}
+	\caption{Visualization of the multiplicative binary Perlin noise used to define obstacle regions across multiple scales.}
+	\label{fig:multiplicative_binary_noise_viz}
+\end{figure}
+
+The graph generation algorithm then utilizes this multiplicative binary Perlin noise to place vertices, as detailed in \cref{alg:fractal_noise_point_sampling}.
+Essentially, candidate points are randomly sampled within a predefined domain (e.g., a unit circle). The noise value, which is the product of \(M\) scaled and normalized Perlin samples, is computed at each candidate point's location. If this value indicates an \enquote{allowed} region (i.e., above \(T_{\text{noise}}\)), the point is accepted and added to the graph's vertex set; otherwise, it is rejected, and a new candidate is sampled. This process continues until the desired number of \(n\) vertices is collected.
+For our experiments that yield good results for up to 10 million nodes, we use a sequence of eight scales (\(M=8\)): \([8, 16, 32, 64, 128, 256, 512, 1024]\). The initial scale of \(8.0\) is chosen instead of \(1.0\) because the Perlin noise implementation available to us exhibits overly smooth behavior at the \(1.0\) scale for our purposes.
+Once the \(n\) points are generated, a global Delaunay triangulation is performed on this point set. Subsequently, the same edge pruning step detailed in the Hierarchical Delaunay Generation section (see \cref{alg:prune_edges}) is applied to achieve a target average degree and refine the graph structure.
+An example of a graph generated using this method and its observed separator scaling are shown in \cref{fig:fractal_noise_graph_results}.
+
+\begin{algorithm}[tbhp]
+	\Input{Target number of points \(n\), \\
+		\(M\) noise scales \(s_i\)}
+	\Output{Geometric graph \(G\)}
+	\BlankLine
+	\(P \longleftarrow \emptyset\)\;
+	\While{\(|P| < n\)}{
+		\((x,y) \longleftarrow\) randomPointInUnitCircle()\;
+		\BlankLine
+		noise \(\longleftarrow \prod_{i=1}^{M} \text{perlinNoise}(x \cdot s_i + 3s_i,~~~y \cdot s_i + 3s_i)\)\;
+		\BlankLine
+        \If{\(\text{noise} > 0.5^{M}\)}{
+			\(P \longleftarrow P \cup \{(x,y)\}\)\;
+		}
+	}
+	\(G \longleftarrow\) delaunay(\(P\))\;
+	pruneEdges(\(G\))\;
+	\Return{\(G\)}\;
+	\caption{Point Sampling using Multiplicative Binary Perlin Noise}
+	\label{alg:fractal_noise_point_sampling}
+\end{algorithm}
+
+
+\begin{figure}[tbhp]
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/noise.png}
+		\caption{Graph generated using multi-scale Perlin noise-based point sampling (\(n = 10^5\)).}
+		\label{fig:fractal_noise_graph_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/noise_10m.pdf}
+		\caption{Separator scaling for the multi-scale Perlin noise graph.}
+		\label{fig:fractal_noise_graph_sep_plot}
+	\end{subfigure}
+	\caption{Synthetic graph generated using multiplicative binary Perlin noise and its separator scaling.}
+	\label{fig:fractal_noise_graph_results}
+\end{figure}
+
+This generation process does not directly prevent Delaunay edges from spanning the \enquote{obstacle} regions (areas with low composite noise values where no points are placed).
+However, it ensures that no vertices, and thus no potential navigation hubs or major junctions, are located within these simulated forbidden zones.
+Furthermore, the subsequent edge pruning step tends to remove many of the long, redundant edges that might span these empty regions, preserving only those deemed more critical for connectivity, akin to bridges over rivers or passes through mountainous terrain.
+
+An interesting finding is that this multi-scale Perlin noise generation method, requiring only selection of a suitable range of scales rather than extensive parameter fine-tuning, produces graphs whose separator sizes scale approximately as \bigO{n^{0.37}}.
+This is particularly noteworthy as an exponent of approximately \(0.37\) aligns closely with the separator scaling behavior empirically observed in real-world road networks, being less than \bigO{n^{1/3}}, yet also substantially better than \bigO{n^{1/2}}.
+
+
+We also investigate whether the full spectrum of noise scales is necessary to achieve this result.
+Experiments are conducted using only high-frequency scales (\([128, 256, 512, 1024]\)) and only low-frequency scales (\([8, 16, 32, 64]\)).
+The resulting noise patterns and separator scaling comparisons are illustrated in \cref{fig:noise_layer_ablation}.
+When using only high-frequency scales, the separators for smaller subgraphs (identified through nested dissection) align well with the desired trend. However, as the graph size or region under consideration increases, the separator sizes revert to an \bigO{n^{1/2}} trend, because large-scale obstacle features (which would be defined by low frequencies) are absent.
+Conversely, when using only low-frequency scales, the separator behavior changes with the graph's size.
+For smaller subgraphs, which mostly fit within the open areas created by high noise values, separators tend to scale as \bigO{n^{1/2}}; this is similar to what is expected from standard Delaunay triangulations in unobstructed regions.
+However, as subgraphs become larger and the low-frequency obstacles themselves begin to define the separations, a \enquote{dropoff} from this initial \bigO{n^{1/2}} trend is observed, meaning the separators become relatively smaller for these intermediate sizes.
+
+\begin{figure}[tbhp]
+	\centering
+    \begin{subfigure}{0.25\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/noise_high.png}
+		\caption{Noise from high-frequency scales only.}
+		\label{fig:noise_high_freq_viz}
+	\end{subfigure}
+	\hfill
+    \begin{subfigure}{0.25\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/noise_low.png}
+		\caption{Noise from low-frequency scales only.}
+		\label{fig:noise_low_freq_viz}
+	\end{subfigure}
+	\hfill
+    \begin{subfigure}{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/noise_high_vs_low_only.pdf}
+		\caption{Separator scaling: high-freq. vs. low-freq. only.}
+		\label{fig:noise_ablation_sep_plot}
+	\end{subfigure}
+	\caption{Impact of using only high-frequency versus only low-frequency Perlin noise scales on (a, b) noise patterns and (c) separator scaling.}
+	\label{fig:noise_layer_ablation}
+\end{figure}
+
+These studies therefore show that using a combination of multiple noise scales, representing obstacles of various sizes, is key to consistently achieving small separator sizes across a wide range of graph dimensions with this multi-scale Perlin noise method.
+This reliance on features defined across different scales to create a complex, layered obstacle landscape is conceptually similar to the explicit hierarchical graph generation methods explored earlier (e.g., \cref{sec:hierarchical_delaunay_generation}); in both approaches, such multi-scale or hierarchical structuring is vital for achieving the desired separator properties, as is demonstrated in our noise model experiments where the favorable separator scaling breaks down if an insufficient range of scales is employed.
