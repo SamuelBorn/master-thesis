@@ -114,7 +114,7 @@ However, this leads to an artificial steep cutoff in the observed separator char
 Experiments exploring various decay functions \(f\) yield diverse results.
 Simple functions like \( f(\text{dist}) = 1/\text{dist} \) result in graphs that still exhibit large top-level separators scaling as \bigO{n}, although subgraphs from nested dissection show the previously noted super-linear decrease in separator size.
 Conversely, rapidly decaying functions like \( f(\text{dist}) = 2^{-\text{dist}} \) produce graphs with separators of almost constant size, likely because the graph structure remains very close to that of the initial tree, with insufficient long-range connections.
-Through further experimentation and fine-tuning, it is found that a function of the form \( f(\text{dist}) = 1/\text{dist}^{3.3} \) is able to produce separator sizes that closely approximate the desired \bigO{n^{1/3}} scaling (see \cref{fig:tree_dist_best_fit_scaling}).
+Through further experimentation and fine-tuning, it is found that a function of the form \( f(\text{dist}) = 1/\text{dist}^{3.3} \) is able to produce separator sizes that closely approximate the desired \bigO{n^{0.37}} scaling (see \cref{fig:tree_dist_best_fit_scaling}).
 \cref{fig:tree_dist_locality_scaling} provides a visual comparison of the separator sizes for various decay functions.
 
 \begin{figure}[tbhp]
@@ -139,7 +139,7 @@ Through further experimentation and fine-tuning, it is found that a function of 
 Despite achieving the target scaling with \(f(\text{dist}) = 1/\text{dist}^{3.3}\), this result offers limited insight into the intrinsic structural properties of real road networks that lead to their small separators.
 The success with this specific, empirically derived exponent appears to be more a consequence of parameter tuning within this particular generative model (a random tree backbone augmented by edges based on tree distance) rather than an elucidation of fundamental graph characteristics.
 While the general concept of incorporating locality based on distances within an existing network structure remains potentially insightful—as such a metric might capture aspects beyond mere Euclidean distance, like travel time reduction incentives—our preliminary results with simpler functions indicate a high sensitivity to the choice of \(f\).
-Identifying a theoretically grounded or easily interpretable function \(f\) that consistently produces \bigO{n^{1/3}} scaling proves non-trivial.
+Identifying a theoretically grounded or easily interpretable function \(f\) that produces \bigO{n^{0.37}} scaling proves non-trivial.
 Given these considerations and the decision to prioritize other structural properties like geometric locality, planarity, and explicit hierarchy, we opt not to pursue an exhaustive search for an optimal or more interpretable tree-distance decay function within the scope of this work.
 
 Achieving the target \bigO{n^{1/3}} scaling with an empirically derived function like \(f(\text{dist}) = 1/\text{dist}^{3.3}\) appears to be an outcome of model-specific parameter tuning rather than a revelation of intrinsic road network properties responsible for their small separators.
