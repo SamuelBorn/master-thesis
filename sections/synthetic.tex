@@ -645,6 +645,7 @@ To better emulate the characteristics of real road networks, such as an average 
 While Bauer et al. \cite{hutchison_synthetic_2010} also suggested a pruning methodology, we adopt a different strategy tailored to our generated graph structures.
 In our approach, edges are considered in order of increasing Euclidean length (shortest first).
 An edge \((u,v)\) is removed if the shortest path distance between \(u\) and \(v\) in the graph, after the hypothetical removal of \((u,v)\), is no more than a factor \(\alpha\) times the original direct length of \((u,v)\); i.e., if \( \text{dist}_{G \setminus \{(u,v)\}}(u,v) \le \alpha \cdot \text{length}(u,v) \).
+This edge removal criterion approximates economic viability considerations, as connections that offer marginal utility or are largely redundant would likely not be constructed in real-world road networks.
 Through experimentation, we found that a pruning parameter of \(\alpha = 2.5\) effectively reduces the average degree to the target range comparable to that of road networks.
 The pseudocode for this edge pruning process is given in \cref{alg:prune_edges}.
 A visual comparison of graph structures before and after pruning is provided in \cref{fig:delaunay_vs_no_pruning_graph}.
