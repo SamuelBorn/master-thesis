@@ -319,8 +319,11 @@ The desired scaling is explicitly engineered into the generation process here, r
 \subsection{Delaunay Triangulations}
 \label{sec:synthetic:delaunay}
 
-We extend this investigation to Delaunay triangulations, which can be viewed as a generalization of grids derived from point sets.
-Our process involves sampling points uniformly at random in a two-dimensional space and computing their Delaunay triangulation.
+We extend this investigation to Delaunay triangulations, which can be viewed as a generalization of grids derived from point sets and are a fundamental structure in computational geometry.
+A Delaunay triangulation for a given set \(P\) of discrete points in a plane is a specific triangulation such that for any triangle, its circumcircle (the unique circle passing through its three vertices) contains no other points from \(P\) in its interior.
+This \enquote{empty circumcircle} property ensures that Delaunay triangulations tend to maximize the minimum angle of all triangles in the triangulation, thereby avoiding overly elongated triangles, making them well-suited for applications like mesh generation.
+Our process involves sampling points uniformly at random in a two-dimensional space and then computing their Delaunay triangulation.
+
 The Delaunay triangulation results in a graph with an average vertex degree of approximately 6, which is denser than typical road networks.
 This density is consistent with properties of triangulations; for a planar graph forming a triangulation of \(|V|\) vertices, Euler's formula (\(|V| - |E| + |F| = 2\), where \(|F|\) is the number of faces) combined with the observation that \(3|F| \approx 2|E|\) (since most faces are triangles and each edge borders two faces) implies that the average degree \(2|E|/|V|\) approaches 6 for large \(|V|\).
 Similar to the grid experiments, we thus randomly delete edges from the triangulation until the average degree reaches the target value of \(2.5\), again analyzing the largest connected component.
