@@ -7,18 +7,7 @@ By analyzing the separator sizes within these synthetic graphs, we aim to determ
 \section{Degree Distribution}
 
 Our initial focus is on isolating the effect of the degree distribution.
-Road networks are known to be sparse graphs.
-The specific PTV Europe road network dataset \cite{ptv_group_dimacs-europe_2009} utilized in our experiments exhibits an average vertex degree of approximately \(2.5\).
-A detailed visualization of the degree distribution for this network is provided in \cref{fig:degree_dist_europe}.
-
-\begin{figure}[tbhp]
-	\centering
-	\includegraphics[width=0.6\linewidth]{graphics/degree_overview_europe.pdf}
-	\caption{Degree distribution of the PTV Europe road network. The x-axis represents the vertex degree, and the y-axis shows the fraction of vertices with that degree. A single node with degree 12 has the highest degree.}
-	\label{fig:degree_dist_europe}
-\end{figure}
-
-To examine whether this low average degree alone is sufficient to yield small separators, we generate connected random graphs matching this average degree.
+To examine whether a low average degree is sufficient to yield small separators, we generate connected random graphs matching this average degree.
 The generation process involves two main steps.
 First, a random spanning tree is created for a given set of \(n\) vertices using the algorithm described by Broder \cite{broder_generating_1989}.
 This algorithm performs a random walk starting from an arbitrary vertex on the complete graph of \(n\) vertices.
@@ -27,13 +16,13 @@ The process continues until all vertices are visited, resulting in a uniformly s
 
 It is noteworthy that random trees generated in this manner exhibit properties distinct from those of road networks.
 For instance, the diameter of such random trees is known to be in \bigO{n^{1/2}} \cite{chlamtac_tree-based_1987}.
-This differs from empirical observations on road networks, such as subgraphs from the nested dissection of the Karlsruhe graph, where the diameter appears smaller, estimated empirically as \bigO{n^{0.3683}}.
-This observed diameter growth is visualized in \cref{fig:diameter_karlsruhe}.
+This differs from our empirical observations on road networks.
+This observed diameter growth of these trees is visualized in \cref{fig:diameter_karlsruhe}.
 
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.6\linewidth]{graphics/diameters.pdf}
-	\caption{Empirical diameter growth observed in the Karlsruhe road network subgraph. The plot shows the diameter (y-axis) as a function of the number of nodes \(n\) (x-axis, log scale).}
+	\caption{The plot shows the diameter (y-axis) as a function of the number of nodes \(n\) (x-axis, log scale).}
 	\label{fig:diameter_karlsruhe}
 \end{figure}
 
@@ -57,7 +46,7 @@ The separator scaling is illustrated in \cref{fig:same_degree}.
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.6\linewidth]{graphics/RandomAvgDeg2.5.pdf}
-	\caption{Separator sizes observed in random graphs generated with an average degree matching the PTV Europe road network (\( \approx 2.5 \)).}
+	\caption{Separator sizes observed in random graphs generated with an average degree matching the DIMACS Europe road network (\( \approx 2.5 \)).}
 	\label{fig:same_degree}
 \end{figure}
 

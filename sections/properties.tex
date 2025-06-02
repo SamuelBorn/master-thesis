@@ -1,7 +1,59 @@
 \chapter{Road Network Propeties}
-\label{ch:experimental_analysis}
+\label{ch:properties}
 
 \todo[inline]{Add a short introduction to the chapter.}
+
+\section{Degree Distribution}
+\label{sec:degree_distribution}
+
+Road networks are characteristically sparse graphs.
+The DIMACS Europe road network dataset from PTV \cite{ptv_group_dimacs-europe_2009}, used in our experiments, exemplifies this with an average vertex degree of approximately \(2.5\).
+\Cref{fig:degree_dist_europe} presents this network's degree distribution, which reveals that a vast majority of vertices (approximately \(99.8\%\)) have a degree less than 5.
+The maximum degree observed in this dataset is 12, attained by a single node.
+
+\begin{figure}[tbhp]
+    \centering
+    \includegraphics[width=0.6\linewidth]{graphics/degree_overview_europe.pdf}
+    \caption{Degree distribution of the DIMACS Europe road network \cite{ptv_group_dimacs-europe_2009}. The x-axis represents vertex degree, and the y-axis indicates the fraction of vertices.}
+    \label{fig:degree_dist_europe}
+\end{figure}
+
+For comparison, other datasets, such as those derived from OpenStreetMap, may exhibit even lower average degrees.
+This often results from a finer granularity in modeling road segments, where features like curves or minor attribute changes are represented by sequences of degree 2 vertices, thereby increasing their prevalence in the graph.
+
+The degree distribution graphs also influences other structural metrics.
+One such metric is the meshedness coefficient, \(\alpha\), which quantifies the density of cycles or bounded faces within a planar graph.
+It is calculated as the ratio of the graph's actual number of bounded faces (\(m - n + 1\), where \(n\) is vertices and \(m\) is edges) to the maximum possible for a planar graph with \(n\) vertices (\(2n - 5\)), i.e., \(\alpha = \frac{m - n + 1}{2n - 5}\) \cite{buhl_topological_2006}.
+This coefficient ranges from 0 for trees to 1 for maximal planar graphs.
+Buhl et al. suggest that this coefficient can also be used to gauge a network's robustness to disconnections and its cost in terms of total edge length \cite{buhl_topological_2006}.
+For the DIMACS Europe road network, after applying a planarization procedure (detailed in \cref{sec:approach:planarity}), we compute a meshedness coefficient \(\alpha \approx 0.1166\).
+This relatively low value further underscores the general sparsity and somewhat tree-like macroscopic structure of the road network.
+
+
+\section{Diameter}
+\label{sec:diameter}
+
+The diameter of a graph, defined as the longest shortest path between any pair of vertices, is a fundamental metric characterizing its overall extent and the efficiency of traversal.
+To investigate how this property manifests in road networks across various scales, we analyzed the diameters of subgraphs obtained from the nested dissection process.
+
+Our empirical analysis of these subgraphs indicates that their diameter \(D\) scales approximately as \bigO{n^{0.3683}}.
+This observed scaling behavior is illustrated in \cref{fig:road_network_diameter_scaling}.
+
+\begin{figure}[tbhp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{graphics/diam-europe.pdf}
+    \caption{Empirical scaling of graph diameter with the number of vertices \(n\) for subgraphs of road networks obtained via nested dissection. The observed scaling is approximately \bigO{n^{0.3683}}.}
+    \label{fig:road_network_diameter_scaling}
+\end{figure}
+
+
+
+
+
+
+
+
+
 
 \section{Separator Sizes}
 \label{sec:empirical_analysis}
