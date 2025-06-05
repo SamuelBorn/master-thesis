@@ -73,7 +73,7 @@ Then, two subgraphs, \(G_1\) and \(G_2\), each containing approximately \((n-s(n
 Finally, every vertex in \(G_1\) is connected to every vertex in \(S\), and likewise, every vertex in \(G_2\) is connected to every vertex in \(S\).
 By construction, the set \(S\) (forming a \(K_{s(n)}\)) is a separator of size \(s(n)\) that partitions the graph into \(G_1\) and \(G_2\).
 Despite this small, built-in separator, the average degree of the resulting graph can be substantial.
-For example, using \(s(n) = n^{1/3}\), a graph of \(n=10,000\) vertices generated via this method has an average degree of approximately 169 and a maximum degree of 6202.
+For example, using \(s(n) = n^{1/3}\), a graph of \(n=10^4\) vertices generated via this method has an average degree of approximately 169 and a maximum degree of 6202.
 This example illustrates that specific structural properties enabling small separators can coexist with high overall edge density, suggesting that the global organization of edges, beyond mere sparsity, significantly influences separator characteristics.
 
 \section{Locality}
@@ -156,7 +156,7 @@ This outcome is visualized in \cref{fig:geometric_locality_separators}.
 	\begin{subfigure}{0.35\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/local_embedding.png}
-		\caption{Visualization of a graph with 10K nodes generated using the geometric locality method.}
+        \caption{Visualization of a graph with \(10^4\) nodes generated using the geometric locality method.}
 		\label{fig:geometric_locality_graph_viz}
 	\end{subfigure}
 	\hfill
@@ -168,6 +168,36 @@ This outcome is visualized in \cref{fig:geometric_locality_separators}.
 	\end{subfigure}
 	\caption{Synthetic graph generation using geometric locality and analysis of separator sizes. }
 	\label{fig:geometric_locality_separators}
+\end{figure}
+
+An alternative strategy we investigate for incorporating geometric locality is the construction of k-Nearest Neighbor (k-NN) graphs.
+In this model, each vertex connects via an edge to its \(k\) geographically closest neighbors, with proximity defined by the Euclidean distance between their embedded point coordinates.
+This approach does not utilize an underlying tree structure like some previously discussed methods.
+Connectivity in a k-NN graph is not guaranteed; however, the size of the largest connected component generally increases with the value of \(k\).
+For instance, with uniformly sampled points, a \(k\) as small as 3 often yields a primary connected component encompassing approximately 98\% of all vertices.
+The average degree of the resulting graph is directly influenced by \(k\).
+For point sets with non-uniform distributions, a larger \(k\) is typically required to achieve a similar level of overall connectivity.
+Our objective is to identify the smallest \(k\) that results in a largely connected graph, while also aiming for an low average degree, comparable to those of sparse road networks.
+The construction of k-NN graphs can be performed efficiently: following an initial \bigO{n \log n} precomputation to build a spatial index such as a k-d tree, identifying the \(k\) nearest neighbors for each of the \(n\) vertices takes approximately \bigO{k \log n} time per vertex, resulting in a total construction time of roughly \bigO{nk \log n}.
+Our experiments show that k-NN graphs generated in this manner also exhibit separator sizes that scale approximately as \bigO{n^{1/2}} as seen in \cref{fig:knn_graph_analysis}.
+
+\begin{figure}[tbhp]
+    \centering
+    \begin{subfigure}{0.35\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/knn.png}
+        \caption{Visualization of a k-NN graph (for \(k=3\)) generated from \(n \approx 10^4\) uniformly sampled points.}
+        \label{fig:knn_graph_structure_viz}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.55\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/knn_seps.pdf}
+        \caption{Separator size scaling for k-NN graphs \(k=3\), showing approximately \bigO{n^{1/2}} behavior.}
+        \label{fig:knn_graph_sep_scaling_plot}
+    \end{subfigure}
+    \caption{Analysis of k-Nearest Neighbor (k-NN) graph of uniformly sampled points and separator scaling.}
+    \label{fig:knn_graph_analysis}
 \end{figure}
 
 The results from the geometric locality approach suggest that merely combining low average degree with this specific form of locality is insufficient to reproduce the cubic root separator sizes of road networks.
@@ -380,7 +410,7 @@ It serves as a reminder that observing \bigO{n^{1/2}} separator scaling does not
 	\begin{subfigure}{0.35\linewidth}
 		\centering
 		\includegraphics[height=\linewidth, angle=90]{graphics/highway.png}
-		\caption{Visualization of a synthetic graph generated using the ABR low highway dimension algorithm with 10K nodes.}
+        \caption{Visualization of a synthetic graph generated using the ABR low highway dimension algorithm with \(10^4\) nodes.}
 		\label{fig:abr_graph_viz}
 	\end{subfigure}
 	\hfill
@@ -914,6 +944,8 @@ An interesting finding is that this multi-scale Perlin noise generation method, 
 This is particularly noteworthy as an exponent of approximately \(0.37\) aligns closely with the separator scaling behavior empirically observed in real-world road networks, being less than \bigO{n^{1/3}}, yet also substantially better than \bigO{n^{1/2}}.
 
 
+\paragraph{Ablation Studies on Noise Scales}
+
 We also investigate whether the full spectrum of noise scales is necessary to achieve this result.
 Experiments are conducted using only high-frequency scales (\([128, 256, 512, 1024]\)) and only low-frequency scales (\([8, 16, 32, 64]\)).
 The resulting noise patterns and separator scaling comparisons are illustrated in \cref{fig:noise_layer_ablation}.
@@ -950,3 +982,45 @@ However, as subgraphs become larger and the low-frequency obstacles themselves b
 
 These studies therefore show that using a combination of multiple noise scales, representing obstacles of various sizes, is key to consistently achieving small separator sizes across a wide range of graph dimensions with this multi-scale Perlin noise method.
 This reliance on features defined across different scales to create a complex, layered obstacle landscape is conceptually similar to the explicit hierarchical graph generation methods explored earlier (e.g., \cref{sec:hierarchical_delaunay_generation}); in both approaches, such multi-scale or hierarchical structuring is vital for achieving the desired separator properties, as is demonstrated in our noise model experiments where the favorable separator scaling breaks down if an insufficient range of scales is employed.
+
+
+
+\paragraph{Alternative Graph Construction: k-Nearest Neighbors}
+
+While the primary approach described above utilizes a Delaunay triangulation followed by pruning on the noise-sampled points, we also explored an alternative graph construction method using k-Nearest Neighbors (k-NN) on the same underlying point sets.
+For these non-uniformly distributed points, a consequence of the noise-based acceptance criteria, a \(k=3\), which often suffices to ensure reasonable connectivity for uniformly sampled points, proved insufficient.
+We found that a value of \(k=5\) was generally necessary to achieve a largely connected graph.
+Interestingly, k-NN graphs constructed from these noise-sampled points exhibited separator sizes that were substantially smaller than our target \bigO{n^{0.37}}.
+\Cref{fig:knn_vs_delaunay_noise_points} illustrates this comparison.
+Visually comparing a k-NN graph (\cref{fig:knn_noise_graph_viz_comp}) with a graph derived from the Delaunay-based approach on the same noise-sampled point set (\cref{fig:delaunay_noise_graph_viz_comp}) reveals that the k-NN graph possesses significantly fewer long edges.
+This characteristic arises because the k-NN construction inherently limits connections to only the \(k\) closest neighbors.
+Consequently, edges are less likely to span large low-noise regions (our simulated obstacles), particularly if a point's \(k\) nearest neighbors all reside on the same side of such a zone.
+This effect of limited long-range connectivity due to the k-NN rule appears to cascade through recursive partitioning levels, contributing to the observed tendency towards very small or trivial separators.
+
+\begin{figure}[tbhp]
+    \centering
+    \begin{subfigure}{0.27\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/noise_rng_small.png}
+        \caption{Delaunay subgraph on noise-sampled points.}
+        \label{fig:delaunay_noise_graph_viz_comp}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.27\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/noise_knn_small.png}
+        \caption{k-NN graph (\(k=5\)) on the same noise-sampled point set.}
+        \label{fig:knn_noise_graph_viz_comp}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/noise_knn_vs_rng.pdf}
+        \caption{Separator scaling: Delaunay-based vs. k-NN based.}
+        \label{fig:knn_delaunay_noise_sep_compare}
+    \end{subfigure}
+    \caption{Comparison of graph structures and separator scaling for Delaunay-derived graphs versus k-NN graphs on identical noise-sampled point sets.}
+    \label{fig:knn_vs_delaunay_noise_points}
+\end{figure}
+
+\todo{write something like: we need hierachy + delaunay that can span larger distances to get the desired scaling}
