@@ -335,43 +335,104 @@ The desired scaling is explicitly engineered into the generation process here, r
 \end{figure}
 
 
-\subsection{Delaunay Triangulations}
-\label{sec:synthetic:delaunay}
 
-We extend this investigation to Delaunay triangulations, which can be viewed as a generalization of grids derived from point sets and are a fundamental structure in computational geometry.
-A Delaunay triangulation for a given set \(P\) of discrete points in a plane is a specific triangulation such that for any triangle, its circumcircle (the unique circle passing through its three vertices) contains no other points from \(P\) in its interior.
-This \enquote{empty circumcircle} property ensures that Delaunay triangulations tend to maximize the minimum angle of all triangles in the triangulation, thereby avoiding overly elongated triangles, making them well-suited for applications like mesh generation.
-Our process involves sampling points uniformly at random in a two-dimensional space and then computing their Delaunay triangulation.
 
-The Delaunay triangulation results in a graph with an average vertex degree of approximately 6, which is denser than typical road networks.
-This density is consistent with properties of triangulations; for a planar graph forming a triangulation of \(|V|\) vertices, Euler's formula (\(|V| - |E| + |F| = 2\), where \(|F|\) is the number of faces) combined with the observation that \(3|F| \approx 2|E|\) (since most faces are triangles and each edge borders two faces) implies that the average degree \(2|E|/|V|\) approaches 6 for large \(|V|\).
-Similar to the grid experiments, we thus randomly delete edges from the triangulation until the average degree reaches the target value of \(2.5\), again analyzing the largest connected component.
 
-As might be expected, the results obtained from these sparse Delaunay graphs are largely analogous to those from sparse grids.
-The separators exhibit scaling consistent with \bigO{n^{1/2}}, characteristic of planar graphs, yet the associated constant factors are small.
-This again leads to absolute separator sizes that are numerically comparable to those measured in road networks for graphs of relevant sizes.
-These findings are depicted in \cref{fig:sparse_delaunay_separators}.
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Delaunay Triangulations and Their Sparse Subgraphs}
+\label{sec:synthetic:delaunay_variants}
+
+As a generalization of grid-like structures derived from point sets, Delaunay Triangulations (DT) are fundamental in computational geometry and serve as a basis for generating planar graphs.
+A DT for a given set \(P\) of discrete points in a plane is a specific triangulation such that for any triangle in \(DT(P)\), its circumcircle (the unique circle passing through its three vertices) contains no other points from \(P\) in its interior.
+This \enquote{empty circumcircle} property ensures that DTs tend to maximize the minimum angle of all triangles in the triangulation, thereby avoiding overly elongated triangles.
+Our process for generating a baseline Delaunay graph involves sampling \(n\) points uniformly at random in a two-dimensional space and then computing their full Delaunay triangulation.
+Such a DT typically has an average vertex degree around 6. This observation is consistent with Euler's formula for planar graphs (\(|V| - |E| + |F| = 2\)); for large triangulations, where most faces are triangles and each internal edge is shared by two faces (\(3|F| \approx 2|E|\)), the average degree \(2|E|/|V|\) approaches 6.
+
+Since an average degree of 6 is considerably denser than that of typical road networks (which is closer to \(2.5\)), sparsification is necessary to create more comparable synthetic graphs. We explore several methods for this:
+
+\paragraph{Random Edge Deletion}
+One straightforward sparsification technique, similar to that applied in our grid experiments, involves randomly deleting edges from the full Delaunay triangulation until the target average degree of approximately \(2.5\) is achieved. The largest connected component of the resulting graph is then used for analysis.
+
+\paragraph{Systematically Defined Subgraphs}
+Alternatively, sparser graphs can be derived from the DT by retaining only those edges that satisfy stricter geometric conditions. Prominent examples of such Delaunay subgraphs include Gabriel Graphs (GG) \cite{gabriel_new_1969} and Relative Neighborhood Graphs (RNG) \cite{toussaint_relative_1980}.
+An edge \((u,v)\) is part of a GG if the closed disk whose diameter is the segment \(uv\) contains no other point from the original set \(P\).
+An edge \((u,v)\) belongs to an RNG if no third point \(w \in P\) is simultaneously closer to both \(u\) and \(v\) than \(u\) and \(v\) are to each other; that is, the lune formed by the intersection of two circles of radius \(\text{dist}(u,v)\) centered at \(u\) and \(v\) must be empty of other points.
+These definitions lead to the known hierarchical relationship: RNG \(\subseteq\) GG \(\subseteq\) DT.
+The RNG is particularly interesting from a network modeling perspective, as its construction criterion can be loosely interpreted in terms of economic viability for infrastructure: a direct road between two points \(u\) and \(v\) might not be constructed if an alternative path via a nearby third point \(w\) (e.g., \(u \to w \to v\)) exists without a significant detour.
+For uniformly sampled random points, the RNG yields an average degree of approximately \(2.6\) \cite{buhl_topological_2006}, which is close to the average degree of road networks.
+
+\paragraph{Separator Analysis of Delaunay Variants}
+We analyzed the separator properties of these different Delaunay-derived graphs: the full DT, the randomly sparsified DT (target average degree \(2.5\)), the Gabriel Graph, and the Relative Neighborhood Graph, all generated from identical initial point sets to ensure comparability.
+Visualizations of these graph structures and their comparative separator scaling are presented in \cref{fig:delaunay_variants_comparison}.
+Despite the variations in density—ranging from an average degree of approximately 6 for the full DT down to about \(2.6\) for the RNG—our experiments indicate that the asymptotic separator scaling for all these Delaunay-derived planar graphs remains consistent with \bigO{n^{1/2}}.
+The method of sparsification, whether through random edge deletion or by applying systematic geometric rules like those for GG or RNG, primarily influences the constant factors associated with the separator size. It does not, however, fundamentally alter the \bigO{n^{1/2}} scaling behavior tied to their underlying planar geometric nature.
+Even when the average degree very closely matches that of road networks (as in the RNG case), the separator scaling does not approach the \(\approx \bigO{n^{0.37}}\) observed empirically for road networks.
 
 \begin{figure}[tbhp]
-	\centering
-	\begin{subfigure}{0.35\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{graphics/delaunay_avg_deg.png}
-		\caption{Visualization of a sparse Delaunay triangulation with 5K nodes after random edge removal to achieve an average degree of \(2.5\).}
-		\label{fig:sparse_delaunay_viz}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{0.55\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{graphics/sep_delaunay_avg_deg.png}
-		\caption{Separator size scaling for sparse Delaunay graphs (average degree \(2.5\)). Separator sizes scale approximately as \bigO{n^{1/2}} with small constant factors, yielding absolute sizes similar to road networks at practical scales. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separatos.}
-		\label{fig:sparse_delaunay_sep_plot}
-	\end{subfigure}
-	\caption{Analysis of sparse Delaunay graphs with average degree \(2.5\).}
-	\label{fig:sparse_delaunay_separators}
+    \centering
+    \begin{subfigure}{0.3\linewidth}
+        \centering
+        \vspace{1.5cm}
+        \caption{Full Delaunay Triangulation (avg. deg. \(\approx 6\)).}
+        \label{fig:delaunay_full_viz}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.3\linewidth}
+        \centering
+        \vspace{1.5cm}
+        \caption{Sparse DT (Random Deletion, avg. deg. \(\approx 2.5\)).}
+        \label{fig:delaunay_random_del_viz}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.3\linewidth}
+        \centering
+        \vspace{1.5cm}
+        \caption{Gabriel Graph (GG) from the same point set.}
+        \label{fig:delaunay_gg_viz}
+    \end{subfigure}
+
+    \vspace{0.2cm} 
+
+    \begin{subfigure}{0.3\linewidth}
+        \centering
+        \vspace{1.5cm}
+        \caption{Relative Neighborhood Graph (RNG, avg. deg. \(\approx 2.6\)).}
+        \label{fig:delaunay_rng_viz}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.6\linewidth} 
+        \centering
+        \vspace{1.5cm} 
+        \caption{Separator scaling for Delaunay variants.}
+        \label{fig:delaunay_variants_sep_plot}
+    \end{subfigure}
+    \caption{Comparison of Delaunay Triangulation and its sparse subgraphs derived from the same point set: visualizations (a-d) and separator scaling (e).}
+    \label{fig:delaunay_variants_comparison}
 \end{figure}
 
-The experiments with sparse grids and Delaunay triangulations suggest that combining geometry with low average degree results in graphs whose practical separator sizes are close to those of road networks, despite differing asymptotic scaling.
+These experiments with sparse grids and various forms of sparse Delaunay triangulations suggest that while combining geometric point generation with methods to achieve low average degree can yield practical separator sizes numerically close to those of road networks (due to potentially small constant factors), the underlying asymptotic scaling remains \bigO{n^{1/2}}.
+This indicates that these standard planar graph models, even when carefully sparsified, do not inherently capture the mechanism leading to the more favorable \(\approx \bigO{n^{0.37}}\) scaling observed in real road networks.
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Highway Dimension}
 \label{sec:synthetic:highway_dimension}
