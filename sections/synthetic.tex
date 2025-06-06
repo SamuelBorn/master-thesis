@@ -382,22 +382,22 @@ Even when the average degree very closely matches that of road networks (as in t
     \centering
     \begin{subfigure}{0.3\linewidth}
         \centering
-        \vspace{1.5cm}
-        \caption{Full Delaunay Triangulation (avg. deg. \(\approx 6\)).}
+        \includegraphics[width=\linewidth]{graphics/delaunay.png}
+        \caption{Full Delaunay Triangulation (avg. deg. \(\approx 6\))}
         \label{fig:delaunay_full_viz}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.3\linewidth}
         \centering
-        \vspace{1.5cm}
-        \caption{Sparse DT (Random Deletion, avg. deg. \(\approx 2.5\)).}
+        \includegraphics[width=\linewidth]{graphics/delaunay_random_delete.png}
+        \caption{Sparse DT (Random Deletion, avg. deg. \(\approx 2.5\))}
         \label{fig:delaunay_random_del_viz}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.3\linewidth}
         \centering
-        \vspace{1.5cm}
-        \caption{Gabriel Graph (GG) from the same point set.}
+        \includegraphics[width=\linewidth]{graphics/gabriel_graph.png}
+        \caption{Gabriel Graph (GG)\newline}
         \label{fig:delaunay_gg_viz}
     \end{subfigure}
 
@@ -405,14 +405,14 @@ Even when the average degree very closely matches that of road networks (as in t
 
     \begin{subfigure}{0.3\linewidth}
         \centering
-        \vspace{1.5cm}
-        \caption{Relative Neighborhood Graph (RNG, avg. deg. \(\approx 2.6\)).}
+        \includegraphics[width=\linewidth]{graphics/relative_neighborhood.png}
+        \caption{Relative Neighborhood Graph (RNG)}
         \label{fig:delaunay_rng_viz}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.6\linewidth} 
         \centering
-        \vspace{1.5cm} 
+        \includegraphics[width=\linewidth]{graphics/delaunay_variants_sep.pdf}
         \caption{Separator scaling for Delaunay variants.}
         \label{fig:delaunay_variants_sep_plot}
     \end{subfigure}
@@ -420,8 +420,8 @@ Even when the average degree very closely matches that of road networks (as in t
     \label{fig:delaunay_variants_comparison}
 \end{figure}
 
-These experiments with sparse grids and various forms of sparse Delaunay triangulations suggest that while combining geometric point generation with methods to achieve low average degree can yield practical separator sizes numerically close to those of road networks (due to potentially small constant factors), the underlying asymptotic scaling remains \bigO{n^{1/2}}.
-This indicates that these standard planar graph models, even when carefully sparsified, do not inherently capture the mechanism leading to the more favorable \(\approx \bigO{n^{0.37}}\) scaling observed in real road networks.
+% These experiments with sparse grids and various forms of sparse Delaunay triangulations suggest that while combining geometric point generation with methods to achieve low average degree can yield practical separator sizes numerically close to those of road networks (due to potentially small constant factors), the underlying asymptotic scaling remains \bigO{n^{1/2}}.
+% This indicates that these standard planar graph models, even when carefully sparsified, do not inherently capture the mechanism leading to the more favorable \(\approx \bigO{n^{0.37}}\) scaling observed in real road networks.
 
 
 
@@ -1063,7 +1063,7 @@ This effect of limited long-range connectivity due to the k-NN rule appears to c
     \begin{subfigure}{0.27\linewidth}
         \centering
         \includegraphics[width=\linewidth]{graphics/noise_rng_small.png}
-        \caption{Delaunay subgraph on noise-sampled points.}
+        \caption{Delaunay subgraph on noise-sampled points. \\}
         \label{fig:delaunay_noise_graph_viz_comp}
     \end{subfigure}
     \hfill
