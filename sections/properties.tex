@@ -12,10 +12,10 @@ The DIMACS Europe road network dataset from PTV \cite{ptv_group_dimacs-europe_20
 The maximum degree observed in this dataset is 12, attained by a single node.
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.6\linewidth]{graphics/degree_overview_europe.pdf}
-    \caption{Degree distribution of the DIMACS Europe road network \cite{ptv_group_dimacs-europe_2009}. The x-axis represents vertex degree, and the y-axis indicates the fraction of vertices.}
-    \label{fig:degree_dist_europe}
+	\centering
+	\includegraphics[width=0.6\linewidth]{graphics/degree_overview_europe.pdf}
+	\caption{Degree distribution of the DIMACS Europe road network \cite{ptv_group_dimacs-europe_2009}. The x-axis represents vertex degree, and the y-axis indicates the fraction of vertices.}
+	\label{fig:degree_dist_europe}
 \end{figure}
 
 For comparison, other datasets, such as those derived from OpenStreetMap, may exhibit even lower average degrees.
@@ -34,16 +34,24 @@ This relatively low value further underscores the general sparsity and somewhat 
 \label{sec:diameter}
 
 The diameter of a graph, defined as the longest shortest path between any pair of vertices, is a fundamental metric characterizing its overall extent and the efficiency of traversal.
-To investigate how this property manifests in road networks across various scales, we analyzed the diameters of subgraphs obtained from the nested dissection process.
+In our analysis, we focus specifically on the hop diameter, where each edge has a uniform weight of 1.
+This choice is motivated by the desire to understand the graph's topological and hierarchical structure.
+To ensure that the measured hop distances are structurally meaningful, we first pre-process all graphs and subgraphs by contracting vertices of degree 2, effectively treating long chains of such vertices as single conceptual edges.
 
-Our empirical analysis of these subgraphs indicates that their diameter \(D\) scales approximately as \bigO{n^{0.3683}}.
+Computing the exact diameter of a general graph can be computationally intensive.
+A simple two-step Breadth-First Search approach, performing a BFS from a random node to find the furthest vertex, then a second BFS from that vertex, is only guaranteed to find the exact diameter in some graph classes (e.g. in trees) and only provides a 2-approximation for general graphs.
+Therefore, to obtain exact diameter values, we employ the more sophisticated iFUB (iterative Fringe Upper Bound) algorithm as described by Crescenzi et al. \cite{crescenzi_computing_2013}.
+This algorithm successfully computes the exact graph diameter in reasonable time without resorting to a full all-pairs shortest path calculation.
+
+We investigated how the hop diameter scales with graph size by analyzing the subgraphs obtained from the nested dissection process.
+Our empirical analysis of these contracted subgraphs indicates that their diameter scales approximately as \bigO{n^{0.3177}}.
 This observed scaling behavior is illustrated in \cref{fig:road_network_diameter_scaling}.
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{graphics/diam-europe.pdf}
-    \caption{Empirical scaling of graph diameter with the number of vertices \(n\) for subgraphs of road networks obtained via nested dissection. The observed scaling is approximately \bigO{n^{0.3683}}.}
-    \label{fig:road_network_diameter_scaling}
+	\centering
+	\includegraphics[width=0.7\linewidth]{graphics/diam-germany-ifub.pdf}
+	\caption{Empirical scaling of hop diameter with the number of vertices \(n\) for nested disscection subgraphs of road networks (with degree-2 nodes contracted). The observed scaling is approximately \bigO{n^{0.3177}}.}
+	\label{fig:road_network_diameter_scaling}
 \end{figure}
 
 
@@ -103,21 +111,21 @@ When constructing the log-log plot, this binning procedure is applied to the log
 \cref{fig:separator_size_loglog_binned} illustrates the binned data points on logarithmic axes.
 
 \begin{figure}[tbhp]
-    \begin{subfigure}{0.49\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/Europe_non_binned.png}
-        \caption{Non-binned separator sizes.}
-        \label{fig:separator_size_loglog_non_binned}
-    \end{subfigure}
-    \hfill
+	\begin{subfigure}{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/Europe_non_binned.png}
+		\caption{Non-binned separator sizes.}
+		\label{fig:separator_size_loglog_non_binned}
+	\end{subfigure}
+	\hfill
 	\begin{subfigure}{0.49\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/Europe-binned.pdf}
 		\caption{Binned average separator sizes.}
-        \label{fig:separator_size_loglog_binned}
+		\label{fig:separator_size_loglog_binned}
 	\end{subfigure}
-    \caption{Separator sizes of Europe on logarithmic axes (subgraphs < 10M nodes).}
-    \label{fig:separator_size_loglog}
+	\caption{Separator sizes of Europe on logarithmic axes (subgraphs < 10M nodes).}
+	\label{fig:separator_size_loglog}
 \end{figure}
 
 To quantify the relationship between separator size \( y \) and subgraph size \( x \), we performed statistical curve fitting on the empirical data.
@@ -138,7 +146,7 @@ Fitting \( y = a \cdot x^{1/2} + b \) yields \( y \approx 0.1087 \cdot x^{1/2} +
 A more general power-law fit \( y = a \cdot x^c + b \) results in \( y \approx 0.2346 \cdot x^{0.3980} + 0.6140 \) with an \( R^2 \) value of \( 0.4832 \).
 While these direct fits indicate a scaling exponent potentially closer to \( 0.4 \) than \( 1/3 \) or \( 1/2 \), the overall \( R^2 \) scores remain relatively low, indicating only a moderate goodness of fit.
 The above mentioned curves are visualized in \cref{fig:separator_size_loglog}.
-The fitted lines displayed in \cref{fig:separator_size_loglog_binned} are those computed from the non-binned data and shown previously in \cref{fig:separator_size_loglog}. 
+The fitted lines displayed in \cref{fig:separator_size_loglog_binned} are those computed from the non-binned data and shown previously in \cref{fig:separator_size_loglog}.
 They are reproduced here to facilitate comparison with the binned averages, although visual alignment may differ due to the underlying averaging represented by the bins.
 
 Observations from the binned log-log plot in \cref{fig:separator_size_loglog_binned} suggest that the relationship between \( \log y \) and \( \log x \) is most consistent within a specific range of subgraph sizes.
@@ -157,10 +165,10 @@ This fit demonstrates an exceptionally high coefficient of determination (\( R^2
 The statistical significance of the slope is confirmed by an extremely low p-value (\( p \approx 1.64 \times 10^{-20} \)).
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{graphics/EuropeShowFit.pdf}
-    \caption{Linear regression fit to the binned data of separator size versus subgraph size, plotted on logarithmic axes. The regression considers only bins corresponding to subgraph sizes (\(x\)) in the range \( 2^7 \le x \le 2^{18} \).}
-    \label{fig:separator_size_loglog_fit}
+	\centering
+	\includegraphics[width=0.7\linewidth]{graphics/EuropeShowFit.pdf}
+	\caption{Linear regression fit to the binned data of separator size versus subgraph size, plotted on logarithmic axes. The regression considers only bins corresponding to subgraph sizes (\(x\)) in the range \( 2^7 \le x \le 2^{18} \).}
+	\label{fig:separator_size_loglog_fit}
 \end{figure}
 
 Visually, this line provides an excellent fit to the binned data points within the considered range, as illustrated in \cref{fig:separator_size_loglog_fit}.
@@ -418,21 +426,21 @@ be analyzed as planar graphs.
 
 
 \begin{figure}
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        % \includegraphics[width=\linewidth]{graphics/europe_dist.png}
-        \caption{...}
-        \label{fig:distance_distribution}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\linewidth}
-        \centering
-        % \includegraphics[width=\linewidth]{graphics/europe_hops.png}
-        \caption{...}
-        \label{fig:hop_distribution}
-    \end{subfigure}
-    \caption{...}
-    \label{fig:distance_hop_distribution}
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		% \includegraphics[width=\linewidth]{graphics/europe_dist.png}
+		\caption{...}
+		\label{fig:distance_distribution}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\linewidth}
+		\centering
+		% \includegraphics[width=\linewidth]{graphics/europe_hops.png}
+		\caption{...}
+		\label{fig:hop_distribution}
+	\end{subfigure}
+	\caption{...}
+	\label{fig:distance_hop_distribution}
 \end{figure}
 
 
