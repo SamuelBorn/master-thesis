@@ -21,22 +21,23 @@ The maximum degree observed in this dataset is 12, attained by a single node.
 For comparison, other datasets, such as those derived from OpenStreetMap, may exhibit even lower average degrees.
 This often results from a finer granularity in modeling road segments, where features like curves or minor attribute changes are represented by sequences of degree 2 vertices, thereby increasing their prevalence in the graph.
 
-The degree distribution graphs also influences other structural metrics.
-One such metric is the meshedness coefficient, \(\alpha\), which quantifies the density of cycles or bounded faces within a planar graph.
-It is calculated as the ratio of the graph's actual number of bounded faces (\(m - n + 1\), where \(n\) is vertices and \(m\) is edges) to the maximum possible for a planar graph with \(n\) vertices (\(2n - 5\)), i.e., \(\alpha = \frac{m - n + 1}{2n - 5}\) \cite{buhl_topological_2006}.
+The degree distribution and overall sparsity also influence other structural metrics, particularly when considering the near-planar nature of road networks.
+One such metric is the meshedness coefficient, \(\alpha\), which quantifies the density of cycles or bounded faces within a planar graph \cite{buhl_topological_2006}.
+It is calculated as the ratio of a graph's actual number of bounded faces (\(m - n + 1\)) to the maximum possible for a planar graph with \(n\) vertices and \(m\) edges, via the formula \(\alpha = \frac{m - n + 1}{2n - 5}\) \cite{buhl_topological_2006}.
 This coefficient ranges from 0 for trees to 1 for maximal planar graphs.
 Buhl et al. suggest that this coefficient can also be used to gauge a network's robustness to disconnections and its cost in terms of total edge length \cite{buhl_topological_2006}.
-For the DIMACS Europe road network, after applying a planarization procedure (detailed in a later section \cref{sec:approach:planarity}), we compute a meshedness coefficient \(\alpha \approx 0.1166\).
-This relatively low value further underscores the general sparsity and somewhat tree-like macroscopic structure of the road network.
-For comparison, the meshedness coefficient of other well-known planar graph classes serves as a useful benchmark.
-For a square grid graph, the coefficient approaches \(0.5\) as \(n \to \infty\), while a full Delaunay triangulation, being a maximal planar graph, has a coefficient approaching 1.
-In contrast, urban cores within road networks tend to be more densely meshed than continental-scale networks.
-For instance, by analyzing the inner city structure of Karlsruhe, we compute a meshedness coefficient of approximately \(0.25\).
-This higher value reflects the more grid-like layout typical of urban centers.
+For the DIMACS Europe road network, after applying a planarization procedure (detailed later in \cref{sec:approach:planarity}), we compute a meshedness coefficient \(\alpha \approx 0.1166\).
+This relatively low value underscores the network's general sparsity and somewhat tree-like macroscopic structure.
 
-A graph with fine granularity, where roads are represented by long chains of degree-2 vertices, can have its meshedness value artificially skewed lower because adding such vertices increases \(n\) without increasing the graph's cycle count (\(m-n\)).
-Therefore, to analyze the underlying junction-based topology independent of this modeling artifact, contracting degree-2 vertices can be a good normalization step.
-Applying this normalization step to the DIMACS Europe graph, increases its meshedness coefficient only slightly from approximately \(0.1166\) to \(0.1317\).
+The level of detail used to model a graph can, however, influence this metric.
+Representing road segments as long chains of degree-2 vertices, a common practice in fine-grained graph models, can artificially lower the meshedness coefficient because it increases the vertex count without changing the cycle count.
+Therefore, contracting degree-2 vertices is a valuable normalization step for analyzing the underlying junction-based topology, independent of such modeling artifacts.
+Applying this normalization to the DIMACS Europe graph has only a minor effect, increasing its meshedness coefficient slightly to approximately \(0.1317\).
+
+For context, the meshedness coefficient for a square grid approaches \(0.5\) as \(n \to \infty\), while a full Delaunay triangulation, as a maximal planar graph, approaches 1.
+In contrast to the continental scale, urban cores are typically more densely meshed.
+For instance, after contracting degree-2 vertices from the inner-city street network of Karlsruhe, we compute a meshedness coefficient of approximately \(0.25\).
+This significantly higher value reflects the more grid-like layout characteristic of dense urban centers.
 
 
 \section{Diameter}
