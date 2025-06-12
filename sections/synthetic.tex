@@ -211,35 +211,17 @@ Performance gains, for example for CCH \cite{dibbelt_customizable_2016}, could p
 
 \paragraph{Initial Deviations in Separator Scaling}
 
-An interesting characteristic is observable for graphs with small node counts in empirical studies of road networks.
-As a careful reader may notice in \cref{fig:separator_size_loglog_non_binned}, real road networks often exhibit a deviation in separator scaling for graphs containing approximately \(2^6\) nodes.
-\cref{fig:outlier_histograms} presents histogram plots to better visualize the prevalence of these instances for both real-world data and our synthetic model.
-Specifically, \cref{fig:real_europe_hist} shows this phenomenon for European road network samples.
-These plots reveal an initial peak in relative separator size for small graphs, followed by a slight decrease, before the data align with the more dominant scaling trend observed for larger graphs.
+Our synthetic graphs generated using the geometric locality approach exhibit a notable initial deviation in their separator scaling at small graph sizes.
+As visualized in the histogram in \cref{fig:local_embedding_hist_deviation}, there is an initial peak in relative separator size for small subgraphs, which then decreases before the data align with the more dominant scaling trend observed for larger graphs.
+This behavior is similar to the initial scaling deviations present in real road networks.
+This correspondence is noteworthy, as it suggests that our geometric locality model, despite failing to replicate the overall asymptotic separator scaling, may capture certain structural properties that are relevant at smaller graph scales and also present in actual road networks.
 
 \begin{figure}[tbhp]
-	\centering
-	\begin{subfigure}{0.48\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{graphics/Germany-hist.pdf}
-		\caption{Histogram of separator sizes for the European road network.}
-		\label{fig:real_europe_hist}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{0.48\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{graphics/local_embedding-hist.pdf}
-		\caption{Histogram of separator sizes for synthetic graphs using geometric locality.  }
-		\label{fig:local_embedding_hist}
-	\end{subfigure}
-	\caption{Histograms illustrating the distribution of separator sizes, comparing real road networks (left) and the geometric locality model (right). A slight increase in separator size is observed for graphs with \(\approx 2^6\) nodes.}
-	\label{fig:outlier_histograms}
+    \centering
+    \includegraphics[width=0.7\linewidth]{graphics/local_embedding-hist.pdf}
+    \caption{Histogram of separator sizes for synthetic graphs using geometric locality, illustrating an initial peak in relative separator size for small subgraphs (around \(2^6\) nodes).}
+    \label{fig:local_embedding_hist_deviation}
 \end{figure}
-
-Our synthetic graphs generated using the geometric locality approach exhibit a similar initial pattern, as can be discerned from the histogram in \cref{fig:local_embedding_hist}.
-This initial behavior in the synthetic model appears qualitatively comparable, although slightly more pronounced than in the real network data.
-This correspondence is noteworthy.
-It suggests that the geometric locality model, despite failing to replicate the overall asymptotic separator scaling of \bigO{n^{1/3}}, may capture certain structural properties relevant at smaller graph scales that are present in actual road networks.
 
 
 
@@ -268,6 +250,8 @@ Since for \(d=3\) the \bigO{n^{2/3}} separators do not offer an improvement over
 We examine separator properties in two classes of planar graphs: grids and Delaunay triangulations.
 These serve as fundamental theoretical models for planar structures relevant to the study of road networks due to their near-planarity.
 In our study, these graph classes are sparsified to achieve a low average degree (approximately \(2.5\)), reflecting the sparsity observed in road networks.
+It is important to note that both of these models inherently introduce strong geometric locality, a property not required by all planar graphs.
+Our focus on these specific classes therefore introduces a bias towards investigating planar graphs that also possess this structural characteristic.
 
 \subsection{Grids}
 \label{sec:synthetic:grid}
@@ -487,20 +471,7 @@ It serves as a reminder that observing \bigO{n^{1/2}} separator scaling does not
 
 \section{Hierarchical Structure}
 
-Real-world road networks intrinsically possess a hierarchical structure.
-Different types of roads cater to different travel distances and volumes, forming levels within the network.
-Depending on the specific taxonomy used, road networks are categorized into various numbers of classes or levels.
-For instance, a common classification for Germany includes (using original German terms alongside translations):
-
-\begin{itemize}
-	\item Federal Motorways (Bundesautobahnen)
-	\item Federal Highways (Bundesstraßen)
-	\item State Roads (Landesstraßen)
-	      % \item District Roads (Kreisstraßen)
-	\item Municipal Roads (Gemeindestraßen)
-\end{itemize}
-
-This inherent hierarchy is another potentially relevant feature influencing separator sizes, which we investigate using synthetic models.
+In the following sections, we explore four distinct approaches to generating synthetic graphs with hierarchical structures.
 
 \subsection{Voronoi-Based Hierarchical Generator}
 
@@ -663,7 +634,7 @@ Such constant-size separators at every level transition are the underlying cause
 
 
 
-\section{Hierarchical Delaunay Graph Generation}
+\subsection{Hierarchical Delaunay Graph Generation}
 \label{sec:hierarchical_delaunay_generation}
 
 Our efforts to generate synthetic graphs with realistic road network properties, particularly small separators, led us to refine techniques inspired by prior work on synthetic road network generation, such as that of Bauer et al. \cite{hutchison_synthetic_2010}.
@@ -917,7 +888,7 @@ Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing th
 
 
 
-\section{Physical Barriers}
+\subsection{Physical Barriers}
 \label{sec:synthetic:physical_barriers}
 
 To investigate the influence of physical features of varying scales on road network structure and separator sizes—ranging from large-scale elements like mountains or lakes to smaller features like challenging terrain or rivers—we explore a generative approach based on iterating Perlin noise functions across multiple scales.
@@ -1056,7 +1027,9 @@ Interestingly, k-NN graphs constructed from these noise-sampled points exhibited
 Visually comparing a k-NN graph (\cref{fig:knn_noise_graph_viz_comp}) with a graph derived from the Delaunay-based approach on the same noise-sampled point set (\cref{fig:delaunay_noise_graph_viz_comp}) reveals that the k-NN graph possesses significantly fewer long edges.
 This characteristic arises because the k-NN construction inherently limits connections to only the \(k\) closest neighbors.
 Consequently, edges are less likely to span large low-noise regions (our simulated obstacles), particularly if a point's \(k\) nearest neighbors all reside on the same side of such a zone.
-This effect of limited long-range connectivity due to the k-NN rule appears to cascade through recursive partitioning levels, contributing to the observed tendency towards very small or trivial separators.
+Marginally increasing \(k\) does not fundamentally alter this effect, as it still restricts connections to a local neighborhood.
+The limited long-range connectivity of the k-NN rule appears to cascade through recursive partitioning. This leads to disproportionately small separators for larger graphs, while smaller, more internally-connected subgraphs can exhibit comparatively larger separators.
+For substantially larger values of k, such as (k=50), the separators exhibit quadratic scaling.
 
 \begin{figure}[tbhp]
     \centering
