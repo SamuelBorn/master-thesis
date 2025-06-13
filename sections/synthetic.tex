@@ -922,9 +922,14 @@ This however yields quadratic scaling behavior for the separator size, as the re
 
 The graph generation algorithm then utilizes this multiplicative binary Perlin noise to place vertices, as detailed in \cref{alg:fractal_noise_point_sampling}.
 Essentially, candidate points are randomly sampled within a predefined domain (e.g., a unit circle). The noise value, which is the product of \(M\) scaled and normalized Perlin samples, is computed at each candidate point's location. If this value indicates an \enquote{allowed} region, the point is accepted and added to the graph's vertex set; otherwise, it is rejected, and a new candidate is sampled. This process continues until the desired number of \(n\) vertices is collected.
-For our experiments that yield good results for up to 10 million nodes, we use a sequence of eight scales (\(M=8\)): \([8, 16, 32, 64, 128, 256, 512, 1024]\). The initial scale of \(8\) is chosen instead of \(1\) because the Perlin noise implementation available to us exhibits overly smooth behavior at scale \(1\) for our purposes.
+For our experiments that yield good results for around 10 million nodes, we use a sequence of eight scales (\(M=8\)): \([8, 16, 32, 64, 128, 256, 512, 1024]\). The initial scale of \(8\) is chosen instead of \(1\) because the Perlin noise implementation available to us exhibits overly smooth behavior at scale \(1\) for our purposes.
 Once the \(n\) points are generated, a global Delaunay triangulation is performed on this point set. Subsequently, the same edge pruning step detailed in the Hierarchical Delaunay Generation section (see \cref{alg:prune_edges}) is applied to achieve a target average degree and refine the graph structure.
 An example of a graph generated using this method and its observed separator scaling are shown in \cref{fig:fractal_noise_graph_results}.
+
+The specific sequence of noise scales is not universally optimal and should be adapted to the target graph size, \(n\).
+For instance, using the aforementioned eight scales to generate a small graph of only \(10^4\) points results in separators that scale approximately as \bigO{n^{1/2}}.
+This happens because, for a smaller total number of points, the high-frequency noise components can introduce excessive fine-grained fragmentation that obscures the structural influence of the larger, low-frequency obstacles.
+To achieve the desired separator behavior for smaller graphs, it is necessary to use fewer high-frequency scales, which allows the larger-scale features to more effectively shape the point distribution.
 
 \begin{algorithm}[tbhp]
 	\Input{Target number of points \(n\), \\
