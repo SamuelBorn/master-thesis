@@ -37,7 +37,7 @@ Experiments yielded large top-level separators, whose sizes scaled approximately
 However, separators found during subsequent recursive partitioning behaved differently: their sizes were significantly smaller than this linear trend would predict for the corresponding subgraph sizes.
 We attribute this deviation to structural changes in the subgraphs induced by the partitioning process.
 Specifically, the large top-level separators often remove a significant fraction of the non-tree edges that were originally added to achieve the target average degree of approximately \(2.5\) in the parent graph.
-Consequently, the resulting subgraphs become sparser—our observations showed a decrease in average degree to approximately \(2.2\)—and increasingly dominated by their underlying tree structure.
+Consequently, the resulting subgraphs become sparser, our observations showed a decrease in average degree to approximately \(2.2\), and increasingly dominated by their underlying tree structure.
 This shift means these subgraphs effectively belong to a different, more tree-like graph class than initially generated, which naturally leads to smaller relative separator sizes.
 The separator scaling is illustrated in \cref{fig:same_degree}.
 
@@ -127,7 +127,7 @@ Through further experimentation and fine-tuning, it is found that a function of 
 
 Despite achieving the target scaling with \(f(\text{dist}) = 1/\text{dist}^{3.3}\), this result offers limited insight into the intrinsic structural properties of real road networks that lead to their small separators.
 The success with this specific, empirically derived exponent appears to be more a consequence of parameter tuning within this particular generative model (a random tree backbone augmented by edges based on tree distance) rather than an elucidation of fundamental graph characteristics.
-While the general concept of incorporating locality based on distances within an existing network structure remains potentially insightful—as such a metric might capture aspects beyond mere Euclidean distance, like travel time reduction incentives—our preliminary results with simpler functions indicate a high sensitivity to the choice of \(f\).
+While the general concept of incorporating locality based on distances within an existing network structure remains potentially insightful, as such a metric might capture aspects beyond mere Euclidean distance, like travel time reduction incentives, our preliminary results with simpler functions indicate a high sensitivity to the choice of \(f\).
 Identifying a theoretically grounded or easily interpretable function \(f\) that produces \bigO{n^{0.37}} scaling proves non-trivial.
 Given these considerations and the decision to prioritize other structural properties like geometric locality, planarity, and explicit hierarchy, we opt not to pursue an exhaustive search for an optimal or more interpretable tree-distance decay function within the scope of this work.
 
@@ -358,7 +358,7 @@ For uniformly sampled random points, the RNG yields an average degree of approxi
 \paragraph{Separator Analysis of Delaunay Variants}
 We analyzed the separator properties of these different Delaunay-derived graphs: the full DT, the randomly sparsified DT (target average degree \(2.5\)), the Gabriel Graph, and the Relative Neighborhood Graph, all generated from identical initial point sets to ensure comparability.
 Visualizations of these graph structures and their comparative separator scaling are presented in \cref{fig:delaunay_variants_comparison}.
-Despite the variations in density—ranging from an average degree of approximately 6 for the full DT down to about \(2.6\) for the RNG—our experiments indicate that the asymptotic separator scaling for all these Delaunay-derived planar graphs remains consistent with \bigO{n^{1/2}}.
+Despite the variations in density, ranging from an average degree of approximately 6 for the full DT down to about \(2.6\) for the RNG, our experiments indicate that the asymptotic separator scaling for all these Delaunay-derived planar graphs remains consistent with \bigO{n^{1/2}}.
 The method of sparsification, whether through random edge deletion or by applying systematic geometric rules like those for GG or RNG, primarily influences the constant factors associated with the separator size. It does not, however, fundamentally alter the \bigO{n^{1/2}} scaling behavior tied to their underlying planar geometric nature.
 Even when the average degree very closely matches that of road networks (as in the RNG case), the separator scaling does not approach the \(\approx \bigO{n^{0.37}}\) observed empirically for road networks.
 
@@ -809,7 +809,7 @@ Such high local density implies that partitioning these individual dense regions
 Simultaneously, by populating the same expansion radius \(r_i\) with more points, the average distances between points decrease on this level, increasing the likelihood of inter-cluster connections.
 The effect of the expansion radius \(r_i\) is direct: a larger radius straightforwardly increases the spatial extent of each new cluster, leading to more substantial overlap with adjacent expansion zones and, consequently, also contributing to larger overall separators due to increased linkage.
 Radii at deeper hierarchical levels must also be scaled appropriately relative to those at higher levels to ensure desired structural properties and avoid unintended consequences on separator sizes.
-Therefore, a careful balance of these parameters—\(f_i, k_i,\) and \(r_i\)—is essential to cultivate a graph structure with the intended connectivity and separator properties.
+Therefore, a careful balance of these parameters, \(f_i, k_i,\) and \(r_i\), is essential to cultivate a graph structure with the intended connectivity and separator properties.
 
 The parameterization offers flexibility.
 For instance, to simulate prominent \enquote{urban centers} at higher levels, a larger initial radius \(r_1\) might be employed.
@@ -891,7 +891,7 @@ Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing th
 \subsection{Physical Barriers}
 \label{sec:synthetic:physical_barriers}
 
-To investigate the influence of physical features of varying scales on road network structure and separator sizes—ranging from large-scale elements like mountains or lakes to smaller features like challenging terrain or rivers—we explore a generative approach based on iterating Perlin noise functions across multiple scales.
+To investigate the influence of physical features of varying scales on road network structure and separator sizes, ranging from large-scale elements like mountains or lakes to smaller features like challenging terrain or rivers, we explore a generative approach based on iterating Perlin noise functions across multiple scales.
 The core idea is to use procedurally generated noise to define regions that are less favorable for node placement, simulating natural or man-made obstacles.
 
 Our initial attempt utilizes a common method for generating additive fractal noise (often termed pink noise).
