@@ -85,7 +85,11 @@ Our investigation into locality begins by exploring how \enquote{closeness} defi
 For this first approach, we simulate locality by considering distances within an initial random spanning tree, which serves as a foundational sparse connected graph.
 The premise is that vertices closer to each other along paths in this underlying tree are more likely candidates for new, direct connections, potentially reflecting how topological proximity in an existing network might drive the addition of new links.
 To implement this, we begin by generating a random spanning tree using Broder's algorithm \cite{broder_generating_1989}.
-Subsequently, edges are added between non-adjacent vertices until a target average degree, chosen as \(2.5\) to approximate that of road networks, is achieved.
+Subsequently, edges are added between non-adjacent vertices until a target average degree is achieved.
+While many experiments in this thesis use a target average degree of approximately \(2.5\) to emulate road networks, a different value is chosen for this specific model.
+The choice of average degree primarily influences the constant factors of the separator scaling, rather than the underlying asymptotic growth of the graph class.
+In other contexts, an average degree of \(2.5\) effectively approximates the constant factors of road network separators.
+For this tree-distance based locality model, however, an average degree of approximately 3 is required to achieve a comparable alignment of these constant factors.
 To incorporate this form of locality, the probability of adding an edge between two vertices \(u\) and \(v\) is made dependent on their distance \( \text{dist}_T(u, v) \) within this initial spanning tree \(T\).
 Specifically, we select a random vertex \(x\) and choose a second vertex \(y\) with a probability related to \(f(\text{dist}_T(x, y))\), where \(f\) is a decreasing function.
 
