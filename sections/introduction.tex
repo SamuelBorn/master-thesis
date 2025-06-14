@@ -1,34 +1,48 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-\todo[inline]{fluff text}
+Road networks are a fundamental component of modern infrastructure, presenting significant computational challenges for applications like large-scale navigation due to their immense size.
+To address these challenges, we model them as mathematical graphs, but must recognize that they are not arbitrary structures, they are imbued with unique topological properties by real-world geographic and economic constraints.
+The central motivation for this thesis is to investigate why road networks possess an inherent structure that allows for highly efficient partitioning through small, balanced separators.
+This chapter introduces this core topic, outlines our contributions, and provides a roadmap for the investigations that follow.
 
 \section{Motivation}
 \label{sec:motivation}
 
-In graph theory, a separator is a subset of vertices whose removal divides the graph into disconnected components of roughly equal size.
-The size of these separators significantly affects the performance of numerous algorithms, particularly those utilizing divide-and-conquer approaches.
-For instance, Tarjan's and Lipton's foundational work on planar graphs \cite{lipton_applications_1977} demonstrates their utility in optimizing algorithms for many problems like e.g. maximum flow.
+In graph theory, a balanced separator is a small subset of vertices whose removal partitions a graph into disconnected components of roughly equal size.
+The size of the smallest such separator is a fundamental graph property, as it governs the performance of numerous divide-and-conquer algorithms.
+The foundational work by Lipton and Tarjan on planar separators, for example, demonstrates how the existence of small separators can be leveraged to create efficient algorithms for numerous problems on planar graphs \cite{lipton_applications_1977, lipton_separator_1979}.
 
-Empirical studies suggest road networks have balanced separators on the order of \bigO{n^{1/3}} \cite{dibbelt_customizable_2016}, which is significantly smaller than the \bigO{n^{1/2}} worst-case bound for planar graphs \cite{lipton_separator_1979}.
-This is noteworthy given that road networks are can be treated as nearly planar due to their geographic nature (few crossings from overpasses/tunnels).
+Work in the context of advanced routing algorithms suggests that road networks have balanced separators with sizes scaling on the order of \bigO{n^{1/3}}, as observed in experiments by Dibbelt et al. \cite{dibbelt_customizable_2016}.
+This is a remarkable finding, as it is significantly smaller than the \bigO{n^{1/2}} worst-case bound guaranteed for planar graphs, even though road networks can be treated as nearly planar structures due to their geographic embedding.
 
-In road networks, these separators enable the creation of effective node orders, which are critical for the performance of search queries in advanced routing algorithms like CCH.
-This thesis seeks to uncover the properties responsible for the presence of such small separators in road networks.
-We aim to determine whether these separators stem from inherent graph characteristics, such as limited vertex degrees or sparsity, or from physical real-world features, such as borders, rivers, or a hierarchical structure.
-Gaining insight into these properties promises to advance our theoretical understanding and offers practical benefits, such as identifying new applications or generating comparable synthetic graphs.
+This specific structural property has significant practical implications.
+In road networks, small separators enable the creation of highly effective node orders, which are critical for the performance of state-of-the-art routing algorithms like Customizable Contraction Hierarchies (CCH).
+This thesis therefore seeks to uncover the properties responsible for the presence of these small separators.
+We aim to determine whether they stem from intrinsic graph characteristics, such as limited vertex degrees or sparsity, or from real-world physical features, such as geographic borders, rivers, or a hierarchical road system.
+Gaining insight into these properties promises not only to advance our theoretical understanding of this graph class but also to offer practical benefits, such as generating more realistic synthetic benchmarks for algorithm evaluation.
 
-Road networks represent an intriguing subject for the study of graph separators.
-Classical results within graph theory primarily establish balanced separators characterized by asymptotic sizes such as \(\Theta\!\left(1\right)\), common in structures like trees, or \(\Omega\!\left(\sqrt{n}\right)\), e.g. planar graphs and unit disk graphs.
-To the best of our knowledge, established graph classes consistently exhibiting separator sizes strictly between these \(\Theta\!\left(1\right)\) and \(\Omega\!\left(\sqrt{n}\right)\) bounds are not prominently featured in the graph theory literature.
-This finding positions road networks within this sparsely populated intermediate complexity range, thereby highlighting the compelling nature of investigating their structural properties.
+From a theoretical standpoint, road networks represent a particularly intriguing subject.
+Classical results in graph theory establish separator sizes at distinct scales, such as \bigO{1} for graph classes with bounded treewidth and \bigTheta{n^{1/2}} for many other classes, e.g. planar graphs.
+To the best of our knowledge, established graph classes that consistently exhibit separator sizes strictly between these well-known bounds are not prominently featured in the literature.
+This finding positions road networks within a sparsely populated intermediate complexity range, thereby highlighting the compelling nature of investigating their unique structural properties.
 
 \section{Contribution}
-\label{sec:Contribution}
+\label{sec:contribution}
 
-\todo[inline]{todo}
+The primary contributions of this thesis are both empirical and generative.
+We first conduct a rigorous empirical analysis of separator scaling in large-scale, real-world road networks, establishing a power-law relationship of approximately \bigO{n^{0.37}}.
+We then systematically evaluate a wide range of synthetic graph models, demonstrating that simple, single-property models based on degree distribution, basic locality, or standard planarity are mostly insufficient to reproduce this observed scaling.
+To address this gap, we develop and analyze two novel, more complex generative models: a Hierarchical Delaunay generator that can replicate the target scaling through parameter tuning, and a Multi-scale Perlin Noise model that simulates physical barriers.
+A key finding is that this noise-based model naturally produces graphs with the desired \bigO{n^{0.37}} separator scaling without requiring extensive fine-tuning, suggesting it captures a fundamental principle of road network formation.
+Based on these findings, we propose that the small separators in road networks are an emergent property of their multi-scale structure, resulting directly from the network's adaptation to a complex physical and hierarchical environment.
 
 \section{Outline}
-\label{sec:overview}
+\label{sec:outline}
 
-\todo[inline]{todo}
+The remainder of this thesis is structured as follows.
+\cref{ch:preliminaries} provides the necessary background by formally defining fundamental concepts from graph theory, including graph separators and planarity.
+\cref{ch:cch} then examines Customizable Contraction Hierarchies as a state-of-the-art application that effectively leverages small separators, providing crucial real-world context for why this graph property is significant.
+\cref{ch:properties} presents a detailed empirical analysis of real-world road networks, establishing their key structural characteristics concerning separator sizes, degree distribution, diameter, and other relevant metrics.
+\cref{ch:synthetic_generation} details our investigation into synthetic graph generation, systematically exploring a range of models from simple, property-based generators to more complex hierarchical and noise-based approaches.
+Finally, \cref{ch:conclusion} summarizes the key findings of this work, provides an answer to the central research question, and discusses the implications, limitations, and potential directions for future research.
