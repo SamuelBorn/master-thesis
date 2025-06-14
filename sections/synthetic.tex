@@ -91,19 +91,15 @@ While many experiments in this thesis use a target average degree of approximate
 The choice of average degree primarily influences the constant factors of the separator scaling, rather than the underlying asymptotic growth of the graph class.
 In other contexts, an average degree of \(2.5\) effectively approximates the constant factors of road network separators.
 For this tree-distance based locality model, however, an average degree of approximately 3 is required to achieve a comparable alignment of these constant factors.
-To incorporate this form of locality, the probability of adding an edge between two vertices \(u\) and \(v\) is made dependent on their distance \( \text{dist}_T(u, v) \) within this initial spanning tree \(T\).
+To incorporate this form of locality, the probability of adding an edge between two vertices \(u\) and \(v\) is made dependent on their distance within this initial spanning tree \(T\), \( \text{dist}_T(u, v) \).
 Specifically, we select a random vertex \(x\) and choose a second vertex \(y\) with a probability related to \(f(\text{dist}_T(x, y))\), where \(f\) is a decreasing function.
 
 The computation of tree distances \(\text{dist}_T(x, y)\) for numerous candidate pairs \((x,y)\) is a critical step in this edge addition phase.
-Initially, for each randomly selected vertex \(x\) and potential neighbor \(y\), a Breadth-First Search (BFS) is performed within the tree \(T\) to find \(\text{dist}_T(x, y)\).
+For each randomly selected vertex \(x\) and potential neighbor \(y\), a Breadth-First Search (BFS) is performed within the tree \(T\) to find \(\text{dist}_T(x, y)\).
 While BFS on a tree is linear in the number of vertices \(n\), repeated invocations for many pairs prove computationally intensive for larger graphs.
-To accelerate this, we adopt an approach based on Lowest Common Ancestor (LCA) queries.
-This involves an initial precomputation of an LCA data structure for the tree \(T\), which can be achieved in \bigO{n \log n} time (e.g., using an Euler tour and sparse table for Range Minimum Queries, enabling \bigO{1} query time).
-Once the LCA of two nodes \(u\) and \(v\) is known, their tree distance is given by \(\text{dist}_T(u, v) = \text{depth}(u) + \text{depth}(v) - 2 \cdot \text{depth}(lca(u,v))\).
-Although a single BFS is also linear, this LCA-based method yields a significant speedup, due to improved parallelization opportunities for the overall process.
-Nevertheless, even with this optimization, the approach of potentially considering many \(y\) candidates for each \(x\) (full sampling) remains slow for large graphs.
-We also test capping the BFS search for \(y\) (e.g., after a fixed number of hops or visited nodes, such as 50,000) as a potential optimization.
-However, this leads to an artificial steep cutoff in the observed separator characteristics once graph or component sizes effectively exceed the scale imposed by this search limit.
+However, the approach is highly parallelizable since each BFS is an independent computation on the fixed tree structure.
+Capping the BFS search for \(y\) (e.g., after a fixed number of hops or visited nodes, such as 50,000), while significantly reducing computational overhead did not achieve the desired locality effect.
+We observe and artificial steep cutoff in the observed separator characteristics once graph or component sizes effectively exceed the scale imposed by this search limit.
 
 Experiments exploring various decay functions \(f\) yield diverse results.
 Simple functions like \( f(\text{dist}) = 1/\text{dist} \) result in graphs that still exhibit large top-level separators scaling as \bigO{n}, although subgraphs from nested dissection show the previously noted super-linear decrease in separator size.
@@ -133,10 +129,9 @@ Through further experimentation and fine-tuning, it is found that a function of 
 Despite achieving the target scaling with \(f(\text{dist}) = 1/\text{dist}^{3.3}\), this result offers limited insight into the intrinsic structural properties of real road networks that lead to their small separators.
 The success with this specific, empirically derived exponent appears to be more a consequence of parameter tuning within this particular generative model (a random tree backbone augmented by edges based on tree distance) rather than an elucidation of fundamental graph characteristics.
 While the general concept of incorporating locality based on distances within an existing network structure remains potentially insightful, as such a metric might capture aspects beyond mere Euclidean distance, like travel time reduction incentives, our preliminary results with simpler functions indicate a high sensitivity to the choice of \(f\).
-Identifying a theoretically grounded or easily interpretable function \(f\) that produces \bigO{n^{0.37}} scaling proves non-trivial.
+Achieving the target \bigO{n^{0.37}} scaling with an empirically derived function like \(f(\text{dist}) = 1/\text{dist}^{3.3}\) appears to be an outcome of model-specific parameter tuning rather than a revelation of intrinsic road network properties responsible for their small separators.
 Given these considerations and the decision to prioritize other structural properties like geometric locality, planarity, and explicit hierarchy, we opt not to pursue an exhaustive search for an optimal or more interpretable tree-distance decay function within the scope of this work.
 
-Achieving the target \bigO{n^{1/3}} scaling with an empirically derived function like \(f(\text{dist}) = 1/\text{dist}^{3.3}\) appears to be an outcome of model-specific parameter tuning rather than a revelation of intrinsic road network properties responsible for their small separators.
 
 \paragraph{Geometric Locality}
 
