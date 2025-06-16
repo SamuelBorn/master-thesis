@@ -428,9 +428,8 @@ A set is considered sparse if every ball of radius \(\mathcal{O}(r)\) contains o
 The significance of this property stems from the finding that low highway dimension provides provable performance guarantees for several important route planning algorithms, including REACH \cite{goldberg_reach_2006}, Contraction Hierarchies \cite{geisberger_contraction_2008}, Highway Hierarchies \cite{sanders_highway_2005}, Transit Node Routing \cite{bast_fast_2007}, and SHARC \cite{bauer_sharc_2010}.
 
 The work introducing highway dimension also proposes a synthetic graph generator (henceforth ABR generator) intended to produce graphs exhibiting this property \cite{abraham_highway_2010}.
-A good explanation of the generation process is provided in \cite{hutchison_synthetic_2010}, which we summarize here.
-The generation process operates iteratively.
-It begins with an empty graph \( G = (V, E) = (\emptyset, \emptyset) \) and progressively adds new vertices \(v_t\) to \(V\), whose locations in the metric space are chosen randomly.
+The generation process, based on the description in \cite{hutchison_synthetic_2010}, operates iteratively.
+It begins with an empty graph \( G = (V, E) = (\emptyset, \emptyset) \) and progressively adds new vertices \(v_t\) to \(V\), whose locations in the metric space (in our case a disk in \(\mathbb{R}^2\)) are chosen randomly.
 Throughout this process, the generator maintains a series of \(2^i\)-covers, denoted \(C_i\), for each level \(i\) where \(1 \leq i \leq \log D\), and \(D\) represents the diameter of the metric space.
 A set \(C_i \subseteq V\) is a \(2^i\)-cover if any two vertices \(u, v \in C_i\) satisfy \(d(u, v) \geq 2^i\), and every vertex \(u \in V\) is within distance \(2^i\) of some vertex in \(C_i\).
 When a new vertex \(v_t\) is added, the generator identifies the smallest index \(i\) such that there exists a vertex \(w \in C_i\) with \(d(v_t, w) \leq 2^i\).
@@ -489,6 +488,7 @@ Subsequently, points are sampled in the vicinity of each city center, concentrat
 Regardless of the sampling method, the resulting set of points \(P\) serves as the input for computing the Voronoi diagram for this initial level.
 The Voronoi diagram partitions the polygon into regions based on nearest-neighbor relationships to the points in \(P\).
 The edges of this Voronoi diagram (where adjacent regions meet) are then added to the synthetic graph.
+The vertices of the graph correspond to the points were 3 or more Voronoi regions meet.
 To introduce hierarchy, some of the resulting Voronoi regions (polygons) are selected, and the process is recursively applied within them: new points are sampled inside the selected region (using either uniform or clustered sampling), and a new Voronoi diagram is constructed within its boundaries, adding further edges to the graph.
 
 Phase two of the generation process addresses the density of the graph \(G\) resulting from the Voronoi tessellation by constructing a sparse graph \(t\)-spanner \(H\).
@@ -498,7 +498,7 @@ An edge \((u, v)\) with length \(len(u, v)\) is added to the spanner \(H\) only 
 To compute \(dist_H(u, v)\), Dijkstra's algorithm is employed.
 Additionally, a union-find data structure maintains the connected components of \(H\), allowing for immediate addition of edges connecting previously disconnected vertices.
 Bauer et al. propose processing edges in non-increasing order (longest first) as a heuristic primarily intended to improve the computational efficiency of the spanner construction; the idea is to handle long edges while the intermediate spanner graph \(H\) is still sparse, potentially speeding up distance computations \cite{hutchison_synthetic_2010}.
-We observe that our pruning strategy, the specifics of which are presented in a later section in \cref{alg:prune_edges}, tends to yield graph structures more visually akin to real-world road networks compared to the Bauer et al. method, although this involves an increased computational expense.
+% We observe that our pruning strategy, the specifics of which are presented in a later section in \cref{alg:prune_edges}, tends to yield graph structures more visually akin to real-world road networks compared to the Bauer et al. method, although this involves an increased computational expense.
 
 This generation method introduces artifacts.
 For example, connections between major structures defined at higher levels (like large "cities") might be unrealistically sparse, potentially consisting of only a few edges.
@@ -534,8 +534,15 @@ Consequently, if the recursion depth is limited and the highest-level structures
 
 To explore hierarchical effects in a more controlled manner, we also investigate a simpler but conceptually related approach using nested grids.
 This method aims to construct a hierarchical graph by recursively embedding grid graphs within the cells of a parent grid, potentially allowing us to deliberately engineer specific separator scaling properties.
-The fundamental idea involves placing copies of a subgraph (e.g., a square grid) into selected cells of a higher-level grid.
-This resulting composite graph can then itself be treated as a subgraph to be placed within cells of a grid at an even higher level, and so on.
+The fundamental idea is recursive: a level-1 structure is a standard square grid.
+A level-\(i\) nested grid (for \(i > 1\)) is then constructed from a higher-level parent grid where selected cells are replaced by entire instances of level-\(i-1\) nested grids.
+This process can be repeated for any number of layers, creating a fractal-like structure of grids within grids.
+
+An optional refinement can be applied to make the graph sparser by removing redundant edges from parent grids.
+An edge of a parent grid is considered redundant if the cell it borders has a subgraph embedded within it.
+This is because the boundary of the embedded subgraph provides a new, more detailed path between the endpoints of the parent grid edge.
+Removing these \enquote{overlapped} parent edges reduces the graph's overall edge density slightly without altering its asymptotic separator scaling.
+
 \cref{fig:nested_grid_analysis} shows a small conceptual example of a nested grid with three layers.
 
 \begin{figure}[tbhp]
@@ -557,15 +564,16 @@ This resulting composite graph can then itself be treated as a subgraph to be pl
 	\label{fig:nested_grid_analysis}
 \end{figure}
 
-A nested grid construction with \(l\) layers is determined by \(l\) grid sizes (specifying the dimensions of the grid at each layer) and \(l-1\) placement parameters (specifying how many subgraphs from layer \(i+1\) are placed within layer \(i\)).
+A nested grid construction with \(\ell\) layers is determined by \(\ell\) grid sizes (specifying the dimensions of the grid at each layer) and \(\ell-1\) placement parameters (specifying how many subgraphs from layer \(i+1\) are placed within layer \(i\)).
 This parameterization offers the possibility of attempting to enforce a target separator scaling, such as \bigO{n^{1/3}}, by carefully choosing the parameters at each level transition.
 We assume that separating the nested structure primarily involves cutting through the top-level grid structure.
 If the number of embedded subgraphs is not excessively large, the separator size might be approximated by the width \(w\) of the top-level grid, similar to a standard grid separator.
-We can then estimate the total number of vertices \(|V|\) at a given stage based on the grid width \(w\) of the current layer, the number \(k\) of subgraphs placed within its cells, and the size \(s\) of each subgraph:
-\[ |V| \approx w^2 + k \cdot s \]
+We can estimate the total number of vertices of a subgraph of the nested grid strucutre \(V_\text{sub}\) based on the top level grid width \(w\) of the current layer, the number \(k\) of subgraphs placed within its cells, and the size \(s\) of each subgraph:
+\[ |V_\text{sub}| \approx w^2 + k \cdot s \]
 This estimate is approximate as it may double-count vertices along the boundaries where subgraphs connect to the parent grid.
-To enforce \bigO{n^{1/3}} scaling specifically at this layer transition, we can equate the separator size (approximated by \(w\)) with \(|V|^{1/3}\):
-\[ w \approx (|V|)^{1/3} \approx (w^2 + ks)^{1/3} \]
+The estimate also assumes we are only looking at perfect nested grids, which is not true as we are looking at general subgraphs from a nested dissection.
+To enforce \bigO{n^{1/3}} scaling specifically at this layer transition, we can equate the separator size (approximated by \(w\)) with \(|V_\text{sub}|^{1/3}\):
+\[ w \approx (|V_\text{sub}|)^{1/3} \approx (w^2 + ks)^{1/3} \]
 This leads to the cubic equation \( w^3 - w^2 - ks = 0 \).
 If we fix the subgraph count \(k\) and subgraph size \(s\), we can solve for the grid width \(w\) required to satisfy this condition at the transition.
 One root of this cubic equation for \(w\) is given by:
@@ -578,7 +586,7 @@ However, achieving a consistent overall \bigO{n^{1/3}} scaling for the entire gr
 The observed local minima in separator size occur systematically at the transitions between hierarchical levels.
 This is because the construction method inherently creates sparse connections between components defined at different levels.
 \cref{fig:nested_grid_connectivity_example} provides a simplified illustration of this principle, showing two example components from the same levels within the hierarchy, not the entire structure of a layer.
-In this specific illustration, the components (represented by nodes 1-4 and 5-8) are linked only by the edges (3)--(5) and (4)--(6).
+In this specific illustration, the components (represented by nodes 1-4 and 5-8) are linked only by the edges \{3,5\} and \{4,6\}.
 Consequently, removing just one endpoint from each connecting edge suffices to disconnect them.
 This demonstrates how a vertex separator of small, constant size (size 2) exists between levels, regardless of the internal size of the components themselves.
 Such constant-size separators at every level transition are the underlying cause of the pronounced local minima observed in the separator scaling plots for these nested structures.
@@ -622,7 +630,7 @@ Such constant-size separators at every level transition are the underlying cause
 		\node[draw=none] at (6.5,1.5) {\(\dots\)};
 		\node[draw=none] at (5.5,1.5) {\(\dots\)};
 	\end{tikzpicture}
-	\caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges (3)--(5) and (4)--(6). Removing one endpoint from each edge (e.g., \{3, 6\}) forms a size-2 vertex separator, irrespective of component sizes.}
+    \caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges \{3,5\} and \{4,6\}. Removing one endpoint from each edge (e.g., 3 and 6) forms a size-2 vertex separator, irrespective of component sizes.}
 	\label{fig:nested_grid_connectivity_example}
 \end{figure}
 
