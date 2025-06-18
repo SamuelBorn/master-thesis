@@ -776,8 +776,8 @@ This outcome is likely because edges are sorted by length before being chunked; 
 
 \paragraph{Parameterization}
 The number of hierarchical layers, denoted \(L\), is a key parameter for the generation process detailed in \cref{alg:hierarchical_delaunay}.
-Drawing from observations of real road networks and prior work on synthetic graph generation \cite{hutchison_synthetic_2010}, \(L\) is often set to 4, a choice suitable for generating graphs with up to approximately 20 million nodes.
-With \(L=4\), the algorithm requires parameters for level expansion fractions \(f_i\), points per expansion site \(k_i\), and expansion radii \(r_i\), for \(i \in [1, L]\), totaling \(3L\) (i.e., 12 for \(L=4\)) parameters.
+Similar to Bauer et al. we also found \(L=4\) to be a suitable choice for generating graphs with realistic road network properties \cite{hutchison_synthetic_2010}.
+For \(L=4\), the algorithm requires parameters for level expansion fractions \(f_i\), points per expansion site \(k_i\), and expansion radii \(r_i\), for \(i \in [1, L]\), totaling \(3L\) (i.e., 12 for \(L=4\)) parameters.
 However, the effective number of free parameters is lower.
 The specific value of the first expansion radius, \(r_1\), primarily scales the entire embedding without fundamentally altering its topological structure, effectively reducing the count to 11 if \(r_1\) is fixed or normalized.
 Furthermore, the algorithm specifies that the first level expansion fraction \(f_1 = 1.0\) (ensuring the initial point always seeds the first level of expansion), reducing the free parameters to 10.
@@ -804,10 +804,11 @@ Achieving road network-like separator scaling with the hierarchical Delaunay gen
 A critical aspect for developing well-behaved separators appears to be ensuring sufficient interaction or \emph{overlap} between regions expanded from different sites.
 This helps to avoid overly simplistic connections between hierarchical components, which can lead to pronounced local minima in separator scaling plots.
 
-It is observed that decreasing expansion radii \(r_i\) contributes to desirable separator properties.
-The median edge length in a Delaunay triangulation of \(n\) points within a region of radius \(r\) scales as \(r \cdot n^{-1/2}\).
-Thus, to maintain somewhat consistent local geometric scales as density increases within nested expansions (if \(k_i\) is relatively stable), \(r_i\) generally needs to decrease.
-Our empirical observations suggested that without an exponential decrease in radii across levels, achieving consistently small separators was not possible.
+We observe that decreasing expansion radii \(r_i\) contributes to desirable separator properties.
+The median edge length in a Delaunay triangulation of \(n\) uniformly random points within a region of radius \(r\) scales as \bigTheta{r \cdot n^{-1/2}}.
+In order for the nested strucutres to contribute to geometric locality the radii \(r_i\) should also decrease in a similar manner to approximate the median edge length.
+For example, constant radii would not yield any geometric locality and points would look uniformly distributed, fading out towards the edge of the graph.
+Our empirical observations suggested that without an exponential decrease in radii across levels, achieving consistently small separators is not possible.
 
 However, if radii become too small too quickly, the graph might develop insufficient connectivity between clusters originating from different parent sites.
 Consider a thought experiment: if each expansion site has an infinitesimally small influence radius for generating points for the next level, these new points primarily connect among themselves and back to their parent site from the higher level.
