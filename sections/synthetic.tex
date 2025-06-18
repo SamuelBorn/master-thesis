@@ -764,11 +764,13 @@ The pruning step, while beneficial for achieving a target average degree and a m
 \end{figure}
 
 Given that sequential pruning can be computationally intensive due to numerous shortest path computations (typically Dijkstra's algorithm, where path precomputation is infeasible as the graph changes), we also explored an approximate parallel version.
-In this variant, edges are processed in chunks, often corresponding to the number of available processing threads.
+In this variant instead of looking at edges one by one, we process the edges in the same order as before, but in chunks of size corresponding to the number of available processing threads.
+While this approach does not reduce the overall computational complexity, it allows to distribute the workload across multiple threads.
 Shortest path computations for all candidate edges within a chunk are performed in parallel, based on the graph state \emph{before} any edges in that chunk are removed.
 After all checks for the current chunk are complete, the identified edges are removed simultaneously.
 This parallelization introduces an approximation: an edge \((u,v)\) might be removed because its shortest alternative path relied on another edge \((x,y)\) from the same chunk, which is also concurrently identified for removal.
 If \((x,y)\) is removed, the true shortest path for \((u,v)\) in the updated graph might have become longer than the \(\alpha \cdot \text{length}(u,v)\) threshold, but this would not be detected as the checks were based on the graph state at the beginning of the chunk processing.
+In extreme cases, this could even lead to the graph becoming disconnected.
 Despite this potential for over-pruning, our empirical results suggest that this approximation has a negligible impact on the final graph structure and its properties.
 This outcome is likely because edges are sorted by length before being chunked; thus, edges within a single chunk are often spatially distributed across the graph rather than being highly locally interdependent, minimizing negative interference from concurrent removals.
 
