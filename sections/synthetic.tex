@@ -156,7 +156,7 @@ This outcome is visualized in \cref{fig:geometric_locality_separators}.
 	\begin{subfigure}{0.35\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/local_embedding.png}
-        \caption{Visualization of a graph with \(10^4\) nodes generated using the geometric locality method.}
+		\caption{Visualization of a graph with \(10^4\) nodes generated using the geometric locality method.}
 		\label{fig:geometric_locality_graph_viz}
 	\end{subfigure}
 	\hfill
@@ -182,22 +182,22 @@ The construction of k-NN graphs can be performed efficiently: following an initi
 Our experiments show that k-NN graphs generated in this manner also exhibit separator sizes that scale approximately as \bigO{n^{1/2}} as seen in \cref{fig:knn_graph_analysis}.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.35\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/knn.png}
-        \caption{Visualization of a k-NN graph (for \(k=3\)) generated from \(n \approx 10^4\) uniformly sampled points.}
-        \label{fig:knn_graph_structure_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.55\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/knn_seps.pdf}
-        \caption{Separator size scaling for k-NN graphs \(k=3\), showing approximately \bigO{n^{1/2}} behavior.}
-        \label{fig:knn_graph_sep_scaling_plot}
-    \end{subfigure}
-    \caption{Analysis of k-Nearest Neighbor (k-NN) graph of uniformly sampled points and separator scaling.}
-    \label{fig:knn_graph_analysis}
+	\centering
+	\begin{subfigure}{0.35\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/knn.png}
+		\caption{Visualization of a k-NN graph (for \(k=3\)) generated from \(n \approx 10^4\) uniformly sampled points.}
+		\label{fig:knn_graph_structure_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.55\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/knn_seps.pdf}
+		\caption{Separator size scaling for k-NN graphs \(k=3\), showing approximately \bigO{n^{1/2}} behavior.}
+		\label{fig:knn_graph_sep_scaling_plot}
+	\end{subfigure}
+	\caption{Analysis of k-Nearest Neighbor (k-NN) graph of uniformly sampled points and separator scaling.}
+	\label{fig:knn_graph_analysis}
 \end{figure}
 
 The results from the geometric locality approach suggest that merely combining low average degree with this specific form of locality is insufficient to reproduce the cubic root separator sizes of road networks.
@@ -217,10 +217,10 @@ This behavior is similar to the initial scaling deviations present in real road 
 This correspondence is noteworthy, as it suggests that our geometric locality model, despite failing to replicate the overall asymptotic separator scaling, may capture certain structural properties that are relevant at smaller graph scales and also present in actual road networks.
 
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.6\linewidth]{graphics/local_embedding-hist.pdf}
-    \caption{Histogram of separator sizes for synthetic graphs using geometric locality, illustrating an initial peak in relative separator size for small subgraphs (around \(2^6\) nodes).}
-    \label{fig:local_embedding_hist_deviation}
+	\centering
+	\includegraphics[width=0.6\linewidth]{graphics/local_embedding-hist.pdf}
+	\caption{Histogram of separator sizes for synthetic graphs using geometric locality, illustrating an initial peak in relative separator size for small subgraphs (around \(2^6\) nodes).}
+	\label{fig:local_embedding_hist_deviation}
 \end{figure}
 
 
@@ -363,45 +363,45 @@ The method of sparsification, whether through random edge deletion or by applyin
 Even when the average degree very closely matches that of road networks (as in the RNG case), the separator scaling does not approach the \(\approx \bigO{n^{0.37}}\) observed empirically for road networks.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.3\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/delaunay.png}
-        \caption{Full Delaunay Triangulation (avg. deg. \(\approx 6\))}
-        \label{fig:delaunay_full_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.3\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/delaunay_random_delete.png}
-        \caption{Sparse DT (Random Deletion, avg. deg. \(\approx 2.5\))}
-        \label{fig:delaunay_random_del_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.3\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/gabriel_graph.png}
-        \caption{Gabriel Graph (GG)\newline}
-        \label{fig:delaunay_gg_viz}
-    \end{subfigure}
+	\centering
+	\begin{subfigure}{0.3\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/delaunay.png}
+		\caption{Full Delaunay Triangulation (avg. deg. \(\approx 6\))}
+		\label{fig:delaunay_full_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.3\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/delaunay_random_delete.png}
+		\caption{Sparse DT (Random Deletion, avg. deg. \(\approx 2.5\))}
+		\label{fig:delaunay_random_del_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.3\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/gabriel_graph.png}
+		\caption{Gabriel Graph (GG)\newline}
+		\label{fig:delaunay_gg_viz}
+	\end{subfigure}
 
-    \vspace{0.2cm} 
+	\vspace{0.2cm}
 
-    \begin{subfigure}{0.3\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/relative_neighborhood.png}
-        \caption{Relative Neighborhood Graph (RNG)}
-        \label{fig:delaunay_rng_viz}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.6\linewidth} 
-        \centering
-        \includegraphics[width=\linewidth]{graphics/delaunay_variants_sep.pdf}
-        \caption{Separator scaling for Delaunay variants.}
-        \label{fig:delaunay_variants_sep_plot}
-    \end{subfigure}
-    \caption{Comparison of Delaunay Triangulation and its sparse subgraphs derived from the same point set: visualizations (a-d) and separator scaling (e).}
-    \label{fig:delaunay_variants_comparison}
+	\begin{subfigure}{0.3\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/relative_neighborhood.png}
+		\caption{Relative Neighborhood Graph (RNG)}
+		\label{fig:delaunay_rng_viz}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.6\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/delaunay_variants_sep.pdf}
+		\caption{Separator scaling for Delaunay variants.}
+		\label{fig:delaunay_variants_sep_plot}
+	\end{subfigure}
+	\caption{Comparison of Delaunay Triangulation and its sparse subgraphs derived from the same point set: visualizations (a-d) and separator scaling (e).}
+	\label{fig:delaunay_variants_comparison}
 \end{figure}
 
 % These experiments with sparse grids and various forms of sparse Delaunay triangulations suggest that while combining geometric point generation with methods to achieve low average degree can yield practical separator sizes numerically close to those of road networks (due to potentially small constant factors), the underlying asymptotic scaling remains \bigO{n^{1/2}}.
@@ -454,7 +454,7 @@ It serves as a reminder that observing \bigO{n^{1/2}} separator scaling does not
 	\begin{subfigure}{0.35\linewidth}
 		\centering
 		\includegraphics[height=\linewidth, angle=90]{graphics/highway.png}
-        \caption{Visualization of a synthetic graph generated using the ABR low highway dimension algorithm with \(10^4\) nodes.}
+		\caption{Visualization of a synthetic graph generated using the ABR low highway dimension algorithm with \(10^4\) nodes.}
 		\label{fig:abr_graph_viz}
 	\end{subfigure}
 	\hfill
@@ -632,7 +632,7 @@ Such constant-size separators at every level transition are the underlying cause
 		\node[draw=none] at (6.5,1.5) {\(\dots\)};
 		\node[draw=none] at (5.5,1.5) {\(\dots\)};
 	\end{tikzpicture}
-    \caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges (3,5) and (4,6). Removing one endpoint from each edge (e.g., 3 and 6) forms a size-2 vertex separator, irrespective of component sizes.}
+	\caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges (3,5) and (4,6). Removing one endpoint from each edge (e.g., 3 and 6) forms a size-2 vertex separator, irrespective of component sizes.}
 	\label{fig:nested_grid_connectivity_example}
 \end{figure}
 
@@ -822,6 +822,36 @@ This, however, can lead to a different problem: distinct top-level expansion sit
 This sparse inter-connectivity between major components results in the re-emergence of pronounced local minima in the separator scaling plots at transitions between hierarchical levels, an issue similar to that encountered in simpler nested grid or Voronoi generation schemes where components are too easily fractured.
 Therefore, for generating graphs with well-behaved separators, it is critical that the expansion areas originating from different sites \emph{overlap} or interact sufficiently to build an integrated and robustly connected graph structure, rather than a collection of dense clusters weakly linked through a sparse higher-level skeleton.
 
+The critical nature of this balance is illustrated in \cref{fig:radius_compare}.
+Using a radius decay that is too aggressive (too small) results in the previously discussed local minima, where the graph fractures along sparse inter-level connections (\cref{fig:radius_small}).
+Conversely, using constant or too slowly decaying radii leads to excessive overlap that overwhelms the hierarchical structure, causing the separator scaling to revert to \bigO{n^{1/2}} (\cref{fig:radius_const}).
+Only a well-tuned, approximately exponential decay of radii yields the desired consistent scaling behavior (\cref{fig:radius_good}).
+
+\begin{figure}[tbhp]
+    \begin{subfigure}{0.3\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/small.pdf}
+        \caption{Too rapid radii decay.}
+        \label{fig:radius_small}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.3\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/good.pdf}
+        \caption{Well-tuned radii decay.}
+        \label{fig:radius_good}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.3\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{graphics/const.pdf}
+        \caption{Constant radii.}
+        \label{fig:radius_const}
+    \end{subfigure}
+    \caption{Illustration of the impact of different radii decay strategies on separator scaling. All other parameters held constant.} 
+    \label{fig:radius_compare}
+\end{figure}
+
 The degree of spatial overlap between regions expanded from different sites is fundamental to achieving desirable separator characteristics, as it dictates the strength of connectivity between hierarchical components.
 The parameters \(f_i\), \(k_i\), and \(r_i\) jointly determine this overlap:
 A higher expansion fraction \(f_i\) results in a greater number of nodes from the parent level being selected as expansion sites.
@@ -829,9 +859,11 @@ This reduces the average distance between chosen sites, causing their respective
 Increasing \(k_i\), the number of points generated per expansion site, primarily makes each local cluster denser.
 Such high local density implies that partitioning these individual dense regions themselves requires larger separators, reflecting their increased internal complexity.
 Simultaneously, by populating the same expansion radius \(r_i\) with more points, the average distances between points decrease on this level, increasing the likelihood of inter-cluster connections.
+Compared to the influence of \(f_i\) and \(r_i\), the effect of \(k_i\) is minor.
+
 The effect of the expansion radius \(r_i\) is direct: a larger radius straightforwardly increases the spatial extent of each new cluster, leading to more substantial overlap with adjacent expansion zones and, consequently, also contributing to larger overall separators due to increased linkage.
 Radii at deeper hierarchical levels must also be scaled appropriately relative to those at higher levels to ensure desired structural properties and avoid unintended consequences on separator sizes.
-Therefore, a careful balance of these parameters, \(f_i, k_i,\) and \(r_i\), is essential to cultivate a graph structure with the intended connectivity and separator properties.
+Therefore, a careful balance of these parameters, \(f_i, k_i\) and \(r_i\), is essential to cultivate a graph structure with the intended connectivity and separator properties.
 
 The parameterization offers flexibility.
 For instance, to simulate prominent \enquote{urban centers} at higher levels, a larger initial radius \(r_1\) might be employed.
@@ -964,7 +996,7 @@ To achieve the desired separator behavior for smaller graphs, it is necessary to
 		\BlankLine
 		noise \(\longleftarrow \prod_{i=1}^{M} \text{perlinNoise}(p \cdot s_i)\)\;
 		\BlankLine
-        \If{\(\text{noise} > 0.5^{M}\)}{
+		\If{\(\text{noise} > 0.5^{M}\)}{
 			\(P \longleftarrow P \cup \{p\}\)\;
 		}
 	}
@@ -1015,21 +1047,21 @@ However, as subgraphs become larger and the low-frequency obstacles themselves b
 
 \begin{figure}[tbhp]
 	\centering
-    \begin{subfigure}{0.25\linewidth}
+	\begin{subfigure}{0.25\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/noise_high.png}
 		\caption{Noise from high-frequency scales only.}
 		\label{fig:noise_high_freq_viz}
 	\end{subfigure}
 	\hfill
-    \begin{subfigure}{0.25\linewidth}
+	\begin{subfigure}{0.25\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/noise_low.png}
 		\caption{Noise from low-frequency scales only.}
 		\label{fig:noise_low_freq_viz}
 	\end{subfigure}
 	\hfill
-    \begin{subfigure}{0.45\linewidth}
+	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/noise_high_vs_low_only.pdf}
 		\caption{Separator scaling: high-freq. vs. low-freq. only.}
@@ -1059,29 +1091,29 @@ The limited long-range connectivity of the k-NN rule appears to cascade through 
 For substantially larger values of k, such as (k=50), the separators exhibit quadratic scaling.
 
 \begin{figure}[tbhp]
-    \centering
-    \begin{subfigure}{0.27\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/noise_rng_small.png}
-        \caption{Delaunay subgraph on noise-sampled points. \\}
-        \label{fig:delaunay_noise_graph_viz_comp}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.27\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/noise_knn_small.png}
-        \caption{k-NN graph (\(k=5\)) on the same noise-sampled point set.}
-        \label{fig:knn_noise_graph_viz_comp}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.4\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{graphics/noise_knn_vs_rng.pdf}
-        \caption{Separator scaling: Delaunay-based vs. k-NN based.}
-        \label{fig:knn_delaunay_noise_sep_compare}
-    \end{subfigure}
-    \caption{Comparison of graph structures and separator scaling for Delaunay-derived graphs versus k-NN graphs on identical noise-sampled point sets.}
-    \label{fig:knn_vs_delaunay_noise_points}
+	\centering
+	\begin{subfigure}{0.27\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/noise_rng_small.png}
+		\caption{Delaunay subgraph on noise-sampled points. \\}
+		\label{fig:delaunay_noise_graph_viz_comp}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.27\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/noise_knn_small.png}
+		\caption{k-NN graph (\(k=5\)) on the same noise-sampled point set.}
+		\label{fig:knn_noise_graph_viz_comp}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.4\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{graphics/noise_knn_vs_rng.pdf}
+		\caption{Separator scaling: Delaunay-based vs. k-NN based.}
+		\label{fig:knn_delaunay_noise_sep_compare}
+	\end{subfigure}
+	\caption{Comparison of graph structures and separator scaling for Delaunay-derived graphs versus k-NN graphs on identical noise-sampled point sets.}
+	\label{fig:knn_vs_delaunay_noise_points}
 \end{figure}
 
 This comparison highlights a distinction between the two graph construction methods.
