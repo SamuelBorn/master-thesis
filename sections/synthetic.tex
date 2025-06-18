@@ -543,14 +543,14 @@ An edge of a parent grid is considered redundant if the cell it borders has a su
 This is because the boundary of the embedded subgraph provides a new, more detailed path between the endpoints of the parent grid edge.
 Removing these \enquote{overlapped} parent edges reduces the graph's overall edge density slightly without altering its asymptotic separator scaling.
 
-\cref{fig:nested_grid_analysis} shows a small conceptual example of a nested grid with three layers.
+\cref{fig:nested_grid_analysis} shows a small conceptual example of a nested grid with four layers.
 
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.35\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/nestedgrid.pdf}
-		\caption{Conceptual illustration of a simple nested grid structure with three hierarchical levels.}
+		\caption{Conceptual illustration of a simple nested grid structure with four hierarchical levels.}
 		\label{fig:nested_grid_viz}
 	\end{subfigure}
 	\hfill
@@ -648,7 +648,7 @@ Such constant-size separators at every level transition are the underlying cause
 Our efforts to generate synthetic graphs with realistic road network properties, particularly small separators, led us to refine techniques inspired by prior work on synthetic road network generation, such as that of Bauer et al. \cite{hutchison_synthetic_2010}.
 A significant artifact observed in some Voronoi-based hierarchical models was that major transport arteries, analogous to motorways, could not be realistically crossed by lower-level roads.
 This limitation arose because new expansion sites were generated strictly within the polygonal cells defined by the higher-level Voronoi tessellation, effectively making top-level Voronoi edges hard boundaries.
-Our revised core idea allows new centers of expansion to emerge from the existing network infrastructure itself; thus, new expansion sites are selected from the nodes of the current graph structure rather than from within predefined areal polygons.
+Our revised core idea allows new centers of expansion to emerge from the existing network infrastructure itself. Thus, new expansion sites are selected from the nodes of the current graph structure rather than from within predefined areal polygons.
 
 An initial refined concept explored an iterative Delaunay approach.
 This process would commence with a global Delaunay triangulation of an initial point set.
