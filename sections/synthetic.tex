@@ -893,14 +893,14 @@ Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing th
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/interplay_baseline.pdf}
-		\caption{Baseline: \(f_i=(1.0, 0.5, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+		\caption{Baseline: \(f_i=(1.0, 0.5, 0.4, 0.3)\); \newline\(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
 		\label{fig:param_interplay_baseline}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/interplay_low_f1.pdf} % Filename implies f1, caption says f2
-		\caption{Low \(f_2\): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+		\caption{Low \(f_2\): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \newline\(k_i=(200, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
 		\label{fig:param_interplay_low_f2}
 	\end{subfigure}
 
@@ -909,17 +909,17 @@ Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing th
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/interplay_increased_r2.pdf}
-		\caption{Fix 1 (Increase radii for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, \textcolor{green}{283}, \textcolor{green!50}{52}, \textcolor{green!50}{11})\).}
+		\caption{Fix 1 (Increase radii for low \(f_2\)): \newline\(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(200, 50, 35, 25)\); \(r_i=(1000, \textcolor{green}{283}, \textcolor{green!50}{52}, \textcolor{green!50}{11})\).}
 		\label{fig:param_interplay_fix1_radii}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/interplay_increased_k1.pdf}
-		\caption{Fix 2 (Increase \(k_1\) for low \(f_2\)): \(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(\textcolor{green}{1000}, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
+		\caption{Fix 2 (Increase \(k_1\) for low \(f_2\)): \newline\(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(\textcolor{green}{1000}, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
 		\label{fig:param_interplay_fix2_k1}
 	\end{subfigure}
-	\caption{Illustration of parameter interplay on separator size scaling in hierarchical Delaunay graphs. Changed parameters in (b), (c), and (d) are relative to (a) or the specific modification being tested.}
+    \caption{Illustration of parameter interplay on separator size scaling in hierarchical Delaunay graphs. Graphs (b),(c) and (d) have a decreased \(f_2\) compared to the baseline (a). Paramter changes to fix the scaling are highlighted green.}
 	\label{fig:hier_delaunay_param_interplay}
 \end{figure}
 
