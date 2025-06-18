@@ -498,7 +498,9 @@ An edge \((u, v)\) with length \(len(u, v)\) is added to the spanner \(H\) only 
 To compute \(dist_H(u, v)\), Dijkstra's algorithm is employed.
 Additionally, a union-find data structure maintains the connected components of \(H\), allowing for immediate addition of edges connecting previously disconnected vertices.
 Bauer et al. propose processing edges in non-increasing order (longest first) as a heuristic primarily intended to improve the computational efficiency of the spanner construction; the idea is to handle long edges while the intermediate spanner graph \(H\) is still sparse, potentially speeding up distance computations \cite{hutchison_synthetic_2010}.
-% We observe that our pruning strategy, the specifics of which are presented in a later section in \cref{alg:prune_edges}, tends to yield graph structures more visually akin to real-world road networks compared to the Bauer et al. method, although this involves an increased computational expense.
+
+For completeness, we briefly mention an alternative pruning strategy for a different generative model that will be detailed in a later section (\cref{sec:hierarchical_delaunay_generation}).
+This method tends to produce graphs with greater visual resemblance to real-world road networks than the Bauer et al. approach, though this comes at a higher computational cost.
 
 This generation method introduces artifacts.
 For example, connections between major structures defined at higher levels (like large "cities") might be unrealistically sparse, potentially consisting of only a few edges.
