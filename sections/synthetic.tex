@@ -666,11 +666,12 @@ Building upon insights from this iterative strategy, we developed a more streaml
 Instead of performing Delaunay triangulations at each hierarchical level followed by a final planarization step, we first generate the complete set of points across all desired levels.
 Only after all points have been generated is a single, global Delaunay triangulation performed on the entire final point set.
 The pseudocode for this hierarchical Delaunay generation process is detailed in \cref{alg:hierarchical_delaunay}.
+The method \texttt{uniformRandomPointsInCircle(center, radius, k)} samples \(k\) points uniformly at random within a circle of given radius centered at the specified point.
 
-A deliberate design choice in our hierarchical point generation process (\cref{alg:hierarchical_delaunay}) is that candidates for new expansion sites at each level \(i\) are selected from the \emph{entire} set of currently existing points \(P\), rather than exclusively from points generated in the immediately preceding level \(i-1\).
+A deliberate design choice in our hierarchical point generation process (\cref{alg:hierarchical_delaunay}) is that candidates for new expansion sites at each level \(i\) are selected from the entire set of currently existing points \(P\), rather than exclusively from points generated in the immediately preceding level \(i-1\).
 This approach reflects the real-world phenomenon where new settlements, even smaller ones, can emerge around and connect to established, major infrastructure hubs that might have formed at much earlier stages of network growth; for instance, a small town developing near a major motorway interchange.
 We also experimented with an alternative strategy where expansion sites for a given level were chosen only from the points generated in the previous level.
-However, this restriction did not yield any noticeable differences in the overall structural properties or separator characteristics of the resulting graphs, thus validating our choice of the more inclusive selection method.
+However, this restriction did not yield any noticeable differences in the overall structural properties or separator characteristics of the resulting graphs.
 
 \begin{algorithm}[tbhp]
 	\Input{Number of hierarchical levels \(L\), \\
@@ -685,7 +686,7 @@ However, this restriction did not yield any noticeable differences in the overal
 	\ForAll{\(i \in [1, L]\)}{
 		\(C_i \longleftarrow\) P.chooseRandom(\(\left\lfloor f_i \cdot |P|\right\rfloor\))\;
 		\ForAll{center \(\in C_i\)}{
-			\(P \longleftarrow P~\cup\) randomPointsInCircle(center, \(r_i\), \(k_i\))\;
+			\(P \longleftarrow P~\cup\) uniformRandomPointsInCircle(center, \(r_i\), \(k_i\))\;
 		}
 	}
 	\BlankLine
