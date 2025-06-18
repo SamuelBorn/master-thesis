@@ -588,7 +588,7 @@ However, achieving a consistent overall \bigO{n^{1/3}} scaling for the entire gr
 The observed local minima in separator size occur systematically at the transitions between hierarchical levels.
 This is because the construction method inherently creates sparse connections between components defined at different levels.
 \cref{fig:nested_grid_connectivity_example} provides a simplified illustration of this principle, showing two example components from the same levels within the hierarchy, not the entire structure of a layer.
-In this specific illustration, the components (represented by nodes 1-4 and 5-8) are linked only by the edges \{3,5\} and \{4,6\}.
+In this specific illustration, the components (represented by nodes 1-4 and 5-8) are linked only by the edges (3,5) and (4,6).
 Consequently, removing just one endpoint from each connecting edge suffices to disconnect them.
 This demonstrates how a vertex separator of small, constant size (size 2) exists between levels, regardless of the internal size of the components themselves.
 Such constant-size separators at every level transition are the underlying cause of the pronounced local minima observed in the separator scaling plots for these nested structures.
@@ -632,7 +632,7 @@ Such constant-size separators at every level transition are the underlying cause
 		\node[draw=none] at (6.5,1.5) {\(\dots\)};
 		\node[draw=none] at (5.5,1.5) {\(\dots\)};
 	\end{tikzpicture}
-    \caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges \{3,5\} and \{4,6\}. Removing one endpoint from each edge (e.g., 3 and 6) forms a size-2 vertex separator, irrespective of component sizes.}
+    \caption{Simplified illustration of connectivity between components from adjacent hierarchical levels. The components (nodes 1-4 and 5-8) are connected only by the two green edges (3,5) and (4,6). Removing one endpoint from each edge (e.g., 3 and 6) forms a size-2 vertex separator, irrespective of component sizes.}
 	\label{fig:nested_grid_connectivity_example}
 \end{figure}
 
@@ -652,17 +652,25 @@ A significant artifact observed in some Voronoi-based hierarchical models was th
 This limitation arose because new expansion sites were generated strictly within the polygonal cells defined by the higher-level Voronoi tessellation, effectively making top-level Voronoi edges hard boundaries.
 Our revised core idea allows new centers of expansion to emerge from the existing network infrastructure itself. Thus, new expansion sites are selected from the nodes of the current graph structure rather than from within predefined areal polygons.
 
-An initial refined concept explored an iterative Delaunay approach.
-This process would commence with a global Delaunay triangulation of an initial point set.
+\paragraph{Initial Approach}
+
+An initial concept explored an iterative Delaunay approach.
+This process would commence with a Delaunay triangulation of an initial point set.
 In subsequent hierarchical levels, a subset of existing points would be selected as \emph{expansion sites}.
 New points would then be sampled in the vicinity of each of these sites.
-Following this, a new Delaunay triangulation would be performed, localized to the region around these newly added points and their respective expansion sites, and then integrated into the larger graph structure.
-This iterative process aimed to simulate a \enquote{rich get richer} phenomenon: regions with a higher density of points would be more likely to have their constituent points selected as expansion sites for subsequent levels, leading to further concentrated growth in those areas.
+Following this, a new Delaunay triangulation would be performed independently for each expansion site.
+This iterative process is designed to emulate a self-reinforcing concentration dynamic, which is analogous to preferential attachment models.
+The rationale is to replicate how real-world settlement and infrastructure patterns evolve, where new growth is more likely to occur in or around already dense regions.
+By making points in these areas more probable candidates for subsequent expansion, the model naturally gives rise to a hierarchical landscape of concentrated clusters, mimicking the formation of urban centers.
 This recursive generation would continue for a specified number of levels.
-As a final step, a planarization process, as described in \cref{alg:planarization}, would be applied: edges, interpreted as straight line segments, are checked for intersections. Any intersections found are resolved by introducing new vertices at these points and subdividing the original edges accordingly.
+The result at this stage is a collection of disjoint, small, triangulated graphs embedded in the plane, whose edge lengths differ significantly based on the geometric scale at which they were generated.
+As a final step, a planarization process, as described in \cref{alg:planarization}, is applied: edges, interpreted as straight line segments, are checked for intersections.
+Any intersections found are resolved by introducing new vertices at these points and subdividing the original edges accordingly thus making the graph connected and planar.
 This method showed initial promise in creating structures that could yield separators with scaling behavior similar to that of road networks.
 
-Building upon insights from this iterative strategy, we developed a more streamlined and effective method, which is the primary focus of this section.
+\paragraph{Refined Generation}
+
+Building upon insights from this strategy, we developed a more streamlined and effective method, which is the primary focus of this section.
 Instead of performing Delaunay triangulations at each hierarchical level followed by a final planarization step, we first generate the complete set of points across all desired levels.
 Only after all points have been generated is a single, global Delaunay triangulation performed on the entire final point set.
 The pseudocode for this hierarchical Delaunay generation process is detailed in \cref{alg:hierarchical_delaunay}.
@@ -706,7 +714,7 @@ Analogous to the delaunay triangulation approach in \cref{sec:synthetic:delaunay
 To better emulate the characteristics of real road networks, such as an average degree around \(2.5\) and fewer nodes with very high degrees, we apply an edge pruning step.
 While Bauer et al. \cite{hutchison_synthetic_2010} also suggested a pruning methodology, we adopt a different strategy tailored to our generated graph structures.
 In our approach, edges are considered in order of increasing Euclidean length (shortest first).
-An edge \((u,v)\) is removed if the shortest path distance between \(u\) and \(v\) in the graph, after the hypothetical removal of \((u,v)\), is no more than a factor \(\alpha\) times the original direct length of \((u,v)\); i.e., if \( \text{dist}_{G \setminus \{(u,v)\}}(u,v) \le \alpha \cdot \text{length}(u,v) \).
+An edge \((u,v)\) is removed if the length of the shortest path between its endpoints in the remaining graph does not exceed its original direct length by more than a factor of \(\alpha\), i.e. if \( \text{dist}_{G \setminus \{(u,v)\}}(u,v) \le \alpha \cdot \text{length}(u,v) \).
 This edge removal criterion approximates economic viability considerations, as connections that offer marginal utility or are largely redundant would likely not be constructed in real-world road networks.
 Through experimentation, we found that a pruning parameter of \(\alpha = 2.5\) effectively reduces the average degree to the target range comparable to that of road networks.
 The pseudocode for this edge pruning process is given in \cref{alg:prune_edges}.
@@ -827,8 +835,8 @@ For instance, to simulate prominent \enquote{urban centers} at higher levels, a 
 This would typically be balanced by adjusting subsequent parameters, such as reducing \(f_2\) (selecting fewer centers from the points generated by these large initial expansions), to maintain overall structural integrity and desired separator characteristics.
 However, such compensations have practical limits; if radii do not shrink sufficiently across levels, adjustments to \(f_i\) or \(k_i\) may not fully mitigate adverse effects on separator scaling.
 
-For generating structures visually akin to road networks, allowing the number of active expansion sites (primarily controlled by \(f_i\)) to decrease at deeper hierarchical levels often yields favorable results.
-This complements the inherent tendency of the generation process where all existing points are candidates for seeding new expansions (the \enquote{rich get richer} effect), helping to manage density while still fostering hierarchical differentiation.
+For generating structures visually akin to road networks, allowing the number of active expansion sites to decrease at deeper hierarchical levels often yields favorable results.
+This complements the inherent tendency of the generation process where all existing points are candidates for seeding new expansions, helping to manage density while still fostering hierarchical differentiation.
 Plausible structures can emerge even with constant \(k_i\) values across levels, provided \(f_i\) and \(r_i\) are appropriately tuned.
 For instance, the parameter set comprising level expansion fractions \(f_i = (1.0, 0.3, 0.2, 0.1)\), points per expansion site \(k_i = (50, 50, 50, 50)\), and expansion radii \(r_i = (1000, 424, 120, 17)\) produces graphs whose separator characteristics are illustrated in \Cref{fig:hier_delaunay_example_params_sep}.
 
