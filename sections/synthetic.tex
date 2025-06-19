@@ -47,7 +47,7 @@ The separator scaling is illustrated in \cref{fig:same_degree}.
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.6\linewidth]{graphics/RandomAvgDeg2.5.pdf}
-	\caption{Separator sizes observed in random graphs generated with an average degree matching the DIMACS Europe road network (\( \approx 2.5 \)).}
+	\caption{Separator sizes observed in random graphs generated with an average degree matching the DIMACS Europe road network (\( \approx 2.5 \)). Separators were computed using FlowCutter (tests with KaHIP yielded similar asymptotic scaling).}
 	\label{fig:same_degree}
 \end{figure}
 
@@ -112,7 +112,7 @@ Through further experimentation and fine-tuning, it is found that a function of 
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/tree_local_pow_overview.pdf}
-		\caption{Separator scaling for various decay functions \(f(\text{dist})\).}
+		\caption{Separator scaling for various decay functions \(f\).}
 		\label{fig:tree_dist_compare_functions}
 	\end{subfigure}
 	\hfill
@@ -122,7 +122,7 @@ Through further experimentation and fine-tuning, it is found that a function of 
 		\caption{Separator scaling for \(f(\text{dist}) = 1/\text{dist}^{3.3}\) with line fit.}
 		\label{fig:tree_dist_best_fit_scaling}
 	\end{subfigure}
-	\caption{Separator size scaling for graphs generated with tree-distance based locality, comparing various decay functions and highlighting the fit for \(f(\text{dist}) = 1/\text{dist}^{3.3}\).}
+	\caption{Separator size scaling for graphs generated with tree-distance based locality, comparing various decay functions and highlighting the fit for \(f(\text{dist}) = 1/\text{dist}^{3.3}\). Separators were computed using FlowCutter (tests with KaHIP yielded similar asymptotic scaling).}
 	\label{fig:tree_dist_locality_scaling}
 \end{figure}
 
@@ -148,7 +148,6 @@ For efficient implementation of the edge addition step, we utilize spatial queri
 
 Despite incorporating this explicit geometric constraint, the resulting synthetic graphs fail to exhibit the desired small separator sizes characteristic of road networks.
 To analyze the separator properties of these graphs, we computed recursive separators.
-% Implementations from both IntertialFlowCutter and KaHIP were utilized for this purpose.
 Our experiments using these methods indicate that separators in these geometrically generated graphs scale approximately as \bigO{n^{1/2}}.
 This outcome is visualized in \cref{fig:geometric_locality_separators}.
 
@@ -166,7 +165,7 @@ This outcome is visualized in \cref{fig:geometric_locality_separators}.
 		\caption{Separator size scaling for synthetic graphs generated with geometric locality. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separatos. }
 		\label{fig:geometric_locality_sep_plot}
 	\end{subfigure}
-	\caption{Synthetic graph generation using geometric locality and analysis of separator sizes. }
+	\caption{Synthetic graph generation using geometric locality and analysis of separator sizes. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:geometric_locality_separators}
 \end{figure}
 
@@ -196,7 +195,7 @@ Our experiments show that k-NN graphs generated in this manner also exhibit sepa
 		\caption{Separator size scaling for k-NN graphs \(k=3\), showing approximately \bigO{n^{1/2}} behavior.}
 		\label{fig:knn_graph_sep_scaling_plot}
 	\end{subfigure}
-	\caption{Analysis of k-Nearest Neighbor (k-NN) graph of uniformly sampled points and separator scaling.}
+	\caption{Analysis of k-Nearest Neighbor (k-NN) graph of uniformly sampled points and separator scaling. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:knn_graph_analysis}
 \end{figure}
 
@@ -219,7 +218,7 @@ This correspondence is noteworthy, as it suggests that our geometric locality mo
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.6\linewidth]{graphics/local_embedding-hist.pdf}
-	\caption{Histogram of separator sizes for synthetic graphs using geometric locality, illustrating an initial peak in relative separator size for small subgraphs (around \(2^6\) nodes).}
+	\caption{Histogram of separator sizes for synthetic graphs using geometric locality, illustrating an initial peak in relative separator size for small subgraphs (around \(2^6\) nodes). Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:local_embedding_hist_deviation}
 \end{figure}
 
@@ -284,7 +283,7 @@ This finding highlights that sparsity, even within a simple planar structure lik
 		\caption{Separator size scaling for sparse grid graphs (average degree \(2.5\)). Separator sizes scale approximately as \bigO{n^{1/2}}, but with a small constant factor leading to absolute sizes comparable to road networks at practical scales. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separators.}
 		\label{fig:sparse_grid_sep_plot}
 	\end{subfigure}
-	\caption{Analysis of sparse grid graphs with average degree \(2.5\).}
+	\caption{Analysis of sparse grid graphs with average degree \(2.5\). Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:sparse_grid_separators}
 \end{figure}
 
@@ -314,7 +313,7 @@ The desired scaling is explicitly engineered into the generation process here, r
 		\caption{Separator scaling for the engineered grid graph, exhibiting the constructed \(\bigO{n^{1/3}}\) behavior.}
 		\label{fig:engineered_grid_sep_plot}
 	\end{subfigure}
-	\caption{Grid-like graph with engineered separators designed to scale as \(\bigO{n^{1/3}}\).}
+	\caption{Grid-like graph with engineered separators designed to scale as \(\bigO{n^{1/3}}\). Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:engineered_grid_sep}
 \end{figure}
 
@@ -400,7 +399,7 @@ Even when the average degree very closely matches that of road networks (as in t
 		\caption{Separator scaling for Delaunay variants.}
 		\label{fig:delaunay_variants_sep_plot}
 	\end{subfigure}
-	\caption{Comparison of Delaunay Triangulation and its sparse subgraphs derived from the same point set: visualizations (a-d) and separator scaling (e).}
+	\caption{Comparison of Delaunay Triangulation and its sparse subgraphs derived from the same point set: visualizations (a-d) and separator scaling (e). Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:delaunay_variants_comparison}
 \end{figure}
 
@@ -464,7 +463,7 @@ It serves as a reminder that observing \bigO{n^{1/2}} separator scaling does not
 		\caption{Separator size scaling observed during recursive partitioning of ABR-generated graphs. Separator sizes scale approximately as \bigO{n^{1/2}}. The fit shown excludes subgraphs with \( \le 256 \) vertices due to their disproportionately large separatos.}
 		\label{fig:abr_graph_sep_plot}
 	\end{subfigure}
-	\caption{Analysis of synthetic graphs generated using the ABR algorithm \cite{abraham_highway_2010}.}
+	\caption{Analysis of synthetic graphs generated using the ABR algorithm \cite{abraham_highway_2010}. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:abr_graph_separators}
 \end{figure}
 
@@ -528,7 +527,7 @@ Consequently, if the recursion depth is limited and the highest-level structures
 		\caption{Separator size scaling for the hierarchical Voronoi graph, showing local minima at layer transitions.}
 		\label{fig:voronoi_hierarchy_sep_plot}
 	\end{subfigure}
-	\caption{Analysis of synthetic graphs generated using the hierarchical Voronoi approach from Bauer et al. \cite{hutchison_synthetic_2010}.}
+	\caption{Analysis of synthetic graphs generated using the hierarchical Voronoi approach from Bauer et al. \cite{hutchison_synthetic_2010}. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:voronoi_hierarchy}
 \end{figure}
 
@@ -562,7 +561,7 @@ Removing these \enquote{overlapped} parent edges reduces the graph's overall edg
 		\caption{Separator size scaling for nested grids, showing pronounced local minima.}
 		\label{fig:nested_grid_sep_plot}
 	\end{subfigure}
-	\caption{Analysis of synthetic graphs generated using the nested grid approach.}
+	\caption{Analysis of synthetic graphs generated using the nested grid approach. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:nested_grid_analysis}
 \end{figure}
 
@@ -759,7 +758,7 @@ The pruning step, while beneficial for achieving a target average degree and a m
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.7\linewidth]{graphics/delaunay_pre_post_pruning_sep_size.pdf}
-	\caption{Comparison of separator size scaling in hierarchical Delaunay graphs before and after the pruning step.}
+	\caption{Comparison of separator size scaling in hierarchical Delaunay graphs before and after the pruning step. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:delaunay_pruned_vs_pre_pruned_sep}
 \end{figure}
 
@@ -848,7 +847,7 @@ Only a well-tuned, approximately exponential decay of radii yields the desired c
 		\caption{Constant radii.}
 		\label{fig:radius_const}
 	\end{subfigure}
-	\caption{Illustration of the impact of different radii decay strategies on separator scaling. All other parameters held constant.}
+	\caption{Illustration of the impact of different radii decay strategies on separator scaling. All other parameters held constant. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:radius_compare}
 \end{figure}
 
@@ -878,7 +877,7 @@ For instance, the parameter set comprising level expansion fractions \(f_i = (1.
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.7\linewidth]{graphics/hierachcial_delaunay_const_sites.pdf}
-	\caption{Separator size scaling for a hierarchical Delaunay graph generated with constant expansion sites: \(f_i=(1.0, 0.3, 0.2, 0.1)\); \(k_i=(50, 50, 50, 50)\); \(r_i=(1000, 424, 120, 17)\).}
+	\caption{Separator size scaling for a hierarchical Delaunay graph generated with constant expansion sites: \(f_i=(1.0, 0.3, 0.2, 0.1)\); \(k_i=(50, 50, 50, 50)\); \(r_i=(1000, 424, 120, 17)\). Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:hier_delaunay_example_params_sep}
 \end{figure}
 
@@ -919,7 +918,7 @@ Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing th
 		\caption{Fix 2 (Increase \(k_1\) for low \(f_2\)): \newline\(f_i=(1.0, \textcolor{red}{0.1}, 0.4, 0.3)\); \(k_i=(\textcolor{green}{1000}, 50, 35, 25)\); \(r_i=(1000, 141, 26, 6)\).}
 		\label{fig:param_interplay_fix2_k1}
 	\end{subfigure}
-	\caption{Illustration of parameter interplay on separator size scaling in hierarchical Delaunay graphs. Graphs (b),(c) and (d) have a decreased \(f_2\) compared to the baseline (a). Paramter changes to fix the scaling are highlighted green.}
+	\caption{Illustration of parameter interplay on separator size scaling in hierarchical Delaunay graphs. Graphs (b),(c) and (d) have a decreased \(f_2\) compared to the baseline (a). Paramter changes to fix the scaling are highlighted green. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:hier_delaunay_param_interplay}
 \end{figure}
 
@@ -1034,7 +1033,7 @@ To achieve the desired separator behavior for smaller graphs, it is necessary to
 		\caption{Separator scaling for the multi-scale Perlin noise graph.}
 		\label{fig:fractal_noise_graph_sep_plot}
 	\end{subfigure}
-	\caption{Synthetic graph generated using multiplicative binary Perlin noise and its separator scaling.}
+	\caption{Synthetic graph generated using multiplicative binary Perlin noise and its separator scaling. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:fractal_noise_graph_results}
 \end{figure}
 
@@ -1079,7 +1078,7 @@ However, as subgraphs become larger and the low-frequency obstacles themselves b
 		\caption{Separator scaling: high-freq. vs. low-freq. only.}
 		\label{fig:noise_ablation_sep_plot}
 	\end{subfigure}
-	\caption{Impact of using only high-frequency versus only low-frequency Perlin noise scales on (a, b) noise patterns and (c) separator scaling.}
+	\caption{Impact of using only high-frequency versus only low-frequency Perlin noise scales on (a, b) noise patterns and (c) separator scaling. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:noise_layer_ablation}
 \end{figure}
 
@@ -1124,7 +1123,7 @@ For substantially larger values of k, such as (k=50), the separators exhibit qua
 		\caption{Separator scaling: Delaunay-based vs. k-NN based.}
 		\label{fig:knn_delaunay_noise_sep_compare}
 	\end{subfigure}
-	\caption{Comparison of graph structures and separator scaling for Delaunay-derived graphs versus k-NN graphs on identical noise-sampled point sets.}
+	\caption{Comparison of graph structures and separator scaling for Delaunay-derived graphs versus k-NN graphs on identical noise-sampled point sets. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
 	\label{fig:knn_vs_delaunay_noise_points}
 \end{figure}
 
