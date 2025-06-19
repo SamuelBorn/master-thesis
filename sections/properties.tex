@@ -8,7 +8,7 @@ These empirical findings serve as a foundation for the synthetic graph generatio
 \section{Separator Sizes}
 \label{sec:empirical_analysis}
 
-To empirically investigate the relationship between graph size and separator size in road networks, we analyze the DIMACS Europe provided by PTV \cite{ptv_group_dimacs-europe_2009}.
+To empirically investigate the relationship between graph size and separator size in road networks, we analyze the DIMACS Europe dataset provided by PTV \cite{ptv_group_dimacs-europe_2009}.
 We take the largest connected component of this graph and make it undirected by ignoring edge directions as we are primarily interested in the topological structure rather than the specific flow direction of traffic.
 A crucial first step in our research is to empirically validate the scaling of these separators.
 We seek to determine if they scale near \(\bigO{n^{1/3}}\), as suggested by prior work \cite{dibbelt_customizable_2016}, or if an alternative scaling, like \(\bigO{n^{1/2}}\), merely appears smaller due to a low constant factor.
@@ -37,7 +37,7 @@ To mitigate the influence of these large-scale geographical artifacts and focus 
     \label{fig:europe_top_separator}
 \end{figure}
 
-For enhanced visibility, particularly concerning the numerous data points corresponding to smaller subgraphs, and to avoid overrepresentation of larger subgraphs, we will also present data a log-log scale.
+For enhanced visibility, particularly concerning the numerous data points corresponding to smaller subgraphs, and to avoid overrepresentation of larger subgraphs, we will also present data on a log-log scale.
 This logarithmic scaling offers the additional advantage that a polynomial relationship between separator size \( y \) and subgraph size \( x \), such as \( y \propto x^c \), manifests as a linear trend in the log-log plot, facilitating the identification of potential power-law dependencies.
 Furthermore, to improve the interpretability of the visualization and emphasize the underlying trend over individual fluctuations or outliers present at various scales, the data points are aggregated into bins.
 Let \( b \) be the number of bins chosen for the aggregation.
@@ -79,7 +79,7 @@ However, this result is likely skewed by the large number of small subgraphs, wh
 To test this hypothesis, we perform a second regression exclusively on data points corresponding to subgraphs with more than \( 2^8 = 256 \) vertices.
 This analysis yields the relationship \( \log y \approx 0.3650 \log x - 1.7322 \).
 
-We report these coefficients to four decimal places as is conventional in scientific reporting.
+We report these coefficients to four decimal places in accordance with scientific reporting conventions.
 However, we acknowledge that this level of precision might overstate the certainty of the fit, given the inherent noise in empirical measurements from complex graph algorithms.
 Minor variations in experimental conditions, such as changing the random seed used in the nested dissection algorithm, can cause slight fluctuations in these fitted parameters.
 Therefore, the reported values should be interpreted as indicative of the general trend rather than as exact constants.
@@ -90,8 +90,7 @@ Fitting \( y = a \cdot x^{1/2} + b \) yields \( y \approx 0.1087 \cdot x^{1/2} +
 A more general power-law fit \( y = a \cdot x^c + b \) results in \( y \approx 0.2346 \cdot x^{0.3980} + 0.6140 \) with an \( R^2 \) value of \( 0.4832 \).
 While these direct fits indicate a scaling exponent potentially closer to \( 0.4 \) than to \( 1/3 \) or \( 1/2 \), the overall \( R^2 \) scores remain relatively low, indicating only a moderate goodness of fit.
 These fitted curves are visualized in \cref{fig:separator_size_loglog}.
-The fitted lines displayed in \cref{fig:separator_size_loglog_binned} are those computed from the non-binned data and shown previously in \cref{fig:separator_size_loglog_non_binned}.
-They are reproduced here to facilitate comparison with the binned averages, although visual alignment may differ due to the underlying averaging represented by the bins.
+The fitted lines from the non-binned data (\cref{fig:separator_size_loglog_non_binned}) are reproduced in \cref{fig:separator_size_loglog_binned} to facilitate comparison with the binned averages; visual alignment may differ due to the binning process.
 
 Observations from the binned log-log plot in \cref{fig:separator_size_loglog_binned} suggest that the linear relationship between \( \log y \) and \( \log x \) is most consistent within a specific range of subgraph sizes.
 The data appear particularly stable for subgraph sizes \( x \) between approximately \( 2^7 \) and \( 2^{18} \) nodes.
@@ -162,7 +161,7 @@ For context, the meshedness coefficient for a square grid approaches \(0.5\) as 
 In contrast to the continental scale, urban cores are typically more densely meshed.
 To illustrate this, we analyze the inner-city structure of Karlsruhe, a sub-region available within the PTV/DIMACS dataset.
 Representations of roads often include long chains of degree-2 vertices that model segments rather than structurally significant junctions.
-Such modeling can artificially skew the meshedness coefficient to lower values because adding these degree-2 vertices increases \(n\) without increasing the graph's cycle count (\(m-n\)).
+Such modeling can artificially skew the meshedness coefficient to lower values because adding these degree-2 vertices increases \(n\) without increasing the graph's cycle count.
 Therefore, to analyze the underlying junction-based topology independent of this modeling artifact, contracting degree-2 vertices is a valuable normalization step.
 After applying this contraction, the graph for Karlsruhe's inner city yields a meshedness coefficient of approximately \(0.25\).
 This higher value reflects the more grid-like layout characteristic of dense urban centers.
@@ -191,23 +190,23 @@ Pseudo-code for this planarization algorithm is provided in \cref{alg:planarizat
 
 \begin{algorithm}[tbhp]
     \Input{Non-planar graph \(G=(V, E, pos)\).}
-    \Output{Planarized version of \G.}
+    \Output{Planarized version of G.}
     \BlankLine
-    spatial\_index \(\longleftarrow\) load(bounding\_boxes(\E))\;
+    spatial\_index \(\longleftarrow\) load(bounding\_boxes(E))\;
     crossings \(\longleftarrow\) \{\}\;
-    \ForAll{\e  in \E}{
-        \ForAll{candidates \(c\) in spatial\_index.query(\e)}{
-            \If{\(c\) intersects \e} {
-                crossings[\(e\)].append(\(c\))\;
-                crossings[\(c\)].append(\(e\))\;
+    \ForAll{e in E}{
+        \ForAll{candidates c in spatial\_index.query(e)}{
+            \If{c intersects e} {
+                crossings[e].append(c)\;
+                crossings[c].append(e)\;
             }
         }
     }
-    \ForAll{(\e, crossed) in crossings}{
-        \G.remove(\e)\;
-        vertices \(\longleftarrow\) get\_intersection\_vertices(\(e\), crossed)\;
-        sort vertices along \e\;
-        add\_new\_edges(\(e\), vertices)\;
+    \ForAll{(e, crossed) in crossings}{
+        G.remove(e)\;
+        vertices \(\longleftarrow\) get\_intersection\_vertices(e, crossed)\;
+        sort\_vertices\_along\_edge(e, vertices)\;
+        add\_new\_edges(e, vertices)\;
     }
     \caption{Simple planarization algorithm \label{alg:planarization}}
 \end{algorithm}
@@ -216,7 +215,7 @@ We apply this planarization method to several real-world road networks.
 The Karlsruhe network, with approximately 120,000 nodes, has around 2,500 crossings.
 The Germany network, comprising about 6 million nodes, has approximately 100,000 crossings.
 Finally, the Europe network, with around 18 million nodes, contains about 300,000 crossings.
-These numbers are a little higher than the \( \approx \bigO{n^{1/2}} \) intersection counts reported in some prior studies, but are of a comparable order of magnitude \cite{eppstein_studying_2008}.
+These numbers are a little higher than intersection counts on the order of \(n^{1/2}\) reported in some prior studies, but are of a comparable order of magnitude \cite{eppstein_studying_2008}.
 The differences could be explained by our modeling of edges as straight lines rather than more complex curves, and might be mitigated by using a more detailed road network model like OpenStreetMap.
 
 Analysis of separator sizes shows minimal variation post-planarization.
@@ -225,7 +224,7 @@ A comparison of the separator sizes in the planar and non-planar versions of the
 
 \begin{figure}[tbhp]
     \centering
-    \includegraphics[width=0.8\linewidth]{graphics/EuropePlanarVsNonPlanar.pdf}
+    \includegraphics[width=0.6\linewidth]{graphics/EuropePlanarVsNonPlanar.pdf}
     \caption{Comparison of separator sizes in the European road network: planar vs. non-planar versions. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
     \label{fig:germany_planar_vs_non_planar}
 \end{figure}
@@ -233,7 +232,7 @@ A comparison of the separator sizes in the planar and non-planar versions of the
 Our findings indicate that separators in non-planar road networks closely resemble those in their planarized counterparts in terms of overall scaling.
 However, a separator from the original graph is not always directly valid in the planarized version, as edge crossings can create new paths between previously separated components.
 We investigated this by traversing a single arm of a nested dissection and checking if the separators for the original subgraphs remain valid in their planarized versions.
-Approximately one-third of these separators can be applied directly without modification, with this being more probable for smaller subgraphs that are less likely to contain edge crossings.
+Approximately one-third of these separators can be applied directly without modification, this is more probable for smaller subgraphs that are less likely to contain edge crossings.
 When a separator is invalidated by the new topology, different outcomes are possible.
 In many cases, an original separator must be augmented with additional nodes to restore the partition, resulting in a slightly larger separator.
 \cref{fig:karlsruhe_planar_vs_non_planar} provides a real-world example, visualizing how a separator from the non-planar Karlsruhe network has to be augmented to remain valid after planarization.
@@ -243,7 +242,7 @@ Conversely, there are also rare cases in which no better separator can be found 
 
 \begin{figure}[tbhp]
     \centering
-    \includegraphics[width=0.8\linewidth]{graphics/karlsruhe_top_level_sep_extended_to_planar_wide.png}
+    \includegraphics[width=0.7\linewidth]{graphics/karlsruhe_top_level_sep_extended_to_planar_wide.png}
     \caption{Visualization of a top-level separator for the road network of Karlsruhe. Vertices colored teal represent the separator nodes identified within the original, non-planar graph. Orange vertices indicate the additional nodes required to establish a valid separator for the planarized version of the network. The single teal vertex on the right is a highway intersection whose inclusion is necessary for the separator.}
     \label{fig:karlsruhe_planar_vs_non_planar}
 \end{figure}
@@ -360,7 +359,7 @@ Conversely, there are also rare cases in which no better separator can be found 
 \end{figure}
 
 
-These findings highlight that the near-planar structure of road networks has minimal impact on separator size, suggesting that such networks can typically be analyzed as planar graphs without loss of essential separator properties.
+These findings highlight that the near-planar structure of road networks has minimal impact on separator size, suggesting that such networks can typically be analyzed as planar graphs without losing essential separator properties.
 
 \section{Hierarchy}
 \label{sec:hierarchy}
@@ -388,7 +387,7 @@ To ensure that the measured hop distances are structurally meaningful, we first 
 This effectively treats long chains of such vertices as single conceptual edges.
 
 Computing the exact diameter of a general graph can be computationally intensive.
-A simple two-step Breadth-First Search approach, performing a BFS from a random node to find the furthest vertex and then a second BFS from that result, is only guaranteed to find the exact diameter in certain graph classes, such as trees, and provides at best a 2-approximation for general graphs.
+A simple two-step Breadth-First Search (BFS) approach can be used. This involves performing a BFS from a random node to find the furthest vertex, and then a second BFS from that resulting vertex. However, this method is only guaranteed to find the exact diameter in certain graph classes, such as trees, and provides at best a 2-approximation for general graphs.
 Therefore, to obtain exact diameter values, we employ the more sophisticated iFUB (iterative Fringe Upper Bound) algorithm as described by Crescenzi et al. \cite{crescenzi_computing_2013}.
 This algorithm successfully computes the exact graph diameter in reasonable time on road networks without resorting to a full all-pairs shortest path calculation.
 
@@ -398,7 +397,7 @@ This observed scaling behavior is illustrated in \cref{fig:road_network_diameter
 
 \begin{figure}[tbhp]
     \centering
-    \includegraphics[width=0.7\linewidth]{graphics/diam-europe-ifub.pdf}
+    \includegraphics[width=0.6\linewidth]{graphics/diam-europe-ifub.pdf}
     \caption{Empirical scaling of hop diameter with the number of vertices \(n\) for nested dissection subgraphs of road networks (with degree-2 nodes contracted). The observed scaling is approximately \bigO{n^{1/3}}.}
     \label{fig:road_network_diameter_scaling}
 \end{figure}
@@ -411,9 +410,9 @@ For the hop distance calculation, the graph is pre-processed by contracting all 
 
 The two histograms reveal a key distinction between the network's geographic and topological structure.
 The weighted distance distribution is strongly right-skewed with a smoothly decaying tail.
-In contrast, the hop count distribution, exhibits a sharp peak at a low hop count and has a by a significantly heavier tail.
+In contrast, the hop count distribution exhibits a sharp peak at a low hop count and has a significantly heavier tail.
 This structural difference may suggest a hierarchical network topology.
-The sharp peak in hop counts likely reflects high efficiency for paths between nodes that are well-connected, locally as well as by a "highway" backbone. However, the heavier tail indicates that a non-trivial number of node pairs are topologically remote, requiring a large number of hops to connect, likely because they are in comparasent not well-serviced by this primary backbone.
+The sharp peak in hop counts likely reflects high efficiency for paths between nodes that are well-connected, locally as well as by a "highway" backbone. However, the heavier tail indicates that a non-trivial number of node pairs are topologically remote, requiring a large number of hops to connect, likely because they are comparatively not well-serviced by this primary backbone.
 
 \begin{figure}[tbhp]
     \centering
