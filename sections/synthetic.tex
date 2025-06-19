@@ -997,16 +997,16 @@ To achieve the desired separator behavior for smaller graphs, it is necessary to
 
 \begin{algorithm}[tbhp]
 	\Input{Target number of points \(n\), \\
-		\(M\) noise scales \(s_i\)}
+		\(L\) noise scales \(s_i\)}
 	\Output{Geometric graph \(G\)}
 	\BlankLine
 	\(P \longleftarrow \emptyset\)\;
 	\While{\(|P| < n\)}{
 		\(p \longleftarrow\) randomPointInUnitCircle()\;
 		\BlankLine
-		noise \(\longleftarrow \prod_{i=1}^{M} \text{perlinNoise}(p \cdot s_i)\)\;
+		noise \(\longleftarrow \prod_{i=1}^{L} \text{perlinNoise}(p \cdot s_i)\)\;
 		\BlankLine
-		\If{\(\text{noise} > 0.5^{M}\)}{
+		\If{\(\text{noise} > 0.5^{L}\)}{
 			\(P \longleftarrow P \cup \{p\}\)\;
 		}
 	}
