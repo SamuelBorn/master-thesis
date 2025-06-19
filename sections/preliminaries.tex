@@ -105,8 +105,12 @@ In this thesis, we primarily utilize InertialFlowCutter \cite{gottesburen_faster
 This algorithm leverages geometric embeddings, often available for road networks, to compute high-quality node orderings efficiently.
 These node orderings serve as the basis for extracting separators from the graph using the method described below \cite{blasius_customizable_2025}.
 Employing this combined approach provides a practical pathway to generate separators for our analysis, adapting the use of InertialFlowCutter's output to suit the specific requirements of this work.
-However, InertialFlowCutter requires such a geometric embedding as input.
-For graphs without an embedding, we utilize the KaHIP (Karlsruhe High Quality Partitioning) framework \cite{sanders_think_2013}.
+We primarily employ \textbf{InertialFlowCutter} \cite{gottesburen_faster_2019} to compute separators.
+Since InertialFlowCutter is specifically designed for the structure of road networks, its performance on the more arbitrary synthetic graphs investigated in this thesis is not guaranteed to be optimal.
+To address this potential bias and validate our results, we cross-check our findings using two other established partitioning frameworks: KaHIP \cite{sanders_think_2013} and FlowCutter \cite{hamann_graph_2018}.
+Despite its specialization, we observe that for most graph instances examined in this thesis, InertialFlowCutter consistently produces separators of smaller size compared to the other two methods.
+A key constraint of InertialFlowCutter, however, is its requirement of a geometric embedding as input.
+Consequently, for synthetic graphs generated without an explicit embedding, we rely exclusively on KaHIP and FlowCutter for separator computation.
 
 When using InertialFlowCutter, the resulting node ordering is interpreted as an elimination order for the vertices of the graph \( G = (V, E) \).
 Based on this order, a chordal supergraph \( G_C = (V, E \cup F) \) is constructed, where \( F \) represents the fill-in edges.
