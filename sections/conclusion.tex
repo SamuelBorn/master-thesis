@@ -51,5 +51,6 @@ A primary direction is the pursuit of a rigorous theoretical analysis of the mul
 Such a study could potentially provide a formal derivation for the empirically observed \bigO{n^{0.37}} scaling.
 Further work could also seek to improve the efficiency of the generative algorithms.
 For instance, the tree-locality generator is hampered by its slow, BFS-based distance calculations; developing an efficient method to sample edges according to weights derived from tree distances would make this model more viable for large-scale tests.
-Finally, the synthetic generators developed here can serve as a basis for creating realistic, large-scale benchmarks for evaluating not only route planning algorithms but also other algorithms that depend on network topology.
-Exploring alternative models for generating hierarchical structures or physical barriers could yield further insights into the essential characteristics of transportation networks.
+The synthetic generators developed here can serve as a basis for creating realistic, large-scale benchmarks for evaluating not only route planning algorithms but also other algorithms that depend on network topology.
+An important extension of this work would be to adapt the noise generation algorithm to more closely replicate other key road network metrics beyond just separators, such as hop distributions or centrality measures, to create an even more robust synthetic road network generator.
+Finally, exploring alternative models for generating hierarchical structures or physical barriers could yield further insights into the essential characteristics of transportation networks.
