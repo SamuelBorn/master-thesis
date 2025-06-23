@@ -994,6 +994,7 @@ However, this does not substantially affect the overall performance of the graph
 
 Our implementation successfully generates graphs with vertex counts \(n \in \{10^4, 10^5, 10^6, 10^7\}\) using \(L=11\) scales.
 The generation method demonstrates scalability, producing graphs with up to 300 million nodes.
+For larger graphs we primarily rely on using the Relative Neighborhood Graph (RNG) creation instead of a Delaunay triangulation with the following edge pruning because the RNG is more efficient to compute for larger point sets.
 Further experiments are constrained by limitations in underlying libraries, which employ 32-bit integers for internal processing.
 
 Once the \(n\) points are generated, a global Delaunay triangulation is performed on this point set. Subsequently, the same edge pruning step detailed in the Hierarchical Delaunay Generation section (see \cref{alg:prune_edges}) is applied to achieve a target average degree and refine the graph structure.
