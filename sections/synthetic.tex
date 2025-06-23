@@ -4,7 +4,6 @@
 To better understand the underlying reasons for the small separators observed in road networks, we investigate the influence of specific graph properties in isolation.
 This chapter details our approach to generating synthetic graph classes that exhibit selected features characteristic of road networks, such as low average degree, specific degree distributions, or properties related to planarity and locality.
 By analyzing the separator sizes within these synthetic graphs, we aim to determine which properties, or combinations thereof, are crucial for enabling small separators.
-
 \section{Degree Distribution}
 
 Our initial focus is on isolating the effect of the degree distribution.
@@ -14,12 +13,10 @@ First, a random spanning tree is created for a given set of \(n\) vertices using
 This algorithm performs a random walk starting from an arbitrary vertex on the complete graph of \(n\) vertices.
 An edge becomes part of the spanning tree the first time a vertex is discovered via that edge during the walk.
 The process continues until all vertices are visited, resulting in a uniformly sampled random spanning tree in expected time \bigO{n \log n}.
-
 It is noteworthy that random trees generated in this manner exhibit properties distinct from those of road networks.
 For instance, the diameter of such random trees is known to be in \bigO{n^{1/2}} \cite{chlamtac_tree-based_1987}.
 This differs from our empirical observations on road networks.
 This observed diameter growth of these trees is visualized in \cref{fig:diameter_karlsruhe}.
-
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.6\linewidth]{graphics/diameters.pdf}
@@ -54,19 +51,17 @@ The separator scaling is illustrated in \cref{fig:same_degree}.
 We also conducted experiments to generate graphs that match not just the average degree but also the specific degree distribution of a reference road network.
 This process involved starting with a random tree and then adding edges subject to constraints: an edge \((u, v)\) was incorporated only if doing so would not cause either vertex \(u\) or \(v\) to exceed the degree count specified for them by the target distribution, which was sampled from the road network.
 The separator results from this more refined approach were largely similar to those from graphs matching only the average degree.
-
 It is important to note, however, that precisely replicating a target degree distribution with this method is not possible.
-While the maximum degree in the generated graphs generally aligns with that of the reference network, discrepancies emerge, particularly for nodes with higher degrees.
+While the maximum degree in the generated graphs generally aligns with that of the reference network, discrepancies emerge, particularly for nodes with a higher degree.
 The underlying random spanning tree structure tends to produce a higher proportion of such nodes compared to actual road networks.
 For instance, in synthetic graphs designed to match the Europe dataset \cite{ptv_group_dimacs-europe_2009}, approximately 1.8\% of vertices had a degree of 5 or greater, exceeding the 0.2\% observed in the real dataset.
 Thus, our process achieves an approximation of the target distribution.
 Nevertheless, we posit that this approximation is sufficiently close for our investigation, as the relatively small fraction of vertices with degrees deviating from the target constraints is unlikely to fundamentally alter the observed separator scaling behavior for this graph class.
-
 These findings reinforce the suggestion that the specific degree distribution, in isolation, is likely insufficient to fully explain the empirically observed small separators.
 Nevertheless, the low average degree remains a noteworthy property.
-While a lower average degree may not fundamentally alter the inherent asymptotic separator scaling characteristic of a specific graph class, it often correlates with smaller constant factors in the observed separator sizes; the practical effect of sparsity on separator magnitudes will be discussed further in a subsequent section.
-
-Beyond the influence of average degree on constant factors, it is also crucial to recognize that neither a low average degree nor a specific sparse degree distribution are strict prerequisites for achieving small separators.
+While a lower average degree may not fundamentally alter the inherent asymptotic separator scaling characteristic of a specific graph class, it often correlates with smaller constant factors in the observed separator sizes,
+the practical effect of sparsity on separator magnitudes will be discussed further in a subsequent section.
+Beyond the influence of average degree on constant factors, it is also crucial to recognize that neither a low average degree nor a specific sparse degree distribution is a strict prerequisite for achieving small separators.
 Indeed, graphs can be constructed that possess both deliberately small separators (as a function of \(n\)) and a high average degree.
 Consider, for instance, the following recursive graph generation scheme designed to produce a graph on \(n\) vertices with a target separator of size \(s(n)\) (e.g., \(s(n) = n^{1/3}\)):
 First, a separator clique \(S\) on \(s(n)\) vertices, denoted \(K_{s(n)}\), is designated.
@@ -76,13 +71,13 @@ By construction, the set \(S\) (forming a \(K_{s(n)}\)) is a separator of size \
 Despite this small, built-in separator, the average degree of the resulting graph can be substantial.
 For example, using \(s(n) = n^{1/3}\), a graph of \(n=10^4\) vertices generated via this method has an average degree of approximately 169 and a maximum degree of 6202.
 This example illustrates that specific structural properties enabling small separators can coexist with high overall edge density, suggesting that the global organization of edges, beyond mere sparsity, significantly influences separator characteristics.
-
 \section{Locality}
 \label{sec:synthetic:locality}
 
 Our investigation into locality begins by exploring how \enquote{closeness} defined by an existing network structure, rather than by direct geometric proximity in an embedding, influences graph properties.
 
 \paragraph{Tree Locality}
+
 For this first approach, we simulate locality by considering distances within an initial random spanning tree, which serves as a foundational sparse connected graph.
 The premise is that vertices closer to each other along paths in this underlying tree are more likely candidates for new, direct connections, potentially reflecting how topological proximity in an existing network might drive the addition of new links.
 To implement this, we begin by generating a random spanning tree using Broder's algorithm \cite{broder_generating_1989}.
@@ -90,23 +85,20 @@ Subsequently, edges are added between non-adjacent vertices until a target avera
 While many experiments in this thesis use a target average degree of approximately \(2.5\) to emulate road networks, a different value is chosen for this specific model.
 The choice of average degree primarily influences the constant factors of the separator scaling, rather than the underlying asymptotic growth of the graph class.
 In other contexts, an average degree of \(2.5\) effectively approximates the constant factors of road network separators.
-For this tree-distance based locality model, however, an average degree of approximately 3 is required to achieve a comparable alignment of these constant factors.
+For this tree-distance-based locality model, however, an average degree of approximately 3 is required to achieve a comparable alignment of these constant factors.
 To incorporate this form of locality, the probability of adding an edge between two vertices \(u\) and \(v\) is made dependent on their distance within this initial spanning tree \(T\), \( \text{dist}_T(u, v) \).
 Specifically, we select a random vertex \(x\) and choose a second vertex \(y\) with a probability related to \(f(\text{dist}_T(x, y))\), where \(f\) is a decreasing function.
-
 The computation of tree distances \(\text{dist}_T(x, y)\) for numerous candidate pairs \((x,y)\) is a critical step in this edge addition phase.
 For each randomly selected vertex \(x\) and potential neighbor \(y\), a Breadth-First Search (BFS) is performed within the tree \(T\) to find \(\text{dist}_T(x, y)\).
 While BFS on a tree is linear in the number of vertices \(n\), repeated invocations for many pairs prove computationally intensive for larger graphs.
 However, the approach is highly parallelizable since each BFS is an independent computation on the fixed tree structure.
 Capping the BFS search for \(y\) (e.g., after a fixed number of hops or visited nodes, such as 50,000), while significantly reducing computational overhead did not achieve the desired locality effect.
-We observe and artificial steep cutoff in the observed separator characteristics once graph or component sizes effectively exceed the scale imposed by this search limit.
-
+We observe an artificial steep cutoff in the observed separator characteristics once graph or component sizes effectively exceed the scale imposed by this search limit.
 Experiments exploring various decay functions \(f\) yield diverse results.
-Simple functions like \( f(\text{dist}) = 1/\text{dist} \) result in graphs that still exhibit large top-level separators scaling as \bigO{n}, although subgraphs from nested dissection show the previously noted super-linear decrease in separator size.
+Simple functions like \( f(\text{dist}) = 1/\text{dist} \) result in graphs that still exhibit large top-level separators scaling as \bigO{n}, although subgraphs from nested dissection show the previously noted superlinear decrease in separator size.
 Conversely, rapidly decaying functions like \( f(\text{dist}) = 2^{-\text{dist}} \) produce graphs with separators of almost constant size, likely because the graph structure remains very close to that of the initial tree, with insufficient long-range connections.
 Through further experimentation and fine-tuning, it is found that a function of the form \( f(\text{dist}) = 1/\text{dist}^{3.3} \) is able to produce separator sizes that closely approximate the desired \bigO{n^{0.37}} scaling (see \cref{fig:tree_dist_best_fit_scaling}).
 \cref{fig:tree_dist_locality_scaling} provides a visual comparison of the separator sizes for various decay functions.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.45\linewidth}
@@ -122,7 +114,7 @@ Through further experimentation and fine-tuning, it is found that a function of 
 		\caption{Separator scaling for \(f(\text{dist}) = 1/\text{dist}^{3.3}\) with line fit.}
 		\label{fig:tree_dist_best_fit_scaling}
 	\end{subfigure}
-	\caption{Separator size scaling for graphs generated with tree-distance based locality, comparing various decay functions and highlighting the fit for \(f(\text{dist}) = 1/\text{dist}^{3.3}\). Separators were computed using FlowCutter (tests with KaHIP yielded similar asymptotic scaling).}
+	\caption{Separator size scaling for graphs generated with tree-distance-based locality, comparing various decay functions and highlighting the fit for \(f(\text{dist}) = 1/\text{dist}^{3.3}\). Separators were computed using FlowCutter (tests with KaHIP yielded similar asymptotic scaling).}
 	\label{fig:tree_dist_locality_scaling}
 \end{figure}
 
@@ -131,7 +123,6 @@ The success with this specific, empirically derived exponent appears to be more 
 While the general concept of incorporating locality based on distances within an existing network structure remains potentially insightful, as such a metric might capture aspects beyond mere Euclidean distance, like travel time reduction incentives, our preliminary results with simpler functions indicate a high sensitivity to the choice of \(f\).
 Achieving the target \bigO{n^{0.37}} scaling with an empirically derived function like \(f(\text{dist}) = 1/\text{dist}^{3.3}\) appears to be an outcome of model-specific parameter tuning rather than a revelation of intrinsic road network properties responsible for their small separators.
 Given these considerations and the decision to prioritize other structural properties like geometric locality, planarity, and explicit hierarchy, we opt not to pursue an exhaustive search for an optimal or more interpretable tree-distance decay function within the scope of this work.
-
 
 \paragraph{Geometric Locality}
 
@@ -145,7 +136,6 @@ The graph generation then proceeds by initially taking the edges of the MST.
 Subsequently, additional edges \((u, v)\) between non-adjacent vertices are iteratively added, but crucially, only if their Euclidean distance is less than or equal to the threshold \(\ell_{\max}\).
 This edge addition process continues until the overall graph reaches the target average degree of \(2.5\).
 For efficient implementation of the edge addition step, we utilize spatial queries: for a randomly selected vertex \(u\), we query for potential neighbors \(v\) within the radius \(\ell_{\max}\) and randomly select one to connect to, avoiding multi-edges and self-loops.
-
 Despite incorporating this explicit geometric constraint, the resulting synthetic graphs fail to exhibit the desired small separator sizes characteristic of road networks.
 To analyze the separator properties of these graphs, we computed recursive separators.
 Our experiments using these methods indicate that separators in these geometrically generated graphs scale approximately as \bigO{n^{1/2}}.
@@ -162,7 +152,7 @@ This outcome is visualized in \cref{fig:geometric_locality_separators}.
 	\begin{subfigure}{0.55\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/sep_local_embedding.pdf}
-		\caption{Separator size scaling for synthetic graphs generated with geometric locality. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separatos. }
+		\caption{Separator size scaling for synthetic graphs generated with geometric locality. The fit shown excludes subgraphs with \( \le 1000 \) vertices due to their disproportionately large separators. }
 		\label{fig:geometric_locality_sep_plot}
 	\end{subfigure}
 	\caption{Synthetic graph generation using geometric locality and analysis of separator sizes. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
@@ -172,14 +162,13 @@ This outcome is visualized in \cref{fig:geometric_locality_separators}.
 An alternative strategy we investigate for incorporating geometric locality is the construction of k-Nearest Neighbor (k-NN) graphs.
 In this model, each vertex connects via an edge to its \(k\) geographically closest neighbors, with proximity defined by the Euclidean distance between their embedded point coordinates.
 This approach does not utilize an underlying tree structure like some previously discussed methods.
-Connectivity in a k-NN graph is not guaranteed; however, the size of the largest connected component generally increases with the value of \(k\).
+Connectivity in a k-NN graph is not guaranteed, however, the size of the largest connected component generally increases with the value of \(k\).
 For instance, with uniformly sampled points, a \(k\) as small as 3 often yields a primary connected component encompassing approximately 98\% of all vertices.
 The average degree of the resulting graph is directly influenced by \(k\).
 For point sets with non-uniform distributions, a larger \(k\) is typically required to achieve a similar level of overall connectivity.
-Our objective is to identify the smallest \(k\) that results in a largely connected graph, while also aiming for an low average degree, comparable to those of sparse road networks.
+Our objective is to identify the smallest \(k\) that results in a largely connected graph, while also aiming for a low average degree, comparable to those of sparse road networks.
 The construction of k-NN graphs can be performed efficiently: following an initial \bigO{n \log n} precomputation to build a spatial index such as a k-d tree, identifying the \(k\) nearest neighbors for each of the \(n\) vertices takes approximately \bigO{k \log n} time per vertex, resulting in a total construction time of roughly \bigO{nk \log n}.
 Our experiments show that k-NN graphs generated in this manner also exhibit separator sizes that scale approximately as \bigO{n^{1/2}} as seen in \cref{fig:knn_graph_analysis}.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.35\linewidth}
@@ -204,7 +193,7 @@ The results from the geometric locality approach suggest that merely combining l
 \paragraph{Real-World Implications}
 
 It is worth considering the practical implications of different asymptotic growth rates for separator sizes within the typical scale of road networks.
-While \bigO{c_1\cdot n^{1/3}} and \bigO{c_2 \cdot n^{1/2}}, with \(c_2 \ll c1\), diverge for large \(n\), the actual separator sizes for graphs up to around 20 million vertices are similar.
+While \bigO{c_1\cdot n^{1/3}} and \bigO{c_2 \cdot n^{1/2}}, with \(c_2 \ll c_1\), diverge for large \(n\), the actual separator sizes for graphs up to around 20 million vertices are similar.
 The performance of algorithms leveraging graph separators in real-world applications may be more influenced by the absolute sizes of separators achievable in practice, compared to a specific scaling model.
 Performance gains, for example for CCH \cite{dibbelt_customizable_2016}, could potentially be realized even if the separators behave like \(c \cdot n^{1/2}\) for a sufficiently small \(c\), as the absolute separator sizes remain manageable for networks of practical relevance.
 
@@ -214,7 +203,6 @@ Our synthetic graphs generated using the geometric locality approach exhibit a n
 As visualized in the histogram in \cref{fig:local_embedding_hist_deviation}, there is an initial peak in relative separator size for small subgraphs, which then decreases before the data align with the more dominant scaling trend observed for larger graphs.
 This behavior is similar to the initial scaling deviations present in real road networks.
 This correspondence is noteworthy, as it suggests that our geometric locality model, despite failing to replicate the overall asymptotic separator scaling, may capture certain structural properties that are relevant at smaller graph scales and also present in actual road networks.
-
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.6\linewidth]{graphics/local_embedding-hist.pdf}
@@ -227,6 +215,7 @@ This correspondence is noteworthy, as it suggests that our geometric locality mo
 
 \paragraph{Minimum Spanning Trees from Higher-Dimensional Embeddings}
 \label{sec:synthetic:mst}
+
 Observing that real road networks often exhibit diameters smaller than the \bigO{n^{1/2}} found in our random tree models, we sought to determine if an initial tree structure with an intrinsically smaller diameter could lead to graphs with correspondingly smaller separators after edge augmentation.
 This motivated an exploration of generating initial trees as Minimum Spanning Trees (MSTs) of points sampled in \(d\)-dimensional Euclidean space, since the diameter of such an MST on \(n\) random points in \(d\)-space (for \(d \ge 2\)) is typically \bigO{n^{1/d}}.
 Our experiments focused on the case where \(d=3\), for which the MST diameter is approximately \bigO{n^{1/3}}.
@@ -237,12 +226,6 @@ If the characteristic linear extent of the volume is proportional to \(n^{1/d}\)
 For \(d=2\), this yields the familiar \bigO{n^{1/2}} scaling for planar-like separators, and for our \(d=3\) experiment, it corresponds to the observed \bigO{n^{2/3}}.
 While this suggests a general hypothesis that augmenting MSTs from \(d\)-dimensional point sets might lead to graphs with \bigO{n^{(d-1)/d}} separators, this avenue was not pursued further.
 Since for \(d=3\) the \bigO{n^{2/3}} separators do not offer an improvement over the \bigO{n^{1/2}} separators of planar graphs in the context of finding exceptionally small separators (and higher dimensions \(d > 3\) would yield even larger exponents as \((d-1)/d \to 1\)), this specific line of inquiry was not extended.
-
-
-
-
-
-
 \section{Planarity}
 \label{sec:synthetic:planarity}
 
@@ -251,7 +234,6 @@ These serve as fundamental theoretical models for planar structures relevant to 
 In our study, these graph classes are sparsified to achieve a low average degree (approximately \(2.5\)), reflecting the sparsity observed in road networks.
 It is important to note that both of these models inherently introduce strong geometric locality, a property not required by all planar graphs.
 Our focus on these specific classes therefore introduces a bias towards investigating planar graphs that also possess this structural characteristic.
-
 \subsection{Grids}
 \label{sec:synthetic:grid}
 
@@ -261,13 +243,11 @@ The generation process starts with a square two-dimensional grid graph.
 Edges are then removed uniformly at random until the target average degree is reached over the entire graph.
 Subsequently, we identify and utilize the largest connected component for analysis.
 We observe that even without explicit mechanisms to prevent disconnection during edge removal, the largest connected component typically encompasses a large fraction of the initial vertices.
-
 Analysis of these sparse grid graphs reveals separator sizes consistent with the \bigO{n^{1/2}} asymptotic behavior of complete grids.
 However, the constant factor associated with this scaling appears to be relatively small.
 Consequently, although the asymptotic limit behavior differs from the \bigO{n^{1/3}} scaling empirically observed for road networks, the absolute separator sizes in these sparse grids are numerically similar to those of road networks for graphs up to typical sizes (e.g., around 20 million nodes).
 This finding highlights that sparsity, even within a simple planar structure like a grid, can lead to separators that are small in absolute terms for practical graph dimensions.
 \Cref{fig:sparse_grid_separators} illustrates a sample sparse grid and the observed separator scaling.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.35\linewidth}
@@ -293,17 +273,16 @@ This approach involves a recursive construction: two smaller grid-like subgraphs
 These subgraphs are then interconnected.
 Instead of forming dense connections or connecting all border vertices, a controlled number of edges, specifically chosen to match the desired separator size (e.g., approximately \(n^{1/3}\) for the combined graph of size \(n\)), are added between \(G_1\) and \(G_2\).
 For instance, this can be achieved by selecting approximately \(n^{1/3}\) nodes along the boundary of one subgraph and connecting each to its closest corresponding node on the boundary of the other.
-The set of these inter-connecting edges (or one of their incident vertices) is, by construction, a separator of the desired \(\bigO{n^{1/3}}\) size.
+The set of these interconnecting edges (or one of their incident vertices) is, by construction, a separator of the desired \(\bigO{n^{1/3}}\) size.
 An example of such a graph and its resulting separator scaling is illustrated in \cref{fig:engineered_grid_sep}.
 While this method demonstrates that specific separator sizes can be achieved by deliberate construction in grid-like structures, it offers limited insight into which intrinsic graph properties of real road networks lead to their empirically observed small separators.
 The desired scaling is explicitly engineered into the generation process here, rather than emerging naturally from more fundamental characteristics.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.35\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/cbrt_grid.png}
-		\caption{A recursively constructed grid with engineered \(\bigO{n^{1/3}}\) inter-connections.}
+		\caption{A recursively constructed grid with engineered \(\bigO{n^{1/3}}\) interconnections.}
 		\label{fig:engineered_grid_structure_viz}
 	\end{subfigure}
 	\hfill
@@ -339,28 +318,36 @@ As a generalization of grid-like structures derived from point sets, Delaunay Tr
 A DT for a given set \(P\) of discrete points in a plane is a specific triangulation such that for any triangle in \(DT(P)\), its circumcircle (the unique circle passing through its three vertices) contains no other points from \(P\) in its interior.
 This \enquote{empty circumcircle} property ensures that DTs tend to maximize the minimum angle of all triangles in the triangulation, thereby avoiding overly elongated triangles.
 Our process for generating a baseline Delaunay graph involves sampling \(n\) points uniformly at random in a two-dimensional space and then computing their full Delaunay triangulation.
-Such a DT typically has an average vertex degree around 6. This observation is consistent with Euler's formula for planar graphs (\(|V| - |E| + |F| = 2\)); for large triangulations, where most faces are triangles and each internal edge is shared by two faces (\(3|F| \approx 2|E|\)), the average degree \(2|E|/|V|\) approaches 6.
+Such a DT typically has an average vertex degree around 6. This observation is consistent with Euler's formula for planar graphs (\(|V| - |E| + |F| = 2\)),
+for large triangulations, where most faces are triangles and each internal edge is shared by two faces (\(3|F| \approx 2|E|\)), the average degree \(2|E|/|V|\) approaches 6.
 
-Since an average degree of 6 is considerably denser than that of typical road networks (which is closer to \(2.5\)), sparsification is necessary to create more comparable synthetic graphs. We explore several methods for this:
+Since an average degree of 6 is considerably denser than that of typical road networks (which is closer to \(2.5\)), sparsification is necessary to create more comparable synthetic graphs.
+We explore several methods for this:
 
 \paragraph{Random Edge Deletion}
-One straightforward sparsification technique, similar to that applied in our grid experiments, involves randomly deleting edges from the full Delaunay triangulation until the target average degree of approximately \(2.5\) is achieved. The largest connected component of the resulting graph is then used for analysis.
+
+One straightforward sparsification technique, similar to that applied in our grid experiments, involves randomly deleting edges from the full Delaunay triangulation until the target average degree of approximately \(2.5\) is achieved.
+The largest connected component of the resulting graph is then used for analysis.
 
 \paragraph{Systematically Defined Subgraphs}
-Alternatively, sparser graphs can be derived from the DT by retaining only those edges that satisfy stricter geometric conditions. Prominent examples of such Delaunay subgraphs include Gabriel Graphs (GG) \cite{gabriel_new_1969} and Relative Neighborhood Graphs (RNG) \cite{toussaint_relative_1980}.
+
+Alternatively, sparser graphs can be derived from the DT by retaining only those edges that satisfy stricter geometric conditions.
+Prominent examples of such Delaunay subgraphs include Gabriel Graphs (GG) \cite{gabriel_new_1969} and Relative Neighborhood Graphs (RNG) \cite{toussaint_relative_1980}.
 An edge \((u,v)\) is part of a GG if the closed disk whose diameter is the segment \(uv\) contains no other point from the original set \(P\).
-An edge \((u,v)\) belongs to an RNG if no third point \(w \in P\) is simultaneously closer to both \(u\) and \(v\) than \(u\) and \(v\) are to each other; that is, the lune formed by the intersection of two circles of radius \(\text{dist}(u,v)\) centered at \(u\) and \(v\) must be empty of other points.
+An edge \((u,v)\) belongs to an RNG if no third point \(w \in P\) is simultaneously closer to both \(u\) and \(v\) than \(u\) and \(v\) are to each other,
+that is, the lune formed by the intersection of two circles of radius \(\text{dist}(u,v)\) centered at \(u\) and \(v\) must be empty of other points.
 These definitions lead to the known hierarchical relationship: RNG \(\subseteq\) GG \(\subseteq\) DT.
 The RNG is particularly interesting from a network modeling perspective, as its construction criterion can be loosely interpreted in terms of economic viability for infrastructure: a direct road between two points \(u\) and \(v\) might not be constructed if an alternative path via a nearby third point \(w\) (e.g., \(u \to w \to v\)) exists without a significant detour.
 For uniformly sampled random points, the RNG yields an average degree of approximately \(2.6\) \cite{buhl_topological_2006}, which is close to the average degree of road networks.
 
 \paragraph{Separator Analysis of Delaunay Variants}
+
 We analyzed the separator properties of these different Delaunay-derived graphs: the full DT, the randomly sparsified DT (target average degree \(2.5\)), the Gabriel Graph, and the Relative Neighborhood Graph, all generated from identical initial point sets to ensure comparability.
 Visualizations of these graph structures and their comparative separator scaling are presented in \cref{fig:delaunay_variants_comparison}.
 Despite the variations in density, ranging from an average degree of approximately 6 for the full DT down to about \(2.6\) for the RNG, our experiments indicate that the asymptotic separator scaling for all these Delaunay-derived planar graphs remains consistent with \bigO{n^{1/2}}.
-The method of sparsification, whether through random edge deletion or by applying systematic geometric rules like those for GG or RNG, primarily influences the constant factors associated with the separator size. It does not, however, fundamentally alter the \bigO{n^{1/2}} scaling behavior tied to their underlying planar geometric nature.
+The method of sparsification, whether through random edge deletion or by applying systematic geometric rules like those for GG or RNG, primarily influences the constant factors associated with the separator size.
+It does not, however, fundamentally alter the \bigO{n^{1/2}} scaling behavior tied to their underlying planar geometric nature.
 Even when the average degree very closely matches that of road networks (as in the RNG case), the separator scaling does not approach the \(\approx \bigO{n^{0.37}}\) observed empirically for road networks.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.3\linewidth}
@@ -405,18 +392,6 @@ Even when the average degree very closely matches that of road networks (as in t
 
 % These experiments with sparse grids and various forms of sparse Delaunay triangulations suggest that while combining geometric point generation with methods to achieve low average degree can yield practical separator sizes numerically close to those of road networks (due to potentially small constant factors), the underlying asymptotic scaling remains \bigO{n^{1/2}}.
 % This indicates that these standard planar graph models, even when carefully sparsified, do not inherently capture the mechanism leading to the more favorable \(\approx \bigO{n^{0.37}}\) scaling observed in real road networks.
-
-
-
-
-
-
-
-
-
-
-
-
 \section{Highway Dimension}
 \label{sec:synthetic:highway_dimension}
 
@@ -425,7 +400,6 @@ One such property is highway dimension, introduced by Abraham et al. \cite{abrah
 Intuitively, a graph possesses a small highway dimension if, for every radius \(r > 0\), there exists a sparse set of vertices \(S_r\) such that every shortest path longer than \(r\) intersects \(S_r\).
 A set is considered sparse if every ball of radius \(\mathcal{O}(r)\) contains only a small number of vertices from \(S_r\) \cite{abraham_highway_2010}.
 The significance of this property stems from the finding that low highway dimension provides provable performance guarantees for several important route planning algorithms, including REACH \cite{goldberg_reach_2006}, Contraction Hierarchies \cite{geisberger_contraction_2008}, Highway Hierarchies \cite{sanders_highway_2005}, Transit Node Routing \cite{bast_fast_2007}, and SHARC \cite{bauer_sharc_2010}.
-
 The work introducing highway dimension also proposes a synthetic graph generator (henceforth ABR generator) intended to produce graphs exhibiting this property \cite{abraham_highway_2010}.
 The generation process, based on the description in \cite{hutchison_synthetic_2010}, operates iteratively.
 It begins with an empty graph \( G = (V, E) = (\emptyset, \emptyset) \) and progressively adds new vertices \(v_t\) to \(V\), whose locations in the metric space (in our case a disk in \(\mathbb{R}^2\)) are chosen randomly.
@@ -438,16 +412,13 @@ Edges are subsequently added based on these covers and a tuning parameter \(k\).
 For each cover \(C_j\) containing \(v_t\) (where \(0 \leq j < i\)), and for each existing vertex \(w \in C_j\), an edge \((w, v_t)\) is added if their distance satisfies \(d(w, v_t) \leq k \cdot 2^j\).
 Furthermore, for each \(C_j\) containing \(v_t\) where \(j < \log D\) and \(v_t\) is also present in \(C_{j+1}\), an edge is added connecting \(v_t\) to its nearest neighbor within the set \(C_{j+1}\).
 For our experiments, we adopt parameter settings similar to those used by \cite{hutchison_synthetic_2010}, setting the diameter \(D = 2^{25}\) and the connection parameter \(k = \sqrt{2}\).
-
 Bauer et al. also describe an alternative node sampling strategy aimed at creating structures resembling city clusters \cite{hutchison_synthetic_2010}.
 We implement and test both the uniform random sampling and this cluster-based sampling approach.
 Our experiments indicate no significant difference in the resulting separator sizes between the two sampling methods using the ABR generator framework.
-
 The analysis of graphs generated using the ABR method yields separators that scale approximately as \bigO{n^{1/2}}.
 This result is noteworthy because graphs generated by this process are typically highly non-planar.
 It serves as a reminder that observing \bigO{n^{1/2}} separator scaling does not necessarily imply planarity.
 \Cref{fig:abr_graph_separators} provides a visual example of an ABR-generated graph and illustrates the observed separator scaling.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.35\linewidth}
@@ -460,7 +431,7 @@ It serves as a reminder that observing \bigO{n^{1/2}} separator scaling does not
 	\begin{subfigure}{0.55\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/sep_highway.pdf}
-		\caption{Separator size scaling observed during recursive partitioning of ABR-generated graphs. Separator sizes scale approximately as \bigO{n^{1/2}}. The fit shown excludes subgraphs with \( \le 256 \) vertices due to their disproportionately large separatos.}
+		\caption{Separator size scaling observed during recursive partitioning of ABR-generated graphs. Separator sizes scale approximately as \bigO{n^{1/2}}. The fit shown excludes subgraphs with \( \le 256 \) vertices due to their disproportionately large separators.}
 		\label{fig:abr_graph_sep_plot}
 	\end{subfigure}
 	\caption{Analysis of synthetic graphs generated using the ABR algorithm \cite{abraham_highway_2010}. Separators were computed using InertialFlowCutter (tests with FlowCutter and KaHIP yielded similar asymptotic scaling).}
@@ -470,7 +441,6 @@ It serves as a reminder that observing \bigO{n^{1/2}} separator scaling does not
 \section{Hierarchical Structure}
 
 In the following sections, we explore four distinct approaches to generating synthetic graphs with hierarchical structures.
-
 \subsection{Voronoi-Based Hierarchical Generator}
 
 One approach to generating synthetic networks with hierarchical features follows the method proposed by Bauer et al. \cite{hutchison_synthetic_2010}.
@@ -483,35 +453,31 @@ Alternatively, to better emulate settlement patterns, a clustered sampling appro
 This approach involves first sampling locations for a number of population centers within the polygon.
 Each center is then assigned characteristics, such as a population size or an influence radius, drawn from a chosen distribution.
 Subsequently, points are sampled in the vicinity of each city center, concentrated within its influence radius, with the number of points related to the city's size.
-
 Regardless of the sampling method, the resulting set of points \(P\) serves as the input for computing the Voronoi diagram for this initial level.
 The Voronoi diagram partitions the polygon into regions based on nearest-neighbor relationships to the points in \(P\).
 The edges of this Voronoi diagram (where adjacent regions meet) are then added to the synthetic graph.
-The vertices of the graph correspond to the points were 3 or more Voronoi regions meet.
+The vertices of the graph correspond to the points where 3 or more Voronoi regions meet.
 To introduce hierarchy, some of the resulting Voronoi regions (polygons) are selected, and the process is recursively applied within them: new points are sampled inside the selected region (using either uniform or clustered sampling), and a new Voronoi diagram is constructed within its boundaries, adding further edges to the graph.
-
 Phase two of the generation process addresses the density of the graph \(G\) resulting from the Voronoi tessellation by constructing a sparse graph \(t\)-spanner \(H\).
 A subgraph \(H\) is a \(t\)-spanner of \(G\) if it preserves all pairwise distances up to a multiplicative factor of \(t\).
 The spanner is built using a greedy algorithm that iterates through the edges of \(G\) sorted by non-increasing length (longest first).
 An edge \((u, v)\) with length \(len(u, v)\) is added to the spanner \(H\) only if the current shortest path distance between \(u\) and \(v\) within \(H\), denoted \(dist_H(u, v)\), is greater than \(t \cdot len(u, v)\).
 To compute \(dist_H(u, v)\), Dijkstra's algorithm is employed.
 Additionally, a union-find data structure maintains the connected components of \(H\), allowing for immediate addition of edges connecting previously disconnected vertices.
-Bauer et al. propose processing edges in non-increasing order (longest first) as a heuristic primarily intended to improve the computational efficiency of the spanner construction; the idea is to handle long edges while the intermediate spanner graph \(H\) is still sparse, potentially speeding up distance computations \cite{hutchison_synthetic_2010}.
-
+Bauer et al. propose processing edges in non-increasing order (longest first) as a heuristic primarily intended to improve the computational efficiency of the spanner construction,
+the idea is to handle long edges while the intermediate spanner graph \(H\) is still sparse, potentially speeding up distance computations \cite{hutchison_synthetic_2010}.
 For completeness, we briefly mention an alternative pruning strategy for a different generative model that will be detailed in a later section (\cref{sec:hierarchical_delaunay_generation}).
 This method tends to produce graphs with greater visual resemblance to real-world road networks than the Bauer et al. approach, though this comes at a higher computational cost.
 
 This generation method introduces artifacts.
 For example, connections between major structures defined at higher levels (like large "cities") might be unrealistically sparse, potentially consisting of only a few edges.
 Another artifact is that higher-level Voronoi edges (e.g., "highways" separating major regions) act as hard boundaries that lower-level edges (within regions) often do not cross, creating unrealistically effective separators along these top-level edges.
-
 Analyzing separators in the final sparse graphs generated by this Voronoi-based method reveals interesting characteristics related to the hierarchy.
 Plots of separator size versus subgraph size often exhibit noticeable local minima, which appear to correspond to the transitions between the hierarchical layers created during generation.
 This can lead to separators of approximately constant size when partitioning cuts primarily occur between these major structures at layer intersections.
 Within a single layer generated by the Voronoi tessellation (before sparsification), the separators tend to exhibit scaling closer to \bigO{n^{1/2}}.
 Consequently, if the recursion depth is limited and the highest-level structures are allowed to grow large, their \bigO{n^{1/2}} separator behavior will dominate the separator size scaling.
 \Cref{fig:voronoi_hierarchy} illustrates the structure and separator behavior of the final sparse graph.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.35\linewidth}
@@ -538,14 +504,11 @@ This method aims to construct a hierarchical graph by recursively embedding grid
 The fundamental idea is recursive: a level-1 structure is a standard square grid.
 A level-\(i\) nested grid (for \(i > 1\)) is then constructed from a higher-level parent grid where selected cells are replaced by entire instances of level-\(i-1\) nested grids.
 This process can be repeated for any number of layers, creating a fractal-like structure of grids within grids.
-
 An optional refinement can be applied to make the graph sparser by removing redundant edges from parent grids.
 An edge of a parent grid is considered redundant if the cell it borders has a subgraph embedded within it.
 This is because the boundary of the embedded subgraph provides a new, more detailed path between the endpoints of the parent grid edge.
 Removing these \enquote{overlapped} parent edges reduces the graph's overall edge density slightly without altering its asymptotic separator scaling.
-
 \cref{fig:nested_grid_analysis} shows a small conceptual example of a nested grid with four layers.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.35\linewidth}
@@ -583,7 +546,6 @@ One root of this cubic equation for \(w\) is given by:
 By carefully selecting \(w\) based on \(k\) and \(s\) using this relationship at each hierarchical level, one can attempt to construct a graph where the separator size scales roughly as the cube root of the number of nodes at each layer transition.
 This controlled approach allows the local minima in separator sizes, already seen in the Voronoi method, to be made more pronounced and regular, as all subgraphs at a given level transition can be designed with the same size \(s\).
 However, achieving a consistent overall \bigO{n^{1/3}} scaling for the entire graph across all sizes \(n\) remains a challenge.
-
 The observed local minima in separator size occur systematically at the transitions between hierarchical levels.
 This is because the construction method inherently creates sparse connections between components defined at different levels.
 \cref{fig:nested_grid_connectivity_example} provides a simplified illustration of this principle, showing two example components from the same levels within the hierarchy, not the entire structure of a layer.
@@ -591,7 +553,6 @@ In this specific illustration, the components (represented by nodes 1-4 and 5-8)
 Consequently, removing just one endpoint from each connecting edge suffices to disconnect them.
 This demonstrates how a vertex separator of small, constant size (size 2) exists between levels, regardless of the internal size of the components themselves.
 Such constant-size separators at every level transition are the underlying cause of the pronounced local minima observed in the separator scaling plots for these nested structures.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{tikzpicture}[every node/.style={draw, circle, minimum size=0.7cm}]
@@ -610,7 +571,6 @@ Such constant-size separators at every level transition are the underlying cause
 
 		\draw[color=green, thick] (3) -- (5);
 		\draw[color=green, thick] (4) -- (6);
-
 		\draw (1,1) -- (1,0);
 		\draw (1,1) -- (1,2);
 		\draw (1,1) -- (0,1);
@@ -646,10 +606,12 @@ Such constant-size separators at every level transition are the underlying cause
 \subsection{Hierarchical Delaunay Graph Generation}
 \label{sec:hierarchical_delaunay_generation}
 
-Our efforts to generate synthetic graphs with realistic road network properties, particularly small separators, led us to refine techniques inspired by prior work on synthetic road network generation, such as that of Bauer et al. \cite{hutchison_synthetic_2010}.
+Our efforts to generate synthetic graphs with realistic road network properties, particularly small separators, led us to refine techniques inspired by prior work on synthetic road network generation, such as that of Bauer et al.
+\cite{hutchison_synthetic_2010}.
 A significant artifact observed in some Voronoi-based hierarchical models was that major transport arteries, analogous to motorways, could not be realistically crossed by lower-level roads.
 This limitation arose because new expansion sites were generated strictly within the polygonal cells defined by the higher-level Voronoi tessellation, effectively making top-level Voronoi edges hard boundaries.
-Our revised core idea allows new centers of expansion to emerge from the existing network infrastructure itself. Thus, new expansion sites are selected from the nodes of the current graph structure rather than from within predefined areal polygons.
+Our revised core idea allows new centers of expansion to emerge from the existing network infrastructure itself.
+Thus, new expansion sites are selected from the nodes of the current graph structure rather than from within predefined areal polygons.
 
 \paragraph{Initial Approach}
 
@@ -664,7 +626,7 @@ By making points in these areas more probable candidates for subsequent expansio
 This recursive generation would continue for a specified number of levels.
 The result at this stage is a collection of disjoint, small, triangulated graphs embedded in the plane, whose edge lengths differ significantly based on the geometric scale at which they were generated.
 As a final step, a planarization process, as described in \cref{alg:planarization}, is applied: edges, interpreted as straight line segments, are checked for intersections.
-Any intersections found are resolved by introducing new vertices at these points and subdividing the original edges accordingly thus making the graph connected and planar.
+Any intersections found are resolved by introducing new vertices at these points and subdividing the original edges accordingly, thus making the graph connected and planar.
 This method showed initial promise in creating structures that could yield separators with scaling behavior similar to that of road networks.
 
 \paragraph{Refined Generation}
@@ -674,12 +636,11 @@ Instead of performing Delaunay triangulations at each hierarchical level followe
 Only after all points have been generated is a single, global Delaunay triangulation performed on the entire final point set.
 The pseudocode for this hierarchical Delaunay generation process is detailed in \cref{alg:hierarchical_delaunay}.
 The method \texttt{uniformRandomPointsInCircle(center, radius, k)} samples \(k\) points uniformly at random within a circle of given radius centered at the specified point.
-
 A deliberate design choice in our hierarchical point generation process (\cref{alg:hierarchical_delaunay}) is that candidates for new expansion sites at each level \(i\) are selected from the entire set of currently existing points \(P\), rather than exclusively from points generated in the immediately preceding level \(i-1\).
-This approach reflects the real-world phenomenon where new settlements, even smaller ones, can emerge around and connect to established, major infrastructure hubs that might have formed at much earlier stages of network growth; for instance, a small town developing near a major motorway interchange.
+This approach reflects the real-world phenomenon where new settlements, even smaller ones, can emerge around and connect to established, major infrastructure hubs that might have formed at much earlier stages of network growth,
+for instance, a small town developing near a major motorway interchange.
 We also experimented with an alternative strategy where expansion sites for a given level were chosen only from the points generated in the previous level.
 However, this restriction did not yield any noticeable differences in the overall structural properties or separator characteristics of the resulting graphs.
-
 \begin{algorithm}[tbhp]
 	\Input{Number of hierarchical levels \(L\), \\
 		Level expansion fractions \(f_i\) (where \(f_1 = 1.0\)), \\
@@ -708,8 +669,7 @@ However, this restriction did not yield any noticeable differences in the overal
 \label{sec:synthetic:hierarchical_delaunay:pruning}
 
 
-Analogous to the delaunay triangulation approach in \cref{sec:synthetic:delaunay_variants}, the global Delaunay triangulation performed in \cref{alg:hierarchical_delaunay} results in a graph with an average vertex degree of approximately 6, which is denser than typical road networks.
-
+Analogous to the Delaunay triangulation approach in \cref{sec:synthetic:delaunay_variants}, the global Delaunay triangulation performed in \cref{alg:hierarchical_delaunay} results in a graph with an average vertex degree of approximately 6, which is denser than typical road networks.
 To better emulate the characteristics of real road networks, such as an average degree around \(2.5\) and fewer nodes with very high degrees, we apply an edge pruning step.
 While Bauer et al. \cite{hutchison_synthetic_2010} also suggested a pruning methodology, we adopt a different strategy tailored to our generated graph structures.
 In our approach, edges are considered in order of increasing Euclidean length (shortest first).
@@ -718,7 +678,6 @@ This edge removal criterion approximates economic viability considerations, as c
 Through experimentation, we found that a pruning parameter of \(\alpha = 2.5\) effectively reduces the average degree to the target range comparable to that of road networks.
 The pseudocode for this edge pruning process is given in \cref{alg:prune_edges}.
 A visual comparison of graph structures before and after pruning is provided in \cref{fig:delaunay_vs_no_pruning_graph}.
-
 \begin{algorithm}[tbhp]
 	\Input{Graph \(G=(V, E)\), \\
 		Pruning parameter \(\alpha\)}
@@ -754,7 +713,6 @@ A visual comparison of graph structures before and after pruning is provided in 
 
 The pruning step, while beneficial for achieving a target average degree and a more realistic degree distribution, does not fundamentally alter the asymptotic separator scaling of the generated Delaunay graphs.
 \Cref{fig:delaunay_pruned_vs_pre_pruned_sep} illustrates that the separator size scaling remains similar for both pruned and unpruned graphs.
-
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.7\linewidth]{graphics/delaunay_pre_post_pruning_sep_size.pdf}
@@ -763,19 +721,21 @@ The pruning step, while beneficial for achieving a target average degree and a m
 \end{figure}
 
 Given that sequential pruning can be computationally intensive due to numerous shortest path computations (typically Dijkstra's algorithm, where path precomputation is infeasible as the graph changes), we also explored an approximate parallel version.
-In this variant instead of looking at edges one by one, we process the edges in the same order as before, but in chunks of size corresponding to the number of available processing threads.
-While this approach does not reduce the overall computational complexity, it allows to distribute the workload across multiple threads.
+In this variant, instead of looking at edges one by one, we process the edges in the same order as before, but in chunks of size corresponding to the number of available processing threads.
+While this approach does not reduce the overall computational complexity, it allows the workload to be distributed across multiple threads.
 Shortest path computations for all candidate edges within a chunk are performed in parallel, based on the graph state \emph{before} any edges in that chunk are removed.
 After all checks for the current chunk are complete, the identified edges are removed simultaneously.
 This parallelization introduces an approximation: an edge \((u,v)\) might be removed because its shortest alternative path relied on another edge \((x,y)\) from the same chunk, which is also concurrently identified for removal.
 If \((x,y)\) is removed, the true shortest path for \((u,v)\) in the updated graph might have become longer than the \(\alpha \cdot \text{length}(u,v)\) threshold, but this would not be detected as the checks were based on the graph state at the beginning of the chunk processing.
 In extreme cases, this could even lead to the graph becoming disconnected.
 Despite this potential for over-pruning, our empirical results suggest that this approximation has a negligible impact on the final graph structure and its properties.
-This outcome is likely because edges are sorted by length before being chunked; thus, edges within a single chunk are often spatially distributed across the graph rather than being highly locally interdependent, minimizing negative interference from concurrent removals.
+This outcome is likely because edges are sorted by length before being chunked,
+thus, edges within a single chunk are often spatially distributed across the graph rather than being highly locally interdependent, minimizing negative interference from concurrent removals.
 
 \paragraph{Parameterization}
+
 The number of hierarchical layers, denoted \(L\), is a key parameter for the generation process detailed in \cref{alg:hierarchical_delaunay}.
-Similar to Bauer et al. we also found \(L=4\) to be a suitable choice for generating graphs with realistic road network properties \cite{hutchison_synthetic_2010}.
+Similar to Bauer et al., we also found \(L=4\) to be a suitable choice for generating graphs with realistic road network properties \cite{hutchison_synthetic_2010}.
 For \(L=4\), the algorithm requires parameters for level expansion fractions \(f_i\), points per expansion site \(k_i\), and expansion radii \(r_i\), for \(i \in [1, L]\), totaling \(3L\) (i.e., 12 for \(L=4\)) parameters.
 However, the effective number of free parameters is lower.
 The specific value of the first expansion radius, \(r_1\), primarily scales the entire embedding without fundamentally altering its topological structure, effectively reducing the count to 11 if \(r_1\) is fixed or normalized.
@@ -799,33 +759,31 @@ For example, for a 4-layer generation (\(L=4\)), the total number of points \(n_
 The final graph size is thus \(n_L\).
 
 \paragraph{Parameter Interplay and Heuristics for Separator Properties}
+
 Achieving road network-like separator scaling with the hierarchical Delaunay generator involves a nuanced interplay between the expansion fractions \(f_i\), points per site \(k_i\), and expansion radii \(r_i\).
 A critical aspect for developing well-behaved separators appears to be ensuring sufficient interaction or \emph{overlap} between regions expanded from different sites.
 This helps to avoid overly simplistic connections between hierarchical components, which can lead to pronounced local minima in separator scaling plots.
-
 We observe that decreasing expansion radii \(r_i\) contributes to desirable separator properties.
 The median edge length in a Delaunay triangulation of \(n\) uniformly random points within a region of radius \(r\) scales as \bigTheta{r \cdot n^{-1/2}}.
-In order for the nested strucutres to contribute to geometric locality the radii \(r_i\) should also decrease in a similar manner to approximate the median edge length.
+In order for the nested structures to contribute to geometric locality the radii \(r_i\) should also decrease in a similar manner to approximate the median edge length.
 For example, constant radii would not yield any geometric locality and points would look uniformly distributed, fading out towards the edge of the graph.
 Our empirical observations suggested that without an exponential decrease in radii across levels, achieving consistently small separators is not possible.
-
 However, if radii become too small too quickly, the graph might develop insufficient connectivity between clusters originating from different parent sites.
 Consider a thought experiment: if each expansion site has an infinitesimally small influence radius for generating points for the next level, these new points primarily connect among themselves and back to their parent site from the higher level.
-The number of points on the effective \enquote{perimeter} of such an expanded site (those able to connect to other, distant parts of the graph) may grow much slower than the number of points generated internally, thereby keeping its external connectivity limited; this effect is amplified by the hierarchical sampling which tends to concentrate points internally.
+The number of points on the effective \enquote{perimeter} of such an expanded site (those able to connect to other, distant parts of the graph) may grow much more slowly than the number of points generated internally, thereby keeping its external connectivity limited,
+this effect is amplified by the hierarchical sampling which tends to concentrate points internally.
 In such a scenario, one might find a separator for the graph defined by the top-level points (e.g., \(n_1\) points after the first level) with a size scaling as \bigOSmall{n_1^{1/2}}.
 If each of these top-level separator nodes is a gateway to a large hierarchical substructure that is only sparsely connected back to this top-level framework (via few \enquote{perimeter} connections or the gateway node itself), the separator for the entire graph \(G_L\) might be estimated based on this top-level cut, extended by these few perimeter vertices.
 Given that the total number of nodes \(n_L\) is typically much larger than \(n_1\), such a separator (e.g., related to a \bigOSmall{n_1^{1/2}} scaling) would likely be disproportionately small for \(n_L\).
 This issue can also manifest at subsequent levels.
 An attempt to achieve a desired global \bigOSmall{n_L^{1/3}} scaling can involve setting parameters so that the initial \bigOSmall{n_1^{1/2}} separator scaling corresponds to this overall target.
 This, however, can lead to a different problem: distinct top-level expansion sites, even if spatially close, might end up connected by very few paths.
-This sparse inter-connectivity between major components results in the re-emergence of pronounced local minima in the separator scaling plots at transitions between hierarchical levels, an issue similar to that encountered in simpler nested grid or Voronoi generation schemes where components are too easily fractured.
+This sparse interconnectivity between major components results in the re-emergence of pronounced local minima in the separator scaling plots at transitions between hierarchical levels, an issue similar to that encountered in simpler nested grid or Voronoi generation schemes where components are too easily fractured.
 Therefore, for generating graphs with well-behaved separators, it is critical that the expansion areas originating from different sites \emph{overlap} or interact sufficiently to build an integrated and robustly connected graph structure, rather than a collection of dense clusters weakly linked through a sparse higher-level skeleton.
-
 The critical nature of this balance is illustrated in \cref{fig:radius_compare}.
 Using a radius decay that is too aggressive (too small) results in the previously discussed local minima, where the graph fractures along sparse inter-level connections (\cref{fig:radius_small}).
 Conversely, using constant or too slowly decaying radii leads to excessive overlap that overwhelms the hierarchical structure, causing the separator scaling to revert to \bigO{n^{1/2}} (\cref{fig:radius_const}).
 Only a well-tuned, approximately exponential decay of radii yields the desired consistent scaling behavior (\cref{fig:radius_good}).
-
 \begin{figure}[tbhp]
 	\begin{subfigure}{0.3\linewidth}
 		\centering
@@ -859,21 +817,17 @@ Increasing \(k_i\), the number of points generated per expansion site, primarily
 Such high local density implies that partitioning these individual dense regions themselves requires larger separators, reflecting their increased internal complexity.
 Simultaneously, by populating the same expansion radius \(r_i\) with more points, the average distances between points decrease on this level, increasing the likelihood of inter-cluster connections.
 Compared to the influence of \(f_i\) and \(r_i\), the effect of \(k_i\) is minor.
-
 The effect of the expansion radius \(r_i\) is direct: a larger radius straightforwardly increases the spatial extent of each new cluster, leading to more substantial overlap with adjacent expansion zones and, consequently, also contributing to larger overall separators due to increased linkage.
 Radii at deeper hierarchical levels must also be scaled appropriately relative to those at higher levels to ensure desired structural properties and avoid unintended consequences on separator sizes.
-Therefore, a careful balance of these parameters, \(f_i, k_i\) and \(r_i\), is essential to cultivate a graph structure with the intended connectivity and separator properties.
-
+Therefore, a careful balance of these parameters, \(f_i\), \(k_i\), and \(r_i\), is essential to cultivate a graph structure with the intended connectivity and separator properties.
 The parameterization offers flexibility.
 For instance, to simulate prominent \enquote{urban centers} at higher levels, a larger initial radius \(r_1\) might be employed.
 This would typically be balanced by adjusting subsequent parameters, such as reducing \(f_2\) (selecting fewer centers from the points generated by these large initial expansions), to maintain overall structural integrity and desired separator characteristics.
-However, such compensations have practical limits; if radii do not shrink sufficiently across levels, adjustments to \(f_i\) or \(k_i\) may not fully mitigate adverse effects on separator scaling.
-
+However, such compensations have practical limits, if radii do not shrink sufficiently across levels, adjustments to \(f_i\) or \(k_i\) may not fully mitigate adverse effects on separator scaling.
 For generating structures visually akin to road networks, allowing the number of active expansion sites to decrease at deeper hierarchical levels often yields favorable results.
 This complements the inherent tendency of the generation process where all existing points are candidates for seeding new expansions, helping to manage density while still fostering hierarchical differentiation.
 Plausible structures can emerge even with constant \(k_i\) values across levels, provided \(f_i\) and \(r_i\) are appropriately tuned.
 For instance, the parameter set comprising level expansion fractions \(f_i = (1.0, 0.3, 0.2, 0.1)\), points per expansion site \(k_i = (50, 50, 50, 50)\), and expansion radii \(r_i = (1000, 424, 120, 17)\) produces graphs whose separator characteristics are illustrated in \Cref{fig:hier_delaunay_example_params_sep}.
-
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.7\linewidth]{graphics/hierachcial_delaunay_const_sites.pdf}
@@ -883,10 +837,10 @@ For instance, the parameter set comprising level expansion fractions \(f_i = (1.
 
 To further illustrate the interplay of these parameters, \Cref{fig:hier_delaunay_param_interplay} presents separator scaling plots for four different parameter configurations.
 The baseline configuration, shown in \cref{fig:param_interplay_baseline}, is chosen to produce separators with characteristics similar to those observed in real road networks.
-\Cref{fig:param_interplay_low_f2} then demonstrates the impact of significantly decreasing the expansion fraction for the second level (\(f_2\)) while other parameters are held constant relative to the baseline; this results in a notable drop in separator sizes, indicative of a less interconnected structure.
+\Cref{fig:param_interplay_low_f2} then demonstrates the impact of significantly decreasing the expansion fraction for the second level (\(f_2\)) while other parameters are held constant relative to the baseline,
+this results in a notable drop in separator sizes, indicative of a less interconnected structure.
 Subsequently, \cref{fig:param_interplay_fix1_radii} shows that this reduction in separator size due to a low \(f_2\) can be counteracted by proportionally increasing the expansion radius of the second level (\(r_2\)) and the subsequent radii (\(r_3, r_4\)).
 Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing the number of points generated at the first level (\(k_1\)) can also compensate for the reduced \(f_2\), again achieving separator scaling similar to the baseline by enhancing overall density and connectivity from the initial expansion phase.
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.45\linewidth}
@@ -946,13 +900,11 @@ Alternatively, \cref{fig:param_interplay_fix2_k1} illustrates that increasing th
 
 To investigate the influence of physical features of varying scales on road network structure and separator sizes, ranging from large-scale elements like mountains or lakes to smaller features like challenging terrain or rivers, we explore a generative approach based on iterating Perlin noise functions across multiple scales.
 The core idea is to use procedurally generated noise to define regions that are less favorable for node placement, simulating natural or man-made obstacles.
-
 The foundational component of these approaches is Perlin noise, a type of gradient noise widely used for procedural texture generation \cite{perlin_image_1985}.
 Unlike value noise, which interpolates random values assigned to a grid, Perlin noise generates a pseudo-random, continuous field by interpolating between random gradients assigned to grid points.
 For any given point in space, its noise value is determined by its position relative to the surrounding grid points and the dot product with their corresponding gradient vectors.
 A key characteristic of Perlin noise is that it produces a smooth, natural-looking texture with its energy concentrated around a specific frequency.
 To create more complex patterns with details at multiple scales, several layers of Perlin noise with different frequencies and amplitudes are typically combined.
-
 Our initial attempt utilizes a common method for generating additive fractal noise (often termed pink noise).
 This process involves summing multiple layers of Perlin noise, where at each step, the sampling frequency doubles and the amplitude halves.
 Sampling at a given point \((x,y)\) at scale \(s\) can also be thought of as sampling a universal noise at \((x \cdot s, y \cdot s)\).
@@ -963,19 +915,17 @@ Points are then sampled in a domain, and their acceptance probability is modulat
 However, this additive approach produces noise that is too smooth, and the resulting \enquote{obstacles} are not sufficiently \enquote{hard} or prohibitive.
 Graphs generated by accepting points based on this smooth additive fractal noise exhibit separator sizes scaling as \bigO{n^{1/2}}.
 Alternative procedural noise types, such as Simplex noise or Brownian noise, likewise fail to produce the desired combination of relatively sharp boundaries and distinct features across multiple scales.
-
 To create more defined, \enquote{harder} obstacle boundaries across multiple scales, we develop an alternative approach using multiplicative Perlin noise.
 For each point \(p\), Perlin noise is first sampled at \(L\) different scales (often referred to as octaves), where the frequency typically doubles at each successive scale.
 The output from the Perlin noise function for each of these \(L\) scales, usually in the range \([-1, 1]\), is then normalized to \([0, 1]\).
 Finally, the overall noise value for the point is determined by the product of these \(L\) normalized values.
-As the number of noise scales increases the resulting product tends towards zero.
+As the number of noise scales increases, the resulting product tends towards zero.
 To transform this continuous output into a binary map of allowed versus disallowed regions, we apply a noise threshold (e.g., \(0.5^L\)).
-A point is considered in an \enquote{allowed} region if its final product value is greater than the noise threshold; otherwise, it is \enquote{disallowed}.
+A point is considered in an \enquote{allowed} region if its final product value is greater than the noise threshold,
+otherwise, it is \enquote{disallowed}.
 This method yields a binary noise field with sharp boundaries and features at various frequencies, as \cref{fig:multiplicative_binary_noise_viz} illustrates.
-
 One could also consider normalizing the product of the noise values by taking the \(L\)-th root of the product and using this value as a probability if a point is in an allowed region or not.
 This however yields quadratic scaling behavior for the separator size, as the resulting noise field is too smooth and does not produce sufficiently distinct obstacle regions.
-
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=\linewidth]{graphics/noise_image.png}
@@ -985,21 +935,21 @@ This however yields quadratic scaling behavior for the separator size, as the re
 
 The graph generation algorithm then utilizes this multiplicative binary Perlin noise to place vertices, as detailed in \cref{alg:fractal_noise_point_sampling}.
 Candidate points are randomly sampled within a predefined domain (e.g., a unit circle).
-The noise value, as described above, is computed at each candidate point's location. If this value indicates an \enquote{allowed} region, the point is accepted and added to the graph's vertex set; otherwise, it is rejected, and a new candidate is sampled. This process continues until the desired number of \(n\) vertices is collected.
-
+The noise value, as described above, is computed at each candidate point's location.
+If this value indicates an \enquote{allowed} region, the point is accepted and added to the graph's vertex set,
+otherwise, it is rejected, and a new candidate is sampled.
+This process continues until the desired number of \(n\) vertices is collected.
 Achieving the desired separator scaling for a larger number of vertices appears to necessitate an increased number of noise scales.
 No clear upper bound on the number of applicable scales is apparent.
 Increasing the number of scales introduces a slight computational overhead.
 However, this does not substantially affect the overall performance of the graph generation process.
-
 Our implementation successfully generates graphs with vertex counts \(n \in \{10^4, 10^5, 10^6, 10^7\}\) using \(L=11\) scales.
 The generation method demonstrates scalability, producing graphs with up to 300 million nodes.
-For larger graphs we primarily rely on using the Relative Neighborhood Graph (RNG) creation instead of a Delaunay triangulation with the following edge pruning because the RNG is more efficient to compute for larger point sets.
+For larger graphs, we primarily rely on using the Relative Neighborhood Graph (RNG) creation instead of a Delaunay triangulation with the following edge pruning because the RNG is more efficient to compute for larger point sets.
 Further experiments are constrained by limitations in underlying libraries, which employ 32-bit integers for internal processing.
-
-Once the \(n\) points are generated, a global Delaunay triangulation is performed on this point set. Subsequently, the same edge pruning step detailed in the Hierarchical Delaunay Generation section (see \cref{alg:prune_edges}) is applied to achieve a target average degree and refine the graph structure.
+Once the \(n\) points are generated, a global Delaunay triangulation is performed on this point set.
+Subsequently, the same edge pruning step detailed in the Hierarchical Delaunay Generation section (see \cref{alg:prune_edges}) is applied to achieve a target average degree and refine the graph structure.
 An example of a graph generated using this method and its observed separator scaling are shown in \cref{fig:fractal_noise_graph_results}.
-
 \begin{algorithm}[tbhp]
 	\Input{Target number of points \(n\), \\
 		\(L\) noise scales \(s_i\)}
@@ -1045,28 +995,24 @@ An example of a graph generated using this method and its observed separator sca
 This generation process does not directly prevent Delaunay edges from spanning the \enquote{obstacle} regions (areas with low composite noise values where no points are placed).
 However, it ensures that no vertices, and thus no potential navigation hubs or major junctions, are located within these simulated forbidden zones.
 Furthermore, the subsequent edge pruning step tends to remove many of the long, redundant edges that might span these empty regions, preserving only those deemed more critical for connectivity, akin to bridges over rivers or passes through mountainous terrain.
-
 The primary success of the multi-scale Perlin noise model lies in its ability to naturally generate graphs with the desired separator properties.
 Requiring only the selection of a suitable range of scales, rather than extensive fine-tuning, this method produces graphs whose separator sizes scale approximately as \bigO{n^{0.37}}.
 This result is crucial, as the exponent aligns almost exactly with the scaling empirically observed in real-world road networks.
-
 
 \paragraph{Ablation Studies on Noise Scales}
 
 We also investigate whether the full spectrum of noise scales is necessary to achieve this result.
 Experiments are conducted using only high-frequency scales and only low-frequency scales.
 The resulting noise patterns and separator scaling comparisons are illustrated in \cref{fig:noise_layer_ablation}.
-When using only high-frequency scales, the separators for smaller subgraphs (identified through nested dissection) align well with the desired trend. However, as the graph size or region under consideration increases, the separator sizes revert to an \bigO{n^{1/2}} trend, because large-scale obstacle features (which would be defined by low frequencies) are absent.
-
+When using only high-frequency scales, the separators for smaller subgraphs (identified through nested dissection) align well with the desired trend.
+However, as the graph size or region under consideration increases, the separator sizes revert to an \bigO{n^{1/2}} trend, because large-scale obstacle features (which would be defined by low frequencies) are absent.
 Conversely, the model using only low-frequency scales exhibits a more complex, multi-stage scaling behavior.
 For smaller subgraphs, which fit entirely within the open regions defined by the noise, separators tend to scale as \bigO{n^{1/2}}, similar to standard Delaunay triangulations in unobstructed space.
-As subgraphs become large enough to span these regions, the low-frequency obstacles themselves begin to define the partitions, causing a \enquote{dropoff} from this initial trend to relatively smaller separator sizes.
+As subgraphs become large enough to span these regions, the low-frequency obstacles themselves begin to define the partitions, causing a \enquote{drop-off} from this initial trend to relatively smaller separator sizes.
 However, for the final top-level separators, we observe a steep increase in size.
 To investigate this further, we generated a much larger graph with \(\approx 250\) million nodes.
-This larger experiment confirms the same overall pattern of a dropoff followed by an increase for the largest separators, but the transition points are shifted to larger subgraph sizes.
+This larger experiment confirms the same overall pattern of a drop-off followed by an increase for the largest separators, but the transition points are shifted to larger subgraph sizes.
 This indicates that the subgraph size at which the low-frequency obstacles become effective separators is relative to the total number of nodes in the graph being partitioned.
-
-
 \begin{figure}[tbhp]
 	\centering
 	\begin{subfigure}{0.25\linewidth}
@@ -1094,9 +1040,8 @@ This indicates that the subgraph size at which the low-frequency obstacles becom
 \end{figure}
 
 These studies therefore show that using a combination of multiple noise scales, representing obstacles of various sizes, is key to consistently achieving small separator sizes across a wide range of graph dimensions with this multi-scale Perlin noise method.
-This reliance on features defined across different scales to create a complex, layered obstacle landscape is conceptually similar to the explicit hierarchical graph generation methods explored earlier (e.g., \cref{sec:hierarchical_delaunay_generation}); in both approaches, such multi-scale or hierarchical structuring is vital for achieving the desired separator properties, as is demonstrated in our noise model experiments where the favorable separator scaling breaks down if an insufficient range of scales is employed.
-
-
+This reliance on features defined across different scales to create a complex, layered obstacle landscape is conceptually similar to the explicit hierarchical graph generation methods explored earlier (e.g., \cref{sec:hierarchical_delaunay_generation}),
+in both approaches, such multi-scale or hierarchical structuring is vital for achieving the desired separator properties, as is demonstrated in our noise model experiments where the favorable separator scaling breaks down if an insufficient range of scales is employed.
 
 \paragraph{Alternative Graph Construction: k-Nearest Neighbors}
 
@@ -1109,8 +1054,9 @@ Visually comparing a k-NN graph (\cref{fig:knn_noise_graph_viz_comp}) with a gra
 This characteristic arises because the k-NN construction inherently limits connections to only the \(k\) closest neighbors.
 Consequently, edges are less likely to span large low-noise regions (our simulated obstacles), particularly if a point's \(k\) nearest neighbors all reside on the same side of such a zone.
 Marginally increasing \(k\) does not fundamentally alter this effect, as it still restricts connections to a local neighborhood.
-The limited long-range connectivity of the k-NN rule appears to cascade through recursive partitioning. This leads to disproportionately small separators for larger graphs, while smaller, more internally-connected subgraphs can exhibit comparatively larger separators.
-For substantially larger values of k, such as (k=50), the separators exhibit quadratic scaling.
+The limited long-range connectivity of the k-NN rule appears to cascade through recursive partitioning.
+This leads to disproportionately small separators for larger graphs, while smaller, more internally-connected subgraphs can exhibit comparatively larger separators.
+For substantially larger values of k, such as k=50, the separators exhibit quadratic scaling.
 
 \begin{figure}[tbhp]
 	\centering
@@ -1144,12 +1090,6 @@ The resulting separator scaling also appears to depend on the specific connectiv
 In contrast to the k-NN graph, the Delaunay triangulation permits the creation of long-range edges that span large, empty regions (our simulated obstacles).
 These \enquote{bridge} edges appear to contribute to a more globally integrated graph structure, which may explain why this model avoids the higher degree of fragmentation and the smaller separator sizes observed with the more locally-restricted k-NN approach.
 
-
-
-
-
-
-
 \paragraph{Comparison with Real-World Hop Distribution}
 
 Given the success of the multi-scale Perlin noise model in replicating separator scaling, we further investigate its potential as a general-purpose synthetic road network generator by comparing its structural properties to the real Europe road network.
@@ -1159,7 +1099,6 @@ Our model samples points within a compact circle, which naturally produces a dif
 The hop distribution, in contrast, better reflects the intrinsic topological structure and hierarchical connectivity of a graph, making it a more suitable metric for evaluating the model's realism independent of its boundary shape.
 To proceed with this comparison, we generated a synthetic graph with the same number of vertices as the Europe graph.
 For a fair structural analysis, we contracted degree-2 vertices in both the real and synthetic graphs.
-
 The resulting hop distributions, shown in \cref{fig:hop_dist_comparison_noise_vs_europe}, exhibit significant differences.
 We observe that it does not generate a similar hop overview.
 The distribution for the synthetic graph lacks the extreme outliers (very long hop paths) seen in the Europe graph, a discrepancy likely attributable to the differing domain shapes previously mentioned.
@@ -1167,10 +1106,9 @@ More critically, a significantly larger fraction of nodes in the real road netwo
 This suggests that while our model effectively simulates physical barriers, it does not fully capture the topological efficiency of a real-world transport system.
 The synthetic graph appears to be missing a sufficiently effective hierarchical backbone of \enquote{highway} connections.
 Although the Delaunay triangulation process allows for some long-range edges across obstacle regions, this mechanism alone seems insufficient.
-
 \begin{figure}[tbhp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{graphics/hop_compare_noise_europe.pdf}
-    \caption{Comparison of hop distance distributions of the Europe and multi-scale Perlin noise graphs. Both graphs have their degree-2 nodes contracted.}
-    \label{fig:hop_dist_comparison_noise_vs_europe}
+	\centering
+	\includegraphics[width=0.7\linewidth]{graphics/hop_compare_noise_europe.pdf}
+	\caption{Comparison of hop distance distributions of the Europe and multi-scale Perlin noise graphs. Both graphs have their degree-2 nodes contracted.}
+	\label{fig:hop_dist_comparison_noise_vs_europe}
 \end{figure}
