@@ -8,7 +8,7 @@ This thesis investigates the underlying structural properties responsible for th
 
 Our empirical analysis first refines the understanding of this phenomenon.
 We demonstrate that the separator size \(s\) scales with graph size \(n\) according to the power law \(s \approx \bigO{n^{0.37}}\).
-This exponent is slightly larger than the previously suggested \(\bigO{n^{1/3}}\) \cite{dibbelt_customizable_2016}, but remains substantially better than the \(\bigO{n^{1/2}}\) bound for planar graphs.
+This exponent is slightly larger than the previously suggested \(\bigO{n^{1/3}}\) \cite{dibbelt_customizable_2016} but remains substantially better than the \(\bigO{n^{1/2}}\) bound for planar graphs.
 
 Our investigation systematically demonstrates the insufficiency of simple, isolated graph properties to explain this behavior.
 Models based solely on degree distribution or basic geometric locality consistently produce separators that scale as \bigO{n} or \bigO{n^{1/2}}.
@@ -28,7 +28,7 @@ Ablation studies further underscore this finding, demonstrating that the full sp
 
 It is important to qualify, however, that the need for a multi-scale or hierarchical structure is not an absolute constraint if one allows for extreme parameter fine-tuning.
 The tree-locality model, for instance, could replicate the desired scaling using a highly specific distance-decay function \(f(\text{dist}) = 1/\text{dist}^{3.3}\).
-This case serves as an interesting exception, highlighting that specific correlation structures can be enforced without explicit hierarchy, though this offers less insight into the natural emergence of such properties.
+This case serves as an interesting exception, highlighting that specific correlation structures can be enforced without an explicit hierarchy, though this offers less insight into the natural emergence of such properties.
 
 Revisiting the central research question, \enquote{Do small separators in road networks arise from intrinsic graph properties, or from real-world physical barriers?}, our findings provide a nuanced answer.
 The evidence strongly suggests that small separators are not a consequence of any single, simple graph property but are an emergent feature of a complex, multi-scale structural organization.
