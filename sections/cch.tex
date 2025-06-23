@@ -2,14 +2,14 @@
 \label{ch:cch}
 
 As established in the introduction, real-world road networks exhibit small separators.
-This observation, stemming from experimental results of the Customizable Contraction Hierarchies (CCH) paper \cite{dibbelt_customizable_2016}, serves as a key inspiration for this thesis.
+This observation, stemming from the experimental results of the Customizable Contraction Hierarchies (CCH) paper \cite{dibbelt_customizable_2016}, is a key inspiration for this thesis.
 This chapter delves into CCH as a state-of-the-art route planning technique to illustrate precisely how such small separators are leveraged to achieve high query performance, particularly in dynamic scenarios where edge weights, such as those reflecting traffic conditions, frequently change.
 Understanding this application provides further context for the significance of the small separator phenomenon that this thesis investigates.
 
 Customizable Contraction Hierarchies address the challenge of dynamic edge weights by employing a three-phase approach: an initial, topology-dependent precomputation; a subsequent, fast customization phase that incorporates current edge weights; and finally, an efficient query phase \cite{delling_customizable_2011, dibbelt_customizable_2016}.
 The core idea underpinning CCH involves strategically inserting shortcut edges into the graph, analogous to the concept used in the original Contraction Hierarchies (CH) algorithm \cite{geisberger_contraction_2008}.
 These shortcuts bypass sequences of original edges, effectively contracting the graph and speeding up queries.
-The following provides an overview of the CCH algorithm, with a focus on how its components benefit from the small separators found in road networks.
+This section provides an overview of the CCH algorithm, focusing on how its components benefit from the small separators found in road networks.
 
 \paragraph{Precomputation}
 
@@ -17,14 +17,14 @@ The CCH precomputation phase introduces shortcut edges based on a given vertex o
 These shortcuts effectively bypass sections of the graph, allowing algorithms to skip over entire subgraphs, unless the target node resides within such a subgraph.
 Furthermore, the specific process of inserting shortcuts based on the contraction order guarantees that any shortest path in the original graph corresponds to an 'up-down' path in the hierarchy defined by the vertex ranks \cite{geisberger_contraction_2008}.
 An 'up-down' path consists of a sequence of edges leading to vertices with increasing ranks (the 'up' segment), followed by a sequence of edges leading to vertices with decreasing ranks (the 'down' segment).
-This property enables efficient bidirectional search by restricting exploration to higher-ranked neighbors.
+This property enables an efficient bidirectional search by restricting exploration to higher-ranked neighbors.
 
 This order is defined by a bijection \( \pi : \{1, \dots, n\} \to V \), where \( n = |V| \).
 We will call the inverse of this order \( \text{rank} : V \to \{1, \dots, n\} \), which assigns each vertex its position in the order.
-The core process involves iteratively contracting vertices in order of their rank, starting from rank 1 up to \( n \).
+The core process involves iteratively contracting vertices according to their rank, from rank 1 up to \( n \).
 Contracting a vertex \( v_i \) involves removing it and its incident edges from the current graph representation.
-For every pair of (higher ranked) neighbors \( u, w \in N(v_i) \), a shortcut edge \( (u, w) \) is introduced.
-Resulting multi-edges are simplified.
+For every pair of higher-ranked neighbors \( u, w \in N(v_i) \), a shortcut edge \( (u, w) \) is introduced.
+Any resulting multi-edges are simplified.
 We call the resulting graph \( G_C = (V, E_C) \), where \( E_C = E \cup F \) and \( F \) represents the set of shortcut edges.
 The contraction process is illustrated in \cref{fig:cch_precomputation_example}.
 
@@ -133,12 +133,12 @@ To achieve this, the concept of a lower triangle is employed.
 Given an edge \(\{x, y\} \in E_C\), a lower triangle is formed by the vertices \(\{x, y, z\}\) if the edges \(\{z, x\}\) and \(\{z, y\}\) also exist, and \(rank(z) < \min\{rank(x), rank(y)\}\).
 The customization algorithm iterates through the vertices of the graph in ascending order of their precomputed rank.
 For each vertex \(x\), it considers all upward edges \(\{x, y\}\) in the graph, where \(y\) is a neighbor of \(x\) and \(rank(y) > rank(x)\).
-For every such edge \(\{x, y\}\) we determine all lower triangles \(\{x, y, z\}\).
+For every such edge \(\{x, y\}\), we determine all lower triangles \(\{x, y, z\}\).
 If the path through \(z\) offers a shorter connection, the weight of the edge \(\{x, y\}\) is updated to this smaller value: \(w(x, y) \leftarrow \min\{w(x, y), w(x, z) + w(z, y)\}\).
 The detailed procedure is outlined in the pseudocode presented in \cref{alg:customization}.
 An illustration of the customization process is provided in \cref{fig:cch_precomputation_example}.
 
-Note that the outlined algorithm only considers undirected edge weights, the algorithm can be extendend to directed edge weights. Details can be found in \cite{dibbelt_customizable_2016}.
+Note that while the outlined algorithm only considers undirected edge weights, it can be extended to handle directed edge weights. Details can be found in \cite{dibbelt_customizable_2016}.
 
 \begin{algorithm}
 	\Input{\( G_C = (V, E_C) \), node ordering \(\pi\), edge weights \(w\)}
@@ -257,8 +257,8 @@ CCH queries restrict exploration to edges leading towards higher-ranked nodes (u
 Consider the separator identified at the highest level of the recursion, which contains approximately \(n^\beta\) nodes.
 When a query initiates within a component defined by this separator, nodes located in other components cannot be reached without traversing downwards through a separator node, violating the upward search constraint.
 This containment effect applies recursively within the sub-components generated during the nested dissection.
-Let \( \alpha \) denote the balance factor.
-The sub-components at recursion level \( i \) consequently have size at most \( \alpha^i \cdot n \).
+Let \(\alpha\) denote the balance factor.
+The sub-components at recursion level \(i\) consequently have a size of at most \( \alpha^i \cdot n \).
 Analyzing the total bound of the search space involves summing these separator sizes across the finite levels \(i\) of the recursion.
 This sum can be bounded by approximating it with the corresponding infinite geometric series \cite{bauer_search-space_2016}:
 
@@ -270,5 +270,5 @@ This sum can be bounded by approximating it with the corresponding infinite geom
 \end{align*}
 
 This analysis demonstrates that the total search space size explored during a CCH query is bounded by \(\bigO{n^\beta}\), under the assumption that small separators can be found recursively.
-Note that we do not have worst case guarantees for the size of the separators in real road networks, but we can expect them to be small in practice.
+Note that while we do not have worst-case guarantees for the separator sizes in real road networks, they are expected to be small in practice.
 Thus, the performance of the CCH algorithm is directly linked to the ability to find small separators.
