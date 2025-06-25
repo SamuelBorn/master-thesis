@@ -1123,7 +1123,7 @@ The hop distribution, in contrast, better reflects the intrinsic topological str
 To proceed with this comparison, we analyze three key graphs.
 First, the real DIMACS Europe road network is pre-processed by contracting its degree-2 vertices, reducing it from approximately 18 million to 15 million nodes; this forms our empirical benchmark.
 Second, to establish a baseline, we generate a full Delaunay triangulation on 15 million noise-sampled points, which by construction has no degree-2 nodes to contract.
-Third, we generate a graph using our primary noise-based method: starting with 18 million points, performing a Delaunay triangulation, applying the pruning step from \cref{alg:prune_edges}, and finally contracting degree-2 nodes, which results in a graph of approximately 14 million nodes.
+Third, we generate a graph using our primary noise-based method: starting with 18 million points, performing a Delaunay triangulation, applying the pruning step from \cref{alg:prune_edges}, and finally contracting degree-2 nodes.
 
 The resulting hop distributions are shown in \cref{fig:hop_dist_comparison_noise_vs_europe}.
 Both synthetic graphs lack the extreme outliers (very long hop paths) of the real Europe graph, a discrepancy likely attributable to the differing domain shapes.
