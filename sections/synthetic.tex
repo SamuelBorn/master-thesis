@@ -1119,19 +1119,25 @@ For this comparison, we focus on the hop distance distribution rather than the w
 A direct comparison of geographic path lengths is not as insightful here, as this metric is heavily influenced by the overall shape of the embedding domain.
 Our model samples points within a compact circle, which naturally produces a different distance profile than the complex and elongated geography of the European continent.
 The hop distribution, in contrast, better reflects the intrinsic topological structure and hierarchical connectivity of a graph, making it a more suitable metric for evaluating the model's realism independent of its boundary shape.
-To proceed with this comparison, we generated a synthetic graph with the same number of vertices as the Europe graph.
-For a fair structural analysis, we contracted degree-2 vertices in both the real and synthetic graphs.
-The resulting hop distributions, shown in \cref{fig:hop_dist_comparison_noise_vs_europe}, exhibit significant differences.
-We observe that it does not generate a similar hop overview.
-The distribution for the synthetic graph lacks the extreme outliers (very long hop paths) seen in the Europe graph, a discrepancy likely attributable to the differing domain shapes previously mentioned.
-More critically, a significantly larger fraction of nodes in the real road network are reachable in fewer hops.
-This suggests that while our model effectively simulates physical barriers, it does not fully capture the topological efficiency of a real-world transport system.
-The synthetic graph appears to be missing a sufficiently effective hierarchical backbone of \enquote{highway} connections.
-Although the Delaunay triangulation process allows for some long-range edges across obstacle regions, this mechanism alone seems insufficient.
+
+To proceed with this comparison, we analyze three key graphs.
+First, the real DIMACS Europe road network is pre-processed by contracting its degree-2 vertices, reducing it from approximately 18 million to 15 million nodes; this forms our empirical benchmark.
+Second, to establish a baseline, we generate a full Delaunay triangulation on 15 million noise-sampled points, which by construction has no degree-2 nodes to contract.
+Third, we generate a graph using our primary noise-based method: starting with 18 million points, performing a Delaunay triangulation, applying the pruning step from \cref{alg:prune_edges}, and finally contracting degree-2 nodes, which results in a graph of approximately 14 million nodes.
+
+The resulting hop distributions are shown in \cref{fig:hop_dist_comparison_noise_vs_europe}.
+Both synthetic graphs lack the extreme outliers (very long hop paths) of the real Europe graph, a discrepancy likely attributable to the differing domain shapes.
+A key finding emerges from the comparison: the pruned synthetic graph is topologically much less efficient than the real network, with a significantly smaller fraction of nodes reachable in few hops.
+Interestingly, the unpruned, full Delaunay triangulation provides a better approximation of the real network's hop distribution, exhibiting a similar peak, which is expected given its higher average degree naturally facilitates shorter hop paths.
+
+This analysis leads to a crucial insight into our pruning strategy.
+While the pruning method successfully achieves a realistic average degree and visual appearance, it appears to do so by removing too many of the structurally important long-range edges created by the Delaunay triangulation.
+These edges are vital for a network's topological efficiency (i.e., short hop paths).
+This suggests that while our noise-based point sampling creates a realistic foundation, a more sophisticated pruning strategy—one that better distinguishes between redundant local edges and essential long-range "highway" connections—is required to create a synthetic generator that accurately reproduces both separator scaling and hop distribution.
 
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=0.7\linewidth]{graphics/hop_compare_noise_europe.pdf}
-	\caption{Comparison of hop distance distributions of the Europe and multi-scale Perlin noise graphs. Both graphs have their degree-2 nodes contracted.}
+	\caption{Comparison of hop distance distributions of the Europe and multi-scale Perlin noise graphs. Graphs have their degree-2 nodes contracted.}
 	\label{fig:hop_dist_comparison_noise_vs_europe}
 \end{figure}
