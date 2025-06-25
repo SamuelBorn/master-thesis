@@ -1,16 +1,16 @@
-%% LaTeX2e class for student theses
-%% sections/abstract_en.tex
-
 \section*{\abstractname}
 
-Road networks empirically exhibit remarkably small graph separators, scaling approximately as \(\bigO{n^{0.37}}\).
-This behavior is significantly better than the theoretical \(\bigO{n^{1/2}}\) bound for general planar graphs, yet the underlying structural properties responsible for this phenomenon are not well understood.
-This thesis systematically investigates which characteristics of road networks give rise to these small separators.
+Empirical observations suggest that road networks possess small graph separators, scaling approximately as \bigO{n^{1/3}}.
+This scaling is substantially smaller than theoretical bounds for major graph classes, notably planar graphs, which are a natural point of comparison due to the near-planar structure of road networks.
+The underlying structural properties of road networks responsible for this phenomenon, however, remain poorly understood.
+This thesis systematically investigates which network characteristics explain these small separators.
 
-We evaluate the impact of several fundamental graph properties, including degree distribution, diameter, planarity, and hierarchy, by analyzing real-world network data and attempting to replicate the observed separator scaling with synthetic graph models.
-Our findings demonstrate that simple properties like sparsity or near-planarity alone are insufficient; models based on these consistently yield separators scaling as \(\bigO{n^{1/2}}\) or worse.
-Instead, our results indicate that the small separators are an emergent property of a complex, multi-scale structure.
+Our analysis of real-world network data indicates a slightly larger separator scaling of approximately \bigO{n^{0.37}}.
+We evaluate the impact of several fundamental graph properties, including degree distribution, locality, and geometric embeddings, by attempting to replicate this scaling behavior with synthetic graph models.
+The findings demonstrate that simple properties like sparsity or near-planarity alone are insufficient.
+Models based on these characteristics consistently yield separators that scale as \bigO{n^{1/2}} or worse.
 
-The most successful model developed in this work simulates the presence of physical barriers at all geographic scales using multiplicative Perlin noise.
-Without extensive parameter fine-tuning, this generative approach naturally produces graphs whose separators scale as \(\bigO{n^{0.37}}\), closely matching empirical data.
-Ablation studies confirm that a full spectrum of noise scales, analogous to a deep hierarchy of real-world obstacles, is crucial for this result.
+Instead, our results indicate that small separators are an emergent property of a hierarchical structure.
+This conclusion is supported by our generative models.
+We find that conceptually different approaches, including a model based on explicit hierarchical construction and another simulating physical barriers with multi-scale noise, can both produce graphs whose separators scale as \bigO{n^{0.37}}, closely matching our empirical findings.
+The shared success of diverse models that enforce a hierarchical organization identifies this as the critical property responsible for small separators in road networks.
