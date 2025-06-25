@@ -11,8 +11,7 @@ We demonstrate that the separator size of road networks \(s\) scales with graph 
 This exponent is slightly larger than the previously suggested \(\bigO{n^{1/3}}\) \cite{dibbelt_customizable_2016} but remains substantially better than the \(\bigO{n^{1/2}}\) bound for planar graphs.
 
 Our investigation systematically demonstrates the insufficiency of simple, isolated graph properties to explain this behavior.
-Models based solely on degree distribution or basic geometric locality consistently produce separators that scale as \bigO{n} or \bigO{n^{1/2}}.
-Even considering graphs with a geometric embedding, which is defining feature of road networks, standard models like grids or Delaunay triangulations fail to reproduce the target scaling.
+Simple models based solely on properties like degree distribution or a two dimensional embedding consistently scale as \bigO{n} or \bigO{n^{1/2}}.
 Furthermore, planarizing real road networks has a negligible impact on their separator sizes, suggesting that the non-planarity of these graphs is not a primary factor in the observed small separators.
 
 In contrast, models incorporating a hierarchical structure show significant promise.
@@ -42,8 +41,13 @@ Therefore, we conclude that the small separators in road networks are a direct r
 \section{Limitations and Future Work}
 \label{sec:conclusion:future_work}
 
-The conclusions presented in this thesis are primarily derived from experimental analysis.
-While our results strongly indicate the importance of hierarchy and multi-scale barriers, the inability of simpler, non-hierarchical models to reproduce the desired scaling does not constitute a formal disproof of their potential under different assumptions.
+The conclusions presented in this thesis are primarily derived from experimental analysis using heuristic separator algorithms.
+A key methodological consideration is that finding a minimal vertex separator is an NP-hard problem for general graphs.
+Consequently, our analysis relies on state-of-the-art partitioning heuristics, primarily using InertialFlowCutter \cite{gottesburen_faster_2019} and cross-validating findings with KaHIP \cite{sanders_think_2013} and FlowCutter \cite{hamann_graph_2018}.
+While all three tools yield consistent asymptotic scaling results for the graphs studied, none guarantee that the separators found are of minimal possible size.
+The separator sizes reported throughout this work should therefore be interpreted as good empirical upper bounds on the true minimal separators.
+
+Beyond this, while our results strongly indicate the importance of hierarchy and multi-scale barriers, the inability of simpler, non-hierarchical models to reproduce the desired scaling does not constitute a formal disproof of their potential under different assumptions.
 A notable limitation is that our most successful models rely on a final Delaunay triangulation.
 The observation that k-Nearest Neighbor graphs built on the same hierarchical point sets fail to produce the correct scaling suggests that the specific connectivity pattern of Delaunay graphs, which allows for both local and some structured long-range connections, plays a significant, yet not fully explored, role.
 
