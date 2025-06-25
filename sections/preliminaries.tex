@@ -105,7 +105,6 @@ In this thesis, we primarily utilize InertialFlowCutter \cite{gottesburen_faster
 This algorithm leverages geometric embeddings, often available for road networks, to compute high-quality node orderings efficiently.
 These node orderings serve as the basis for extracting separators from the graph using the method described below \cite{blasius_customizable_2025}.
 Employing this combined approach provides a practical pathway to generate separators for our analysis, adapting the use of InertialFlowCutter's output to suit the specific requirements of this work.
-We primarily employ \textbf{InertialFlowCutter} \cite{gottesburen_faster_2019} to compute separators.
 Since InertialFlowCutter is specifically designed for the structure of road networks, its performance on the more arbitrary synthetic graphs investigated in this thesis is not guaranteed to be optimal.
 To address this potential bias and validate our results, we cross-check our findings using two other established partitioning frameworks: KaHIP \cite{sanders_think_2013} and FlowCutter \cite{hamann_graph_2018}.
 Despite its specialization, we observe that for most graph instances examined in this thesis, InertialFlowCutter consistently produces separators of smaller size compared to the other two methods.
@@ -178,8 +177,8 @@ An overview of this process is illustrated in \cref{fig:extract_separator_from_o
 	\label{fig:extract_separator_from_order}
 \end{figure}
 
-To ensure separators yield balanced partitions, the extraction process is refined using a 'significance threshold' based on relative subgraph size.
-Child nodes are only considered 'significant' if the subgraph they represent exceeds this threshold (e.g., contains at least 5\% of the nodes in the parent's subgraph).
+To ensure separators yield balanced partitions, the extraction process is refined using a significance threshold based on relative subgraph size.
+Child nodes are only considered significant if the subgraph they represent exceeds this threshold (e.g., contains at least 5\% of the nodes in the parent's subgraph).
 When tracing a potential separator path \(P = (v_1, \dots, v_k)\) downwards, the path extends from \(v_i\) to \(v_{i+1}\) only if \(v_{i+1}\) is the \emph{single} significant child of \(v_i\).
 The path \(S = \{v_1, \dots, v_k\}\) is finalized as the separator upon reaching the first node \(v_k\) that possesses \emph{two or more} significant children.
 This ensures separators correspond to meaningful branches in the tree structure concerning substantial graph parts.
