@@ -17,7 +17,7 @@ Furthermore, as the concept of separators primarily applies to connectivity, we 
 An edge connecting vertices \(u\) and \(v\) in an undirected graph is denoted as the set \(\{u,v\}\).
 The neighborhood of a vertex \(v\) is defined as the set of vertices adjacent to \(v\), denoted as \(N : V \to \mathcal{P}(V)\).
 
-A graph \emph{embedding} assigns each vertex \(v \in V\) of a graph \(G = (V, E)\) to a unique point \(p\) in a specific geometric space, such as the Euclidean plane \(\mathbb{R}^2\) or the surface of a sphere.
+A graph \emph{embedding} assigns each vertex \(v \in V\) of a graph \(G = (V, E)\) to a point \(p\) in a specific geometric space, such as the Euclidean plane \(\mathbb{R}^2\) or the surface of a sphere.
 We then consider edges as straight line segments connecting the points corresponding to their incident vertices.
 
 Throughout this thesis, the term \emph{graph size} refers specifically to the number of vertices, \(|V|\).
@@ -49,7 +49,7 @@ Furthermore, minimizing the size of the separator \(S\) itself is critical for a
 The size of the separator is typically evaluated asymptotically as a function of the number of vertices \(n = |V|\) e.g. \(n^\beta\) for \(\beta \in (0,1)\).
 
 The concept of \emph{recursive} \(\alpha\)-balanced separators extends this idea by ensuring that the property of finding small, balanced separators persists in the resulting subgraphs.
-Specifically, after removing an \(\alpha\)-balanced separator \(S\) from \(G\), each induced subgraph \(G[V_i]\) (for \(i = 1, 2, \dots, k\)) can itself be partitioned using another \(\alpha\)-balanced separator of small size.
+Specifically, after removing an \(\alpha\)-balanced separator \(S\) from \(G\), each induced subgraph \(G[V_i]\) (\({i \in \{1, 2, \dots, k\}}\)) can itself be partitioned using another \(\alpha\)-balanced separator of small size.
 
 \begin{figure}[tbhp]
 	\centering

@@ -29,7 +29,7 @@ We call the resulting graph \( G_C = (V, E_C) \), where \( E_C = E \cup F \) and
 The contraction process is illustrated in \cref{fig:cch_precomputation_example}.
 
 \begin{figure}[tbhp]
-	\begin{subfigure}{0.45\linewidth}
+	\begin{subfigure}[t]{0.45\linewidth}
 		\centering
 		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
 			\node (3) at (-0.5,2) {3};
@@ -49,7 +49,7 @@ The contraction process is illustrated in \cref{fig:cch_precomputation_example}.
 		\caption{Input graph. Already converted to be undirected and simple.}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}{0.45\linewidth}
+	\begin{subfigure}[t]{0.45\linewidth}
 		\centering
 		\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.7cm}]
 			\node (3) at (-0.5,2) {3};
@@ -156,7 +156,7 @@ Note that while the outlined algorithm only considers undirected edge weights, i
 \end{algorithm}
 
 \begin{figure}[tbhp]
-	\begin{subfigure}{0.45\linewidth}
+	\begin{subfigure}[t]{0.45\linewidth}
 		\centering
 		\begin{tikzpicture}
 			\begin{scope}[every node/.style={circle, draw, minimum size=0.7cm}]
@@ -182,7 +182,7 @@ Note that while the outlined algorithm only considers undirected edge weights, i
 		\caption{Graph after precomputation. Weights are added to the edges. Shortcuts get weight \(\infty\).}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}{0.45\linewidth}
+	\begin{subfigure}[t]{0.45\linewidth}
 		\centering
 		\begin{tikzpicture}
 			\begin{scope}[every node/.style={circle, draw, minimum size=0.7cm}]
