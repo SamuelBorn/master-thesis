@@ -411,24 +411,30 @@ For the hop distance calculation, the graph is pre-processed by contracting all 
 The two histograms reveal a key distinction between the network's geographic and topological structure.
 The weighted distance distribution is strongly right-skewed with a smoothly decaying tail.
 In contrast, the hop count distribution exhibits a sharp peak at a low hop count and has a significantly heavier tail.
-This structural difference may suggest a hierarchical network topology.
-The sharp peak in hop counts likely reflects high efficiency for paths between nodes that are well-connected, locally as well as by a "highway" backbone. However, the heavier tail indicates that a non-trivial number of node pairs are topologically remote, requiring a large number of hops to connect, likely because they are comparatively not well-serviced by this primary backbone.
+We hypothesize that this heavy tail in the hop distribution is not an intrinsic topological property of the road network's hierarchy, but rather an artifact of the non-convex, geographically elongated shape of the European continent.
+Even with a highly efficient network, paths between extremities, such as from Finland to Spain, are inherently long in terms of the number of intermediate junctions and segments.
+This hypothesis is supported by two key observations.
+First, the hop distribution for the more compact and convex graph of Germany does not exhibit a similarly heavy tail.
+Second, we performed an experiment where points were sampled uniformly at random within the geographic shape of Europe, and a edge length restricted Delaunay triangulation was constructed on these points.
+The hop distribution of this simple geometric graph also displays a very similar heavy tail.
+This strongly suggests that the observed heavy tail in the Europe road network's hop distribution is primarily a consequence of its large-scale geography, rather than a feature of its specific man-made topology.
+
 
 \begin{figure}[tbhp]
     \centering
     \begin{subfigure}{0.45\linewidth}
         \centering
         \includegraphics[width=\linewidth]{graphics/distances_europe.pdf}
-        \caption{Distribution of weighted path distances.}
+        \caption{Distribution of weighted path distances for the Europe network.}
         \label{fig:distance_distribution}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.45\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{graphics/hops_europe.pdf}
-        \caption{Distribution of path lengths in hops.}
+        \includegraphics[width=\linewidth]{graphics/hops_europe_germany.pdf}
+        \caption{Comparison of hop distance distributions for the Europe and Germany networks.}
         \label{fig:hop_distribution}
     \end{subfigure}
-    \caption{Probability density functions (PDFs) and cumulative distribution functions (CDFs) for weighted distances and hop counts in the PTV Europe road network, approximated from 10,000 one-to-all queries.}
+    \caption{Path length distributions approximated from 10,000 one-to-all queries. Left: Weighted distances for the DIMACS Europe road network. Right: Comparison of hop distributions for the Europe network versus the more compact Germany sub-network.}
     \label{fig:distance_hop_distribution}
 \end{figure}
