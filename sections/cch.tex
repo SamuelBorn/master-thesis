@@ -19,7 +19,7 @@ Furthermore, the specific process of inserting shortcuts based on the contractio
 An \emph{up-down} path consists of a sequence of edges leading to vertices with increasing ranks (the \emph{up} segment), followed by a sequence of edges leading to vertices with decreasing ranks (the \emph{down} segment).
 This property enables an efficient bidirectional search by restricting exploration to higher-ranked neighbors.
 
-This order is defined by a bijection \( \pi : \{1, \dots, n\} \to V \), where \( n = |V| \).
+The order is defined by a bijection \( \pi : \{1, \dots, n\} \to V \), where \( n = |V| \).
 We will call the inverse of this order \( \text{rank} : V \to \{1, \dots, n\} \), which assigns each vertex its position in the order.
 The core process involves iteratively contracting vertices according to their rank, from rank 1 up to \( n \).
 Contracting a vertex \( v_i \) involves removing it and its incident edges from the current graph representation.
@@ -82,7 +82,7 @@ Different heuristics for selecting the contraction order exist.
 
 \paragraph{Nested Dissection}
 
-One method for computing good vertex orders are Nested Dissections.
+One method for computing good vertex orders are nested dissections.
 The process begins by identifying a small, balanced separator in the graph.
 Nodes within this separator are conceptually removed, partitioning the graph into smaller components.
 These separator nodes are designated as high-rank nodes in the hierarchy and are consequently placed towards the end of the final node ordering.
@@ -121,7 +121,7 @@ This procedure is then applied recursively to the remaining components.
 		\draw (12) -- (22) -- (32) -- (42) -- (52) -- (62) -- (72);
 		\foreach \i in {1,...,7} { \draw (\i0) -- (\i1) -- (\i2); }
 	\end{tikzpicture}
-	\caption{Example of a Nested Dissection. The top level separator is shown in teal, the second level in orange and the third level in purple. The nodes are named according to their rank in the resulting order.}
+	\caption{Example of a nested dissection. The top level separator is shown in teal, the second level in orange and the third level in purple. The nodes are named according to their rank in the resulting order.}
 	\label{fig:nested_dissection_example}
 \end{figure}
 
@@ -202,10 +202,10 @@ Note that while the outlined algorithm only considers undirected edge weights, i
 				\draw (1) -- (4) node {1};
 				\draw (1) -- (6) node {2};
 				\draw[thick, teal, dashed] (5) -- (6) node {\textbf{2}};
-				\draw[thick, teal, dashed] (4) -- (6) node {\(\infty\)};
+                \draw[thick, teal, dashed] (4) -- (6) node {\textbf{3}};
 			\end{scope}
 		\end{tikzpicture}
-		\caption{Graph after customization. The shortcut edge \(\{5, 6\}\) is updated to weight \(2\).}
+		\caption{Graph after customization.}
 	\end{subfigure}
 	\caption{Example of the CCH customization step.}
 \end{figure}
@@ -231,7 +231,7 @@ The query algorithm performs a bidirectional search upwards in this elimination 
 		\draw (3) -- (5);
 		\draw (5) -- (2);
 		\draw (1) -- (4);
-		\draw (1) -- (6);
+		% \draw (1) -- (6);
 
 		\draw[thick, teal, dashed] (5) -- (6);
 		\draw[thick, teal, dashed] (4) -- (6);

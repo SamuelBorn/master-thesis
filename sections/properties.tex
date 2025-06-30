@@ -38,7 +38,7 @@ To mitigate the influence of these large-scale geographical artifacts and focus 
 \end{figure}
 
 For enhanced visibility, particularly concerning the numerous data points corresponding to smaller subgraphs, and to avoid overrepresentation of larger subgraphs, we will also present data on a log-log scale.
-This logarithmic scaling offers the additional advantage that a polynomial relationship between separator size \( y \) and subgraph size \( x \), such as \( y \propto x^c \), manifests as a linear trend in the log-log plot, facilitating the identification of potential power-law dependencies.
+This logarithmic scaling offers the additional advantage that a polynomial relationship between separator size \( y \) and subgraph size \( x \), such as \( y \propto x^c \), manifests as a linear trend in the log-log plot.
 Furthermore, to improve the interpretability of the visualization and emphasize the underlying trend over individual fluctuations or outliers present at various scales, the data points are aggregated into bins.
 Let \( b \) be the number of bins chosen for the aggregation.
 Let \( x_{\max} \) denote the maximum observed subgraph size, assuming \( x_{\max} > 0 \).
@@ -121,7 +121,7 @@ Based on the high quality of the fit (\( R^2 \approx 0.9994 \)) and the statisti
 Empirical studies of road networks reveal a notable deviation in separator scaling for small subgraphs.
 This deviation is particularly apparent for subgraphs containing approximately \(2^6\) vertices, where separator sizes are often larger than the general scaling trend would suggest, as can be observed in \cref{fig:separator_size_loglog_non_binned}.
 \cref{fig:real_europe_hist} presents a histogram that further visualizes the distribution of these separator sizes.
-This phenomenon corresponds with the observation of a higher meshedness coefficient for smaller, denser urban cores, as discussed in \cref{sec:degree_distribution}.
+This phenomenon corresponds with the observation of a higher meshedness coefficient for smaller, denser urban cores, as discussed later in \cref{sec:degree_distribution}.
 The more grid-like, densely connected structure implied by a higher meshedness may contribute to these comparatively larger separators at smaller scales.
 
 \begin{figure}[tbhp]
@@ -170,7 +170,7 @@ Applying this same normalization step to the entire DIMACS Europe graph has a le
 \label{sec:approach:planarity}
 
 Road networks can be modeled as nearly planar graphs, meaning they permit an embedding in the plane with a limited number of edge crossings.
-Empirical evidence suggests that the number of such crossings in real-world road networks is typically on the order of \(\bigO{n}\), a sub-linear count relative to the number of edges \cite{eppstein_studying_2008}.
+Empirical evidence suggests that the number of such crossings in real-world road networks is typically on the order of \(\bigO{n^{1/2}}\), a sub-linear count relative to the number of edges \cite{eppstein_studying_2008}.
 It is a well-known result in graph theory that planar graphs admit \(\frac{2}{3}\)-balanced separators of size \(\bigO{n^{1/2}}\) \cite{lipton_separator_1979}.
 A relevant inquiry is whether the near-planarity of road networks is a critical feature that influences their separator properties, or if the occasional non-planar elements are merely incidental.
 This prompts the question of how separator sizes are affected when road networks are transformed into strictly planar graphs.
@@ -178,7 +178,7 @@ This prompts the question of how separator sizes are affected when road networks
 To obtain a planar representation, we begin with the existing graph structure where vertices possess associated geometric coordinates.
 Each edge is interpreted as the straight line segment connecting the coordinates of its incident vertices.
 The algorithm then identifies all geometric intersection points between these line segments.
-A new vertex is introduced into the graph at the coordinates of each detected intersection, provided this point does not coincide with an existing vertex.
+A new vertex is introduced into the graph at the coordinates of each intersection, provided this point does not coincide with an existing vertex.
 Any original edge containing one or more such intersection points is then removed and replaced by a sequence of new, shorter edges that connect the original endpoints and the new intersection vertices in their linear order.
 This process transforms the initial graph into a planar graph embedding by explicitly representing all edge crossings as vertices.
 For efficient execution, we utilize a spatial index over the bounding boxes of all edges.
@@ -192,7 +192,7 @@ Pseudo-code for this planarization algorithm is provided in \cref{alg:planarizat
     \Output{Planarized version of G.}
     \BlankLine
     spatial\_index \(\longleftarrow\) load(bounding\_boxes(E))\;
-    crossings \(\longleftarrow\) \{\}\;
+    crossings \(\longleftarrow\) \{ \(\emptyset\) for e in E \}\;
     \ForAll{e in E}{
         \ForAll{candidates c in spatial\_index.query(e)}{
             \If{c intersects e} {
@@ -214,11 +214,11 @@ We apply this planarization method to several real-world road networks.
 The Karlsruhe network, with approximately 120,000 nodes, has around 2,500 crossings.
 The Germany network, comprising about 6 million nodes, has approximately 100,000 crossings.
 Finally, the Europe network, with around 18 million nodes, contains about 300,000 crossings.
-These numbers are a little higher than intersection counts on the order of \(n^{1/2}\) reported in some prior studies, but are of a comparable order of magnitude \cite{eppstein_studying_2008}.
+These numbers are a little higher than intersection counts on the order of \bigO{n^{1/2}} reported in prior studies, but are of a comparable order of magnitude \cite{eppstein_studying_2008}.
 The differences could be explained by our modeling of edges as straight lines rather than more complex curves, and might be mitigated by using a more detailed road network model like OpenStreetMap.
 
 Analysis of separator sizes shows minimal variation post-planarization.
-We identify \(\frac{2}{3}\)-balanced separators with sizes still scaling approximately as \bigO{n^{1/3}}, aligning with the values from the original non-planar graphs.
+We identify \(\frac{2}{3}\)-balanced separators with sizes still scaling approximately as \bigO{n^{0.37}}, aligning with the values from the original non-planar graphs.
 A comparison of the separator sizes in the planar and non-planar versions of the Europe network is depicted in \cref{fig:germany_planar_vs_non_planar}.
 
 \begin{figure}[tbhp]
@@ -231,8 +231,7 @@ A comparison of the separator sizes in the planar and non-planar versions of the
 Our findings indicate that separators in non-planar road networks closely resemble those in their planarized counterparts in terms of overall scaling.
 However, a separator from the original graph is not always directly valid in the planarized version, as edge crossings can create new paths between previously separated components.
 We investigated this by traversing a single arm of a nested dissection and checking if the separators for the original subgraphs remain valid in their planarized versions.
-Approximately one-third of these separators can be applied directly without modification, this is more probable for smaller subgraphs that are less likely to contain edge crossings.
-When a separator is invalidated by the new topology, different outcomes are possible.
+Many separators can be applied directly without modification, this is more probable for smaller subgraphs that are less likely to contain edge crossings.
 In many cases, an original separator must be augmented with additional nodes to restore the partition, resulting in a slightly larger separator.
 \cref{fig:karlsruhe_planar_vs_non_planar} provides a real-world example, visualizing how a separator from the non-planar Karlsruhe network has to be augmented to remain valid after planarization.
 
@@ -411,7 +410,7 @@ The two histograms reveal a key distinction between the network's geographic and
 The weighted distance distribution is strongly right-skewed with a smoothly decaying tail.
 In contrast, the hop count distribution exhibits a sharp peak at a low hop count and has a significantly heavier tail.
 We hypothesize that this heavy tail in the hop distribution is not an intrinsic topological property of the road network's hierarchy, but rather an artifact of the non-convex, geographically elongated shape of the European continent.
-Even with a highly efficient network, paths between extremities, such as from Finland to Spain, are inherently long in terms of the number of intermediate junctions and segments.
+Even with a highly efficient network, paths between extremities, such as from Norway to Spain, are inherently long in terms of the number of intermediate junctions and segments.
 This hypothesis is supported by two key observations.
 First, the hop distribution for the more compact and convex graph of Germany does not exhibit a similarly heavy tail.
 Second, we performed an experiment where points were sampled uniformly at random within the geographic shape of Europe, and a edge length restricted Delaunay triangulation was constructed on these points.

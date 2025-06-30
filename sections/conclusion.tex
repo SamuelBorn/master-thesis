@@ -10,7 +10,8 @@ We demonstrate that the separator size of road networks \(s\) scales with graph 
 This exponent is slightly larger than the previously suggested \(\bigO{n^{1/3}}\) \cite{dibbelt_customizable_2016} but remains substantially better than the \(\bigO{n^{1/2}}\) bound for planar graphs.
 
 Our investigation systematically demonstrates the insufficiency of simple, isolated graph properties to explain this behavior.
-Simple models based solely on properties like degree distribution or a two-dimensional embedding consistently scale as \bigO{n} or \bigO{n^{1/2}}.
+Simple models based solely on properties like degree distribution or a two-dimensional embedding consistently scale as \bigO{n^{1/2}} or worse.
+
 Furthermore, planarizing real road networks has a negligible impact on their separator sizes, suggesting that the non-planarity of these graphs is not a primary factor in the observed small separators.
 
 In contrast, models incorporating a hierarchical structure show significant promise.
@@ -35,7 +36,7 @@ This multi-scale structure can be interpreted as an explicit hierarchy of road t
 The success of the multi-scale Perlin noise model indicates that the constrained placement of nodes by geography is a powerful generative mechanism.
 Road networks are built upon a landscape permeated by obstacles at every scale, from mountain ranges down to small urban features like parks.
 This forces the graph to be composed of densely connected regions that are themselves sparsely interconnected through well-defined corridors, a structure highly amenable to small separators.
-Therefore, we conclude that the small separators in road networks are a direct result of their adaptation to a multi-scale, obstacle-rich environment.
+Therefore, we conclude that the small separators in road networks are a result of their adaptation to a multi-scale, obstacle-rich environment.
 
 \section{Limitations and Future Work}
 \label{sec:conclusion:future_work}
