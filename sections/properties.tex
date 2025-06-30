@@ -49,7 +49,6 @@ A primary consideration for using the arithmetic mean was the nature of subseque
 While methods like box plots offer detailed distributional insights, they do not provide the single-point representation required for these analyses.
 Furthermore, the choice of the mean over the median, which is known for its robustness to outliers, was deliberate in this context.
 Outliers within bins are not necessarily disregarded as noise but are considered potentially informative data points reflecting relevant variations.
-Supporting this decision are the mean's straightforward calculation, computational efficiency, and clear interpretation as the centroid or center of mass of the points within the bin.
 
 When constructing the log-log plot, this binning procedure is applied to the logarithmically transformed data.
 \cref{fig:separator_size_loglog} illustrates the binned data points on logarithmic axes alongside the non-binned data.
@@ -88,7 +87,7 @@ We also explore direct non-linear curve fitting to the original data points usin
 Fitting \( y = a \cdot x^{1/3} + b \) results in \( y \approx 0.4599 \cdot x^{1/3} - 0.0341 \) with an \( R^2 \) value of \( 0.4724 \).
 Fitting \( y = a \cdot x^{1/2} + b \) yields \( y \approx 0.1087 \cdot x^{1/2} + 0.5000 \), but with a very low \( R^2 \) value of \( 0.0873 \), suggesting that a square-root dependency is unlikely.
 A more general power-law fit \( y = a \cdot x^c + b \) results in \( y \approx 0.2346 \cdot x^{0.3980} + 0.6140 \) with an \( R^2 \) value of \( 0.4832 \).
-While these direct fits indicate a scaling exponent potentially closer to \( 0.4 \) than to \( 1/3 \) or \( 1/2 \), the overall \( R^2 \) scores remain relatively low, indicating only a moderate goodness of fit.
+While these direct fits indicate a scaling exponent potentially closer to \( 0.4 \) than to \( 1/3 \) or \( 1/2 \), the overall \( R^2 \) scores remain relatively low, indicating only a moderately good fit.
 These fitted curves are visualized in \cref{fig:separator_size_loglog}.
 The fitted lines from the non-binned data (\cref{fig:separator_size_loglog_non_binned}) are reproduced in \cref{fig:separator_size_loglog_binned} to facilitate comparison with the binned averages; visual alignment may differ due to the binning process.
 
@@ -387,7 +386,7 @@ To ensure that the measured hop distances are structurally meaningful, we first 
 This effectively treats long chains of such vertices as single conceptual edges.
 
 Computing the exact diameter of a general graph can be computationally intensive.
-A simple two-step Breadth-First Search (BFS) approach can be used. This involves performing a BFS from a random node to find the furthest vertex, and then a second BFS from that resulting vertex. However, this method is only guaranteed to find the exact diameter in certain graph classes, such as trees, and provides at best a 2-approximation for general graphs.
+A simple two-step Breadth-First Search (BFS) approach can be used. This involves performing a BFS from a random node to find the furthest vertex, and then a second BFS from that resulting vertex. However, this method is only guaranteed to find the exact diameter in certain graph classes, such as trees, and provides at best a 2-approximation for general graphs \cite{aingworth_fast_1999}.
 Therefore, to obtain exact diameter values, we employ the more sophisticated iFUB (iterative Fringe Upper Bound) algorithm as described by Crescenzi et al. \cite{crescenzi_computing_2013}.
 This algorithm successfully computes the exact graph diameter in reasonable time on road networks without resorting to a full all-pairs shortest path calculation.
 

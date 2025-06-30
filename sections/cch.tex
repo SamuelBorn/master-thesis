@@ -3,7 +3,7 @@
 
 As established in the introduction, real-world road networks exhibit small separators.
 This observation, stemming from the experimental results of the Customizable Contraction Hierarchies (CCH) paper \cite{dibbelt_customizable_2016}, is a key inspiration for this thesis.
-This chapter delves into CCH as a state-of-the-art route planning technique to illustrate precisely how such small separators are leveraged to achieve high query performance, particularly in dynamic scenarios where edge weights, such as those reflecting traffic conditions, frequently change.
+This chapter details how the state-of-the-art Customizable Contraction Hierarchies (CCH) algorithm leverages small separators to enable fast queries, particularly in dynamic scenarios with changing edge weights.
 Understanding this application provides further context for the significance of the small separator phenomenon that this thesis investigates.
 
 Customizable Contraction Hierarchies address the challenge of dynamic edge weights by employing a three-phase approach: an initial, topology-dependent precomputation; a subsequent, fast customization phase that incorporates current edge weights; and finally, an efficient query phase \cite{delling_customizable_2011, dibbelt_customizable_2016}.
@@ -13,10 +13,10 @@ This section provides an overview of the CCH algorithm, focusing on how its comp
 
 \paragraph{Precomputation}
 
-The CCH precomputation phase introduces shortcut edges based on a given vertex order.
+The CCH precomputation phase introduces shortcut edges based on a given contraction order.
 These shortcuts effectively bypass sections of the graph, allowing algorithms to skip over entire subgraphs, unless the target node resides within such a subgraph.
-Furthermore, the specific process of inserting shortcuts based on the contraction order guarantees that any shortest path in the original graph corresponds to an 'up-down' path in the hierarchy defined by the vertex ranks \cite{geisberger_contraction_2008}.
-An 'up-down' path consists of a sequence of edges leading to vertices with increasing ranks (the 'up' segment), followed by a sequence of edges leading to vertices with decreasing ranks (the 'down' segment).
+Furthermore, the specific process of inserting shortcuts based on the contraction order guarantees that any shortest path in the original graph corresponds to an \emph{up-down} path in the hierarchy defined by the vertex ranks \cite{geisberger_contraction_2008}.
+An \emph{up-down} path consists of a sequence of edges leading to vertices with increasing ranks (the \emph{up} segment), followed by a sequence of edges leading to vertices with decreasing ranks (the \emph{down} segment).
 This property enables an efficient bidirectional search by restricting exploration to higher-ranked neighbors.
 
 This order is defined by a bijection \( \pi : \{1, \dots, n\} \to V \), where \( n = |V| \).
@@ -64,10 +64,10 @@ The contraction process is illustrated in \cref{fig:cch_precomputation_example}.
 			\draw (5) -- (2);
 			\draw (2) -- (6);
 			\draw (1) -- (4);
-			\draw (4) -- (6);
+			\draw (1) -- (6);
 
 			\draw[thick, teal, dashed] (5) -- (6);
-			\draw[thick, teal, dashed] (1) -- (6);
+			\draw[thick, teal, dashed] (4) -- (6);
 		\end{tikzpicture}
 		\caption{Graph after precomputation, new shortcut edges are shown in teal.}
 	\end{subfigure}
@@ -174,9 +174,9 @@ Note that while the outlined algorithm only considers undirected edge weights, i
 				\draw (2) -- (5) node {1};
 				\draw (2) -- (6) node {3};
 				\draw (1) -- (4) node {1};
-				\draw (4) -- (6) node {2};
+				\draw (1) -- (6) node {2};
 				\draw[thick, teal, dashed] (5) -- (6) node {\(\infty\)};
-				\draw[thick, teal, dashed] (1) -- (6) node {\(\infty\)};
+				\draw[thick, teal, dashed] (4) -- (6) node {\(\infty\)};
 			\end{scope}
 		\end{tikzpicture}
 		\caption{Graph after precomputation. Weights are added to the edges. Shortcuts get weight \(\infty\).}
@@ -200,9 +200,9 @@ Note that while the outlined algorithm only considers undirected edge weights, i
 				\draw (2) -- (5) node {1};
 				\draw (2) -- (6) node {3};
 				\draw (1) -- (4) node {1};
-				\draw (4) -- (6) node {2};
+				\draw (1) -- (6) node {2};
 				\draw[thick, teal, dashed] (5) -- (6) node {\textbf{2}};
-				\draw[thick, teal, dashed] (1) -- (6) node {\(\infty\)};
+				\draw[thick, teal, dashed] (4) -- (6) node {\(\infty\)};
 			\end{scope}
 		\end{tikzpicture}
 		\caption{Graph after customization. The shortcut edge \(\{5, 6\}\) is updated to weight \(2\).}
@@ -231,9 +231,10 @@ The query algorithm performs a bidirectional search upwards in this elimination 
 		\draw (3) -- (5);
 		\draw (5) -- (2);
 		\draw (1) -- (4);
-		\draw (4) -- (6);
+		\draw (1) -- (6);
 
 		\draw[thick, teal, dashed] (5) -- (6);
+		\draw[thick, teal, dashed] (4) -- (6);
 	\end{tikzpicture}
 	\caption{Elimination tree for the example graph in \cref{fig:cch_precomputation_example}.}
 	\label{fig:cch_elimination_tree}
@@ -255,7 +256,7 @@ The correctness of this query algorithm for computing shortest path distances ha
 The size of the separators found significantly impacts the efficiency of CCH queries.
 CCH queries restrict exploration to edges leading towards higher-ranked nodes (upward edges).
 Consider the separator identified at the highest level of the recursion, which contains approximately \(n^\beta\) nodes.
-When a query initiates within a component defined by this separator, nodes located in other components cannot be reached without traversing downwards through a separator node, violating the upward search constraint.
+When a query initiates within a component induced by a separator, nodes located in other components cannot be reached without traversing downwards through a separator node, violating the upward search constraint.
 This containment effect applies recursively within the sub-components generated during the nested dissection.
 Let \(\alpha\) denote the balance factor.
 The sub-components at recursion level \(i\) consequently have a size of at most \( \alpha^i \cdot n \).
