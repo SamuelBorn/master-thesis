@@ -1,6 +1,17 @@
-%% LaTeX2e class for student theses
-%% sections/abstract_de.tex
-
 \section*{\abstractname}
 
-\todo[inline]{Translate when English abstract is complete.}
+Empirische Beobachtungen legen nahe, dass reale Straßennetzwerke kleine Graphseparatoren aufweisen, deren Größe etwa in der Größenordnung von \bigO{n^{1/3}}, wächst.
+Dieses Wachstum ist signifikant langsamer als die Worst-Case-Schranken bekannter Graphklassen, wie die planarer Graphen mit einer Separatorgröße von \bigO{n^{1/2}}.
+Die diesem Phänomen zugrunde liegenden strukturellen Eigenschaften sind jedoch bisher nur unzureichend verstanden.
+Diese Arbeit untersucht daher systematisch, welche Netzwerkeigenschaften das Vorhandensein kleiner Separatoren erklären.
+
+Unsere Analyse von realen Netzwerkdaten deutet auf ein Wachstum der Separatorgröße von circa \bigO{n^{0.37}} hin.
+Wir bewerten den Einfluss verschiedener Grapheigenschaften, indem wir versuchen, dieses Wachstumsverhalten mithilfe synthetisch generierter Graphen zu replizieren.
+Die Untersuchung zeigt, dass simplere Eigenschaften wie geringe Dichte oder die Existenz einer Einbettung allein nicht ausreichen, um die in Straßennetzwerken beobachteten Separatorgrößen zu erklären.
+Modelle, die allein auf solchen Merkmalen basieren, führen typischerweise zu Separatoren, deren Größe mit \bigO{n^{1/2}} oder schlechter wächst.
+
+Unsere Ergebnisse deuten stattdessen darauf hin, dass die kleinen Separatoren eine direkte Folge einer hierarchischen Struktur sind.
+Diese Schlussfolgerung wird durch unsere generativen Modelle gestützt.
+Wir stellen fest, dass zwei konzeptionell unterschiedliche Ansätze, einer basierend auf expliziter hierarchischer Konstruktion, der andere auf der Simulation physischer Barrieren mittels mehrskaligem Rauschen, Graphen mit einer Separatorgröße von \bigO{n^{0.37}} erzeugen.
+Dieses Ergebnis kommt den empirischen Beobachtungen in Straßengraphen sehr nahe.
+Der Erfolg dieser diversen Modelle, die eine hierarchische Organisation erzwingen, legt nahe, dass Hierarchie die entscheidende Eigenschaft ist, die für die kleinen Separatoren in Straßennetzwerken verantwortlich ist.
