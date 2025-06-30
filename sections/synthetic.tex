@@ -548,7 +548,7 @@ A nested grid construction with \(L\) layers is determined by \(L\) grid sizes (
 This parameterization offers the possibility of attempting to enforce a target separator scaling, such as \bigO{n^{1/3}}, by carefully choosing the parameters at each level transition.
 We assume that separating the nested structure primarily involves cutting through the top-level grid structure.
 If the number of embedded subgraphs is not excessively large, the separator size might be approximated by the width \(w\) of the top-level grid, similar to a standard grid separator.
-We can estimate the total number of vertices of a subgraph of the nested grid strucutre \(V_\text{sub}\) based on the top level grid width \(w\) of the current layer, the number \(k\) of subgraphs placed within its cells, and the size \(s\) of each subgraph:
+We can estimate the total number of vertices of a subgraph of the nested grid structure \(V_\text{sub}\) based on the top level grid width \(w\) of the current layer, the number \(k\) of subgraphs placed within its cells, and the size \(s\) of each subgraph:
 \[ |V_\text{sub}| \approx w^2 + k \cdot s \]
 This estimate is approximate as it may double-count vertices along the boundaries where subgraphs connect to the parent grid.
 The estimate also assumes we are only looking at perfect nested grids, which is not true as we are looking at general subgraphs from a nested dissection.
@@ -650,7 +650,7 @@ This method showed initial promise in creating structures that could yield separ
 
 Building upon insights from this strategy, we developed a more streamlined and effective method, which is the primary focus of this section.
 Instead of performing Delaunay triangulations at each hierarchical level followed by a final planarization step, we first generate the complete set of points across all desired levels.
-Only after all points have been generated is a single, global Delaunay triangulation performed on the entire final point set.
+Only after all points have been generated a single, global Delaunay triangulation is performed on the entire final point set.
 The pseudocode for this hierarchical Delaunay generation process is detailed in \cref{alg:hierarchical_delaunay}.
 The method \texttt{uniformRandomPointsInCircle(center, radius, k)} samples \(k\) points uniformly at random within a circle of given radius centered at the specified point.
 A deliberate design choice in our hierarchical point generation process (\cref{alg:hierarchical_delaunay}) is that candidates for new expansion sites at each level \(i\) are selected from the entire set of currently existing points \(P\), rather than exclusively from points generated in the immediately preceding level \(i-1\).
