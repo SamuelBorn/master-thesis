@@ -356,7 +356,7 @@ We analyzed the separator properties of these different Delaunay-derived graphs:
 Visualizations of these graph structures and their comparative separator scaling are presented in \cref{fig:delaunay_variants_comparison}.
 Despite the variations in density, ranging from an average degree of approximately 6 for the full DT down to about \(2.6\) for the RNG, our experiments indicate that the asymptotic separator scaling for all these Delaunay-derived planar graphs remains consistent with \bigO{n^{1/2}}.
 The method of sparsification, whether through random edge deletion or by applying systematic geometric rules like those for GG or RNG, primarily influences the constant factors associated with the separator size.
-It does not, however, fundamentally alter the \bigO{n^{1/2}} scaling behavior tied to their underlying planar geometric nature.
+However, it does not fundamentally alter the \bigO{n^{1/2}} scaling behavior tied to their underlying planar geometric nature.
 Even when the average degree very closely matches that of road networks (as in the RNG case), the separator scaling does not approach the \(\approx \bigO{n^{0.37}}\) observed empirically for road networks.
 
 \begin{figure}[tbhp]
@@ -478,8 +478,8 @@ The spanner is built using a greedy algorithm that iterates through the edges of
 An edge \((u, v)\) with length \(len(u, v)\) is added to the spanner \(H\) only if the current shortest path distance between \(u\) and \(v\) within \(H\), denoted \(dist_H(u, v)\), is greater than \(t \cdot len(u, v)\).
 To compute \(dist_H(u, v)\), Dijkstra's algorithm is employed.
 Additionally, a union-find data structure maintains the connected components of \(H\), allowing for immediate addition of edges connecting previously disconnected vertices.
-Bauer et al. propose processing edges in non-increasing order (longest first) as a heuristic primarily intended to improve the computational efficiency of the spanner construction,
-the idea is to handle long edges while the intermediate spanner graph \(H\) is still sparse, potentially speeding up distance computations \cite{hutchison_synthetic_2010}.
+Bauer et al. propose processing edges in non-increasing order (longest first) as a heuristic primarily intended to improve the computational efficiency of the spanner construction.
+The idea is to handle long edges while the intermediate spanner graph \(H\) is still sparse, potentially speeding up distance computations \cite{hutchison_synthetic_2010}.
 For completeness, we briefly mention an alternative pruning strategy for a different generative model that will be detailed in a later section (\cref{sec:hierarchical_delaunay_generation}).
 This method tends to produce graphs with greater visual resemblance to real-world road networks than the Bauer et al. approach, though this comes at a higher computational cost.
 
@@ -517,7 +517,7 @@ Consequently, if the recursion depth is limited and the highest-level structures
 To explore hierarchical effects in a more controlled manner, we also investigate a simpler but conceptually related approach using nested grids.
 This method aims to construct a hierarchical graph by recursively embedding grid graphs within the cells of a parent grid, potentially allowing us to deliberately engineer specific separator scaling properties.
 The fundamental idea is recursive: a level-1 structure is a standard square grid.
-A level-\(i\) nested grid (for \(i > 1\)) is then constructed from a higher-level parent grid where selected cells are replaced by entire instances of level-\(i-1\) nested grids.
+A level-\(i\) nested grid (for \(i > 1\)) is then constructed from a higher-level parent grid, where selected cells are replaced by entire instances of level-\(i-1\) nested grids.
 This process can be repeated for any number of layers, creating a fractal-like structure of grids within grids.
 An optional refinement can be applied to make the graph sparser by removing redundant edges from parent grids.
 An edge of a parent grid is considered redundant if the cell it borders has a subgraph embedded within it.
@@ -970,7 +970,7 @@ The generation method demonstrates scalability, producing graphs with up to 300 
 For larger graphs, we primarily rely on using the Relative Neighborhood Graph (RNG) creation instead of a Delaunay triangulation with the following edge pruning because the RNG is more efficient to compute for larger point sets.
 Further experiments are constrained by limitations in underlying libraries, which employ 32-bit integers for internal processing.
 Once the \(n\) points are generated, a global Delaunay triangulation is performed on this point set.
-Subsequently, the same edge pruning step detailed in the Hierarchical Delaunay Generation section (see \cref{alg:prune_edges}) is applied to achieve a target average degree and refine the graph structure.
+Subsequently, the same edge pruning step detailed in the hierarchical Delaunay Generation section (see \cref{alg:prune_edges}) is applied to achieve a target average degree and refine the graph structure.
 An example of a graph generated using this method and its observed separator scaling are shown in \cref{fig:fractal_noise_graph_results}.
 
 \begin{algorithm}[tbhp]
@@ -1000,7 +1000,7 @@ An example of a graph generated using this method and its observed separator sca
 	\begin{subfigure}[t]{0.38\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/noise.png}
-		\caption{Graph generated using multi-scale Perlin noise-based point sampling (\(n = 10^5\)).}
+        \caption{Graph generated using multi-scale Perlin noise-based point sampling (\({n = 10^5}\)).}
 		\label{fig:fractal_noise_graph_viz}
 	\end{subfigure}
 	\hfill

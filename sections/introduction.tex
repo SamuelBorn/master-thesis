@@ -14,9 +14,9 @@ The size of the smallest such separator is a fundamental graph property, as it g
 The foundational work by Lipton and Tarjan on planar separators, for example, demonstrates how the existence of small separators can be leveraged to create efficient algorithms for numerous problems on planar graphs \cite{lipton_applications_1977, lipton_separator_1979}.
 
 Work in the context of advanced routing algorithms suggests that road networks have balanced separators with sizes scaling on the order of \bigO{n^{1/3}}, as observed in experiments by Dibbelt et al. \cite{dibbelt_customizable_2016}.
-This is a remarkable finding, as it is significantly smaller than the \bigO{n^{1/2}} worst-case bound guaranteed for planar graphs, even though road networks can be treated as nearly planar structures due to their geographic embedding.
+This is a remarkable finding, as it is significantly smaller than the \bigO{n^{1/2}} worst-case bound guaranteed for planar graphs, even though road networks can be treated as nearly planar structures due to their geographic embedding \cite{lipton_applications_1977, lipton_separator_1979}.
 
-This specific structural property has significant practical implications.
+The existence of such small graph separators has significant practical implications.
 In road networks, small separators enable the creation of highly effective node orders, which are critical for the performance of state-of-the-art routing algorithms like Customizable Contraction Hierarchies (CCH).
 This thesis therefore seeks to uncover the properties responsible for the presence of these small separators.
 We aim to determine whether they stem from intrinsic graph characteristics, such as limited vertex degrees or sparsity, or from real-world physical features, such as geographic borders, rivers, or a hierarchical road system.
@@ -33,7 +33,7 @@ This finding positions road networks within a sparsely populated intermediate co
 The primary contributions of this thesis are both empirical and generative.
 We first conduct a rigorous empirical analysis of separator scaling in large-scale, real-world road networks, establishing a power-law relationship of approximately \bigO{n^{0.37}}.
 We then systematically evaluate a wide range of synthetic graph models, demonstrating that simple, single-property models based on degree distribution, basic locality, or standard planarity are mostly insufficient to reproduce this observed scaling.
-To address this gap, we develop and analyze two novel, more complex generative models: a Hierarchical Delaunay generator that can replicate the target scaling through parameter tuning, and a Multi-scale Perlin Noise model that simulates physical barriers.
+To address this gap, we develop and analyze two novel, more complex generative models: a hierarchical Delaunay generator that can replicate the target scaling through parameter tuning, and a multi-scale Perlin noise model that simulates physical barriers.
 A key finding is that this noise-based model naturally produces graphs with the desired \bigO{n^{0.37}} separator scaling without requiring extensive fine-tuning, suggesting it captures a fundamental principle of road network formation.
 Based on these findings, we propose that the small separators in road networks are an emergent property of their multi-scale structure, resulting directly from the network's adaptation to a complex physical and hierarchical environment.
 
