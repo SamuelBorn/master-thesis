@@ -326,7 +326,7 @@ The desired scaling is explicitly engineered into the generation process here, r
 
 As a generalization of grid-like structures derived from point sets, Delaunay Triangulations (DT) are fundamental in computational geometry and serve as a basis for generating planar graphs.
 A DT for a given set \(P\) of discrete points in a plane is a specific triangulation such that for any triangle in \(DT(P)\), its circumcircle (the unique circle passing through its three vertices) contains no other points from \(P\) in its interior.
-This \enquote{empty circumcircle} property ensures that DTs tend to maximize the minimum angle of all triangles in the triangulation, thereby avoiding overly elongated triangles.
+This \enquote{empty circumcircle} property ensures that DTs maximize the minimum angle of all triangles in the triangulation, thereby avoiding overly elongated triangles.
 Our process for generating a baseline Delaunay graph involves sampling \(n\) points uniformly at random in a two-dimensional space and then computing their full Delaunay triangulation.
 Such a DT typically has an average vertex degree around 6. This observation is consistent with Euler's formula for planar graphs (\(|V| - |E| + |F| = 2\)),
 for large triangulations, where most faces are triangles and each internal edge is shared by two faces (\(3|F| \approx 2|E|\)), the average degree \(2|E|/|V|\) approaches 6.
